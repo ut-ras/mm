@@ -151,6 +151,13 @@ movePath(pos, dir){
  *  @param prevNode - previous node
  *  @param currNode - node mouse currently reached
  */
-addRelation(prevNode, currNode){
-
+addRelation(prevNode, currNode, dirLeft, dirEntered, mvDist){
+    if(prevNode.id == currNode.id){
+        prevNode.neighbors[dirLeft].path = 0;
+        prevNode.neighbors[dirEntered].path = 0;
+    }
+    prevNode.neighbors[dirLeft].id = currNode.id;
+    prevNode.neighbors[dirLeft].dist = mvDist;
+    currNode.neighbors[dirEntered].id = prevNode.id;
+    currNode.neighbors[dirEntered].dist = mvDst;
 }
