@@ -13,7 +13,7 @@
   * @param _neighbors - north, east, south, west: Neighbor objects.
   *     default neighbor objects are null (unexplored).
   */
- var Node = function(_id, _position, _neighbors){
+ var Node = function(_id, _position, _neighbors = [null, null, null, null]){
      var id = _id;
      var position = _position;
      var neighbors = _neighbors;

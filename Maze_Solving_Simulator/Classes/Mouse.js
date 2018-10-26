@@ -196,7 +196,7 @@ var Mouse = function(_position = [0, 0]){
           *  @param dir :int
           *     absolute direction the mouse leaves from the current junction
           *  @return int[2], where [0] = int[2]
-          *     location - [newPos, moveDist]
+          *     location - [newPos, moveDist, directionEntered]
           */
          movePath : function(pos, dir){
              let activeDir = dir;
@@ -270,7 +270,7 @@ var Mouse = function(_position = [0, 0]){
              if(deadEnd)
                  return [pos, 0];
              else
-                 return [pos, mvDst];
+                 return [pos, mvDst, activeDir];
          }
     }
 }
