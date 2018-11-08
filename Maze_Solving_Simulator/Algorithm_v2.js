@@ -10,13 +10,15 @@ let currentNode;
 let position;
 let travelDirection;
 let id = 0;
+let dirEntered;
+let dirLeft;
 
 const ROWS = 16, COLS = 16;
 const GOAL_POS = [[7,8], [8,8], [8,7], [7,7]]; //top right, ctr-clockwise respectively
 
 function main() {
     //instantiate mouse at bottom left position
-    var mouse = new Mouse();
+    var mouse = new Mmouse();
     nodes.push(new Node(id, mouse.getPosition()));
     currentNodeID = id;
     id++;
