@@ -206,7 +206,7 @@ class Mmouse{
      *     (x,y) coordinates of the mmouse before it starts moving.
      *  @param dir :int
      *     Math.absolute direction the mmouse leaves from the current junction
-     *  @return int[2], where [0] = int[2]
+     *  @return int[3], where [0] = int[3]
      *     location - [newPos, moveDist, directionEntered]
      */
     movePath(pos_o, dir){
