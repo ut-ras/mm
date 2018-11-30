@@ -7,8 +7,20 @@
  **/
 #include "Neighbor.h"
 
-void Neighbor(Neighbor *neighbor, int id, bool pathBool, int distance){
+void initNeighbor(Neighbor *neighbor, int id, bool pathBool, int distance){
     neighbor->id = id;
     neighbor->pathBool = pathBool;
     neighbor->distance = distance;
+}
+
+void setNeighborId(Neighbor *neighbor, int _id){
+    neighbor->id = _id;
+}
+
+void setPath(Neighbor *neighbor, bool _path){
+    neighbor->pathBool = _path;
+}
+
+void setDistance(Neighbor *neighbor, int _dist){
+    neighbor->distance = _dist;
 }

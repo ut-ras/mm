@@ -17,7 +17,7 @@
  *     1 = no wall, 0 = wall, -1 = unexplored
  * @param distance - the distance between nodes (in unit hamming distance cells).
  **/
-typdef struct Neighbor{
+typedef struct Neighbor{
     int id;
     bool pathBool;
     int distance;
@@ -25,10 +25,10 @@ typdef struct Neighbor{
 
 /**
  * Use:
- *
- *
+ * Neighbor myNeighbor;
+ * Neighbor(&myNeighbor, id, pathBool, distance);
  **/
-void Neighbor(Neighbor *neighbor, int id, bool pathBool, int distance);
+void initNeighbor(Neighbor *neighbor, int id, bool pathBool, int distance);
 
 /**
  * @function getNeighborId
@@ -36,7 +36,9 @@ void Neighbor(Neighbor *neighbor, int id, bool pathBool, int distance);
  *      reference of the neighbor to get ID from
  * @return id : int
  **/
-int getNeighborId(Neighbor *neighbor);
+int getNeighborId(Neighbor *neighbor){
+    return neighbor->id;
+}
 
 /**
  * @function getPath
@@ -45,7 +47,9 @@ int getNeighborId(Neighbor *neighbor);
  * @return pathBool : bool
  *      true - path exists; false - wall exists;
  **/
-bool getPath(Neighbor *neighbor);
+bool getPath(Neighbor *neighbor){
+    return neighbor->pathBool;
+}
 
 /**
  * @function getDistance
@@ -54,7 +58,9 @@ bool getPath(Neighbor *neighbor);
  * @return distance : int
  *      distance to the connecting node, if any (else 0)
  **/
-int getDistance(Neighbor *neighbor);
+int getDistance(Neighbor *neighbor){
+    return neighbor->distance;
+}
 
 /**
  * @function setNeighborId
@@ -63,7 +69,7 @@ int getDistance(Neighbor *neighbor);
  * @param id : int
  *      id to set
  **/
-void setNeighborId(Neighbor *neighbor, int id);
+void setNeighborId(Neighbor *neighbor, int _id);
 
 /**
  * @function setPath
@@ -72,7 +78,7 @@ void setNeighborId(Neighbor *neighbor, int id);
  * @param path : bool
  *      pathBool to set
  **/
-void setPath(Neighbor *neighbor, bool path);
+void setPath(Neighbor *neighbor, bool _path);
 
 /**
  * @function setDistance
@@ -81,6 +87,6 @@ void setPath(Neighbor *neighbor, bool path);
  * @param dist : int
  *      distance to set
  **/
-void setDistance(Neighbor *neighbor, int dist);
+void setDistance(Neighbor *neighbor, int _dist);
 
 #endif
