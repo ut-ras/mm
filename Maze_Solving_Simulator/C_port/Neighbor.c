@@ -4,8 +4,10 @@
  * Last modified: 11/30/18
  *
  * This file defines the function definitions declared in Neighbor.h.
+ * 11/30/18 - Neighbor basic functionality tested, works
  **/
 #include "Neighbor.h"
+#include <stdio.h>
 
 void initNeighbor(Neighbor *neighbor, int id, bool pathBool, int distance){
     neighbor->id = id;
@@ -24,3 +26,12 @@ void setPath(Neighbor *neighbor, bool _path){
 void setDistance(Neighbor *neighbor, int _dist){
     neighbor->distance = _dist;
 }
+// 
+// int test_neighbor(){
+//     Neighbor myNeighbor;
+//     initNeighbor(&myNeighbor, 2, false, 15);
+//     printf("id:%s\n", getPath(&myNeighbor) ? "true" : "false");
+//     setPath(&myNeighbor, true);
+//     printf("new id:%s\n", getPath(&myNeighbor) ? "true" : "false");
+//     return 0;
+// }

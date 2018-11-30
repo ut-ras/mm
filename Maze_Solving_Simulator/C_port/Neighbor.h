@@ -26,7 +26,7 @@ typedef struct Neighbor{
 /**
  * Use:
  * Neighbor myNeighbor;
- * Neighbor(&myNeighbor, id, pathBool, distance);
+ * initNeighbor(&myNeighbor, id, pathBool, distance);
  **/
 void initNeighbor(Neighbor *neighbor, int id, bool pathBool, int distance);
 
