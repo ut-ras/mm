@@ -10,8 +10,8 @@
 #define STRUCTS_H
 
 typedef struct Position{
-    int X;
-    int Y;
+    int x;
+    int y;
 }Position;
 
 typedef struct Location{

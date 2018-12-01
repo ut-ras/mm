@@ -24,7 +24,7 @@ typdef struct Mouse{
     int heading;
 }Mouse;
 
-Mouse Mouse(int posX, int posY, int heading);
+void initMouse(Mouse *mouse, int posX, int posY, int heading);
 
 /**
  *  @function move - move the Mouse an arbitrary distance (1 cell)
@@ -44,7 +44,7 @@ void move(Mouse *mouse, int activeDir);
  *  @return cell_environment : CellEnv
  *      refer to Structs.h.
  **/
-CellEnv getCellType(Mouse *mouse);
+void getCellType(CellEnv *cellEnv);
 
 /**
  *  @function findHammingDist - given a position and direction to move towards,
@@ -98,7 +98,8 @@ Location movePath(Mouse *mouse, Position position, int dir);
 
 /*wrapper functions defined for low level moving of the mouse and determining
 heading here?*/
-
+//return abs direction mouse is facing
+int heading();
 
 
 #endif

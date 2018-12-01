@@ -7,7 +7,7 @@
  * 11/30/18 - Neighbor basic functionality tested, works
  **/
 #include "Neighbor.h"
-#include <stdio.h>
+// #include <stdio.h> //uncomment when unit testing
 
 void initNeighbor(Neighbor *neighbor, int id, bool pathBool, int distance){
     neighbor->id = id;
@@ -26,7 +26,7 @@ void setPath(Neighbor *neighbor, bool _path){
 void setDistance(Neighbor *neighbor, int _dist){
     neighbor->distance = _dist;
 }
-// 
+//
 // int test_neighbor(){
 //     Neighbor myNeighbor;
 //     initNeighbor(&myNeighbor, 2, false, 15);
