@@ -10,19 +10,20 @@
 #ifndef NODE_H
 #define NODE_H
 #include "Structs.h"
+#include "Neighbor.h"
 
 /**
  * @class Mouse: the relationship between two nodes.
  * @param position - grid cell position of mouse
  * @param heading - direction the mouse is facing
  **/
-typdef struct Node{
+typedef struct Node{
     int id;
     Position position;
     Neighbor neighbors[4];
 }Node;
 
-Node Node(int id, Position position);
+void initNode(Node *node, int id, Position position);
 
 /**
  * @function getID
@@ -37,7 +38,7 @@ int getID(Node *node);
  *      reference of the node to get position from
  * @return position : Position
  **/
-Position getPosition(Node *node);
+Position getNodePosition(Node *node);
 
 /**
  * @function getNeighbors - gets individual Neighbors
@@ -46,7 +47,7 @@ Position getPosition(Node *node);
  * @param neighborArr[4] : Neighbors[]
  *      pass by reference array to fill with Neighbor data
  **/
-void getNeighbors(Node *node, Neighbors neighborArr[4]);
+void getNeighbors(Node *node, Neighbor neighborArr[4]);
 
 /**
  *  @function addRelation - given the previous and newly reached node,

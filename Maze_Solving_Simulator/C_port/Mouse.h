@@ -1,25 +1,24 @@
 /**
  * Mouse.h
  * Author: Matthew Yu
- * Last modified: 11/30/18
+ * Last modified: 12/1/18
  *
  * This file describes the mmouse class and the functions that it uses.
- * This class is dependent on the following classes and their source files:
- *      @class Node m_Node.js
- *      @class Neighbor m_Neighbor.js
- *
- * TODO: Clean up input parameters since some duplicate off class
+ * Dependencies: Node.h; Structs.h
+ * 12/1/18 : Implemented most of Mouse.c; needs wrapper functions for low level
+ *  control and unit testing
  **/
 #ifndef MOUSE_H
 #define MOUSE_H
 #include "Structs.h"
+#include "Node.h"
 
 /**
  * @class Mouse: the relationship between two nodes.
  * @param position - grid cell position of mouse
  * @param heading - direction the mouse is facing
  **/
-typdef struct Mouse{
+typedef struct Mouse{
     Position position;
     int heading;
 }Mouse;
@@ -64,7 +63,7 @@ int findHammingDist(Position position, int dir);
  *  @return position : Position
  *     current position of the Mouse
  **/
-Position getPosition(Mouse *mouse);
+void getPosition(Position *position, Mouse *mouse);
 
 /**
  *  @function findDir - determines the direction the mmouse should travel after

@@ -258,7 +258,7 @@ class Mmouse{
                     }
                 }
             }
-            //if cell is a dead eand
+            //if cell is a dead end
             if(cell[4] == 1){
                 deadEnd = true;
                 //flip activeDir - turn around
