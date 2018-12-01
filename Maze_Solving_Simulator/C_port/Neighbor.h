@@ -7,8 +7,6 @@
  **/
 #ifndef NEIGHBOR_H
 #define NEIGHBOR_H
-#include <stdbool.h>
-
 
 /**
  * @class Neighbor: the relationship between two nodes.
@@ -19,7 +17,7 @@
  **/
 typedef struct Neighbor{
     int id;
-    bool pathBool;
+    int pathBool;
     int distance;
 }Neighbor;
 
@@ -28,7 +26,7 @@ typedef struct Neighbor{
  * Neighbor myNeighbor;
  * initNeighbor(&myNeighbor, id, pathBool, distance);
  **/
-void initNeighbor(Neighbor *neighbor, int id, bool pathBool, int distance);
+void initNeighbor(Neighbor *neighbor, int id, int pathBool, int distance);
 
 /**
  * @function getNeighborId
@@ -45,9 +43,9 @@ int getNeighborId(Neighbor *neighbor){
  * @param neighbor : Neighbor
  *      reference of the neighbor to get pathBool from
  * @return pathBool : bool
- *      true - path exists; false - wall exists;
+ *      1 - path exists; 0 - wall exists; -1 - unknown
  **/
-bool getPath(Neighbor *neighbor){
+int getPath(Neighbor *neighbor){
     return neighbor->pathBool;
 }
 
@@ -78,7 +76,7 @@ void setNeighborId(Neighbor *neighbor, int _id);
  * @param path : bool
  *      pathBool to set
  **/
-void setPath(Neighbor *neighbor, bool _path);
+void setPath(Neighbor *neighbor, int _path);
 
 /**
  * @function setDistance

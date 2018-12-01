@@ -8,8 +8,11 @@
  **/
 #include "Neighbor.h"
 // #include <stdio.h> //uncomment when unit testing
+// #define TRUE 1
+// #define FALSE 0
+// #define UNKNOWN -1
 
-void initNeighbor(Neighbor *neighbor, int id, bool pathBool, int distance){
+void initNeighbor(Neighbor *neighbor, int id, int pathBool, int distance){
     neighbor->id = id;
     neighbor->pathBool = pathBool;
     neighbor->distance = distance;
@@ -19,19 +22,21 @@ void setNeighborId(Neighbor *neighbor, int _id){
     neighbor->id = _id;
 }
 
-void setPath(Neighbor *neighbor, bool _path){
+void setPath(Neighbor *neighbor, int _path){
     neighbor->pathBool = _path;
 }
 
 void setDistance(Neighbor *neighbor, int _dist){
     neighbor->distance = _dist;
 }
-//
-// int test_neighbor(){
+
+
+
+// int main(){
 //     Neighbor myNeighbor;
-//     initNeighbor(&myNeighbor, 2, false, 15);
-//     printf("id:%s\n", getPath(&myNeighbor) ? "true" : "false");
-//     setPath(&myNeighbor, true);
-//     printf("new id:%s\n", getPath(&myNeighbor) ? "true" : "false");
+//     initNeighbor(&myNeighbor, 2, UNKNOWN, 15);
+//     printf("id:%i\n", getPath(&myNeighbor));
+//     setPath(&myNeighbor, FALSE);
+//     printf("new id:%i\n", getPath(&myNeighbor));
 //     return 0;
 // }
