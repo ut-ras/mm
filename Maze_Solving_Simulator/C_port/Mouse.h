@@ -23,7 +23,7 @@ typedef struct Mouse{
     int heading;
 }Mouse;
 
-void initMouse(Mouse *mouse, int posX, int posY, int heading);
+void initMouse(Mouse *mouse, Position position, int heading);
 
 /**
  *  @function move - move the Mouse an arbitrary distance (1 cell)

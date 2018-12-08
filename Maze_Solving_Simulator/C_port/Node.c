@@ -12,7 +12,7 @@
      for(int i = 0; i < 4; i++){
          node->neighbors[i].id = 0;
          node->neighbors[i].pathBool = -1;
-         node->neighbors[i].distance = 0;         
+         node->neighbors[i].distance = 0;
      }
  }
 
@@ -35,7 +35,7 @@
          //close path if mouse returns to node it left
          setPath(&(prevNode->neighbors[dirLeft]), 0);
          setPath(&(prevNode->neighbors[dirEntered]), 0);
-     }else if(1 != 0){//some condition){
+     }else if(1 == 0){//some condition){
          int i = 0;
      }else{
          setNeighborId(&(prevNode->neighbors[dirLeft]), currNode->id);

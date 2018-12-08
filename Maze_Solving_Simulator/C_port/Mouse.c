@@ -11,23 +11,33 @@
  **/
 #include "Mouse.h"
 #include <stdlib.h>
-#include <stdio.h>
 #define TRUE 1
 #define FALSE 0
 #define UNKNOWN -1
 
-void initMouse(Mouse *mouse, int posX, int posY, int heading){
-    mouse->position.x = posX;
-    mouse->position.y = posY;
+void initMouse(Mouse *mouse, Position position, int heading){
+    mouse->position = position;
     mouse->heading = heading;
 }
 
 void move(Mouse *mouse, int activeDir){
-    int facing = heading();
     //orientate mouse based on heading
-    //move
-    //adjust virtual position in mouse memory
-    //loop
+    //move physically
+    //update position in memory
+    switch(activeDir){
+        case 0:
+            mouse->position.y--;
+            break;
+        case 1:
+            mouse->position.x++;
+            break;
+        case 2:
+            mouse->position.y++;
+            break;
+        case 3:
+            mouse->position.x--;
+            break;
+    }
 }
 
 int findHammingDist(Position position, int dir){
