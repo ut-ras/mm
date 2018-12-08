@@ -23,6 +23,11 @@ typedef struct Node{
     Neighbor neighbors[4];
 }Node;
 
+/**
+ * Use:
+ * Node myNode;
+ * initNode(&myNode, id, position);
+ **/
 void initNode(Node *node, int id, Position position);
 
 /**

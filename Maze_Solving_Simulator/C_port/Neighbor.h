@@ -34,9 +34,7 @@ void initNeighbor(Neighbor *neighbor, int id, int pathBool, int distance);
  *      reference of the neighbor to get ID from
  * @return id : int
  **/
-int getNeighborId(Neighbor *neighbor){
-    return neighbor->id;
-}
+int getNeighborId(Neighbor *neighbor);
 
 /**
  * @function getPath
@@ -45,9 +43,7 @@ int getNeighborId(Neighbor *neighbor){
  * @return pathBool : bool
  *      1 - path exists; 0 - wall exists; -1 - unknown
  **/
-int getPath(Neighbor *neighbor){
-    return neighbor->pathBool;
-}
+int getPath(Neighbor *neighbor);
 
 /**
  * @function getDistance
@@ -56,9 +52,7 @@ int getPath(Neighbor *neighbor){
  * @return distance : int
  *      distance to the connecting node, if any (else 0)
  **/
-int getDistance(Neighbor *neighbor){
-    return neighbor->distance;
-}
+int getDistance(Neighbor *neighbor);
 
 /**
  * @function setNeighborId

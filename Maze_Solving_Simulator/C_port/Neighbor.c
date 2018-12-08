@@ -18,16 +18,28 @@ void initNeighbor(Neighbor *neighbor, int id, int pathBool, int distance){
     neighbor->distance = distance;
 }
 
-void setNeighborId(Neighbor *neighbor, int _id){
-    neighbor->id = _id;
+int getNeighborId(Neighbor *neighbor){
+    return neighbor->id;
 }
 
-void setPath(Neighbor *neighbor, int _path){
-    neighbor->pathBool = _path;
+int getPath(Neighbor *neighbor){
+    return neighbor->pathBool;
 }
 
-void setDistance(Neighbor *neighbor, int _dist){
-    neighbor->distance = _dist;
+int getDistance(Neighbor *neighbor){
+    return neighbor->distance;
+}
+
+void setNeighborId(Neighbor *neighbor, int id){
+    neighbor->id = id;
+}
+
+void setPath(Neighbor *neighbor, int path){
+    neighbor->pathBool = path;
+}
+
+void setDistance(Neighbor *neighbor, int dist){
+    neighbor->distance = dist;
 }
 
 
