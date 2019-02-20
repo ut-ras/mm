@@ -1,6 +1,7 @@
 #include "distance.h"
 #include "motorController.c"
 #include <math.h>
+#include "enc.h"
 
 #define PCONST 0.004
 
@@ -40,7 +41,11 @@ int init() {
 		return 2;
 	}
 
-	mcpwm_example_gpio_initialize();
+    //Initialize Encoders
+    enc_init();
+
+
+	//mcpwm_example_gpio_initialize();
     mcpwm_initialize();
 
 	return 0;
@@ -78,7 +83,7 @@ void moveUntilInter(float maxSpeed, short* walls) {
 	read_distance(&right, dists);
 	int frontRight = dists[0];
 	int sideRight = dists[1];
-	
+
 	int currError = (LEFT_SIDE_ZERO - sideLeft + sideRight - RIGHT_SIDE_ZERO) / 2;
 	int lastError = currError;
 
