@@ -5,6 +5,7 @@
  * @Help: mmsim.readthedocs.io
  * @Purpose: for use for UT IEEE RAS Micromouse team, 2018-2019.
  * @Compile: "gcc -o client client.c -lzmq"
+ * @Set up server: make
  */
 #include <stdio.h>
 #include <string.h>
