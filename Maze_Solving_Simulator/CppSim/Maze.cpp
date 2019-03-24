@@ -31,6 +31,26 @@ void Maze::setMaze(){
     }
 }
 
+void Maze::parse(string filename){
+    int maze[32][32];
+    string line;
+    ifstream myfile (filename);
+    if (myfile.is_open()) {
+        for (int j = 31; j > -1 && getline(myfile, line); j--) {
+            char linechar[line.size() + 1];
+            strcpy(linechar, line.c_str());
+            for (int i = 0; i < 32; i++) {
+                if (linechar[i] == ' ') {
+                    maze[i][j] = 0;
+                } else {
+                    maze[i][j] = 1;
+                }
+            }
+        }
+        myfile.close();
+    }
+}
+
 const int** Maze::getMaze(){
     return maze;
 }
