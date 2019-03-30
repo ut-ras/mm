@@ -2,8 +2,9 @@
 #include "motorController.c"
 #include <math.h>
 #include "enc.h"
+#include "esp_timer.h"
 
-#define PCONST 0.004
+#define PCONST 0.0075
 
 #define LEFT_FRONT_PIN 37
 #define LEFT_SIDE_PIN 38
@@ -63,18 +64,47 @@ void zero() {
 	RIGHT_SIDE_ZERO = dists[1];
 }
 
-void setMotorsPidBasic(int error, float maxSpeed) {
-	float speedReduc = abs(error * PCONST);
-	if (error > 10)
-		setMotors(maxSpeed - speedReduc, maxSpeed);
-	else if (error < 10)
-		setMotors(maxSpeed, maxSpeed - speedReduc);
-	else
-		setMotors(maxSpeed, maxSpeed);
+void setMotorsP(int error, float maxSpeed) {
+	float speedReduc = error * PCONST;
+    setMotors(maxSpeed - speedReduc, maxSpeed + speedReduc + 18);
 }
 
-void moveUntilInter(float maxSpeed, short* walls) {
+void followP(float maxSpeed, short* walls) {
 	int dists[2];
+
+	read_distance(&left, dists);
+	int frontLeftLast = dists[0];
+	int sideLeftLast = dists[1];
+
+	read_distance(&right, dists);
+	int frontRightLast = dists[0];
+	int sideRightLast = dists[1];
+
+    int error = 0;
+
+    uint64_t prevTime = (uint64_t)esp_timer_get_time();
+
+/*	while(frontLeft > LEFT_FRONT_THRESH && frontRight > RIGHT_FRONT_THRESH
+		&& sideLeft < LEFT_SIDE_THRESH && sideRight < RIGHT_SIDE_THRESH) {
+        setMotorsP(error, maxSpeed);
+
+        read_distance(&left, dists);
+        int frontLeftCurr = dists[0];
+	    int sideLeftCurr = dists[1];
+
+        read_distance(&right, dists);
+        int frontRightCurr = dists[0];
+        int sideRightCurr = dists[1];
+
+	}
+
+	walls[0] = sideLeft < LEFT_SIDE_THRESH ? 1 : 0;
+	walls[2] = sideRight < RIGHT_SIDE_THRESH ? 1 : 0;
+	walls[1] = (frontLeft > LEFT_FRONT_THRESH && frontRight > RIGHT_FRONT_THRESH) ? 0 : 1;*/
+}
+
+void followPBasic(float maxSpeed, short* walls) {
+    int dists[2];
 
 	read_distance(&left, dists);
 	int frontLeft = dists[0];
@@ -84,13 +114,22 @@ void moveUntilInter(float maxSpeed, short* walls) {
 	int frontRight = dists[0];
 	int sideRight = dists[1];
 
-	int currError = (LEFT_SIDE_ZERO - sideLeft + sideRight - RIGHT_SIDE_ZERO) / 2;
-	int lastError = currError;
+    int error;
 
-	while(frontLeft > LEFT_FRONT_THRESH && frontRight > RIGHT_FRONT_THRESH
-		&& sideLeft < LEFT_SIDE_THRESH && sideRight < RIGHT_SIDE_THRESH) {
-		currError = (LEFT_SIDE_ZERO - sideLeft + sideRight - RIGHT_SIDE_ZERO) / 2;
-		setMotorsPidBasic(currError, maxSpeed);
+	while(/*frontLeft > LEFT_FRONT_THRESH && frontRight > RIGHT_FRONT_THRESH
+		&& sideLeft < LEFT_SIDE_THRESH && sideRight < RIGHT_SIDE_THRESH*/1) {
+
+        read_distance(&left, dists);
+        frontLeft = dists[0];
+	    sideLeft = dists[1];
+
+        read_distance(&right, dists);
+        frontRight = dists[0];
+        sideRight = dists[1];
+
+        error = (LEFT_SIDE_ZERO - sideLeft) + (sideRight - RIGHT_SIDE_ZERO);
+        printf("error: %d l: %d r: %d\n", error, sideLeft, sideRight);
+        setMotorsP(error, maxSpeed);
 	}
 
 	walls[0] = sideLeft < LEFT_SIDE_THRESH ? 1 : 0;
