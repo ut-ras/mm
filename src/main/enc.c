@@ -13,7 +13,7 @@
 #define PCNT_H_LIM_VAL INT16_MAX
 #define PCNT_L_LIM_VAL INT16_MIN
 #define PCNT_FILTER_VAL 100
-#define ACTIVE_ENCODERS 1
+#define ACTIVE_ENCODERS 2
 
 pcnt_isr_handle_t user_isr_handle = NULL; // user's ISR service handle
 
@@ -120,4 +120,12 @@ void enc_init() {
   encoders[0]->pcnt = PCNT_UNIT_0;
   pcnt_init(encoders[0]->pcnt, 5,
             10); // pcnt 0, A=gpio5, B=gpio10
+
+  encoders[1] = (Enc *)malloc(sizeof(Enc));
+  encoders[1]->count = 0;
+  encoders[1]->sum = 0;
+  encoders[1]->direction = forward;
+  encoders[1]->pcnt = PCNT_UNIT_1;
+  pcnt_init(encoders[1]->pcnt, 25,
+            26); // pcnt 0, A=gpio25, B=gpio26
 }

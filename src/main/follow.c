@@ -23,8 +23,10 @@ void app_main() {
         }
         */
     readEncoders();
-    printf("encoder %d -> %d\n, direction %d\n", 0, getTicks(0),
+    printf("encoder %d -> %d, direction %d\n", 0, getTicks(0),
            encoders[0]->direction);
+    printf("encoder %d -> %d, direction %d\n", 1, getTicks(1),
+           encoders[1]->direction);
     vTaskDelay(10 / portTICK_RATE_MS);
   }
 }
