@@ -1,82 +1,123 @@
 #include "driver/gpio.h"
+#include "driver/pcnt.h"
+#include "driver/periph_ctrl.h"
 #include "enc.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/queue.h"
-#include "freertos/task.h"
+#include "esp_attr.h"
+#include "esp_log.h"
+#include "freertos/portmacro.h"
+#include "soc/gpio_sig_map.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define GPIO_INPUT_IO_0 4
-#define GPIO_INPUT_IO_1 5
-#define GPIO_INPUT_PIN_SEL                                                     \
-  ((1ULL << GPIO_INPUT_IO_0) | (1ULL << GPIO_INPUT_IO_1))
-#define ESP_INTR_FLAG_DEFAULT 0
+#define PCNT_H_LIM_VAL INT16_MAX
+#define PCNT_L_LIM_VAL INT16_MIN
+#define PCNT_FILTER_VAL 100
+#define ACTIVE_ENCODERS 1
 
-static xQueueHandle gpio_evt_queue = NULL;
+pcnt_isr_handle_t user_isr_handle = NULL; // user's ISR service handle
 
-static void IRAM_ATTR gpio_isr_handler(void *arg) {
-  uint32_t gpio_num = (uint32_t)arg;
-  xQueueSendFromISR(gpio_evt_queue, &gpio_num, NULL);
+/* Decode what PCNT's unit originated an interrupt
+ * and pass this information together with the event type
+ * the main program using a queue.
+ */
+static void IRAM_ATTR pcnt_enc_intr_handler(void *arg) {
+  uint32_t intr_status = PCNT.int_st.val;
+  int i;
+  pcnt_evt_t evt;
+  portBASE_TYPE HPTaskAwoken = pdFALSE;
+
+  for (i = 0; i < PCNT_UNIT_MAX; i++) {
+    if (intr_status & (BIT(i))) {
+      evt.unit = i;
+      /* Save the PCNT event type that caused an interrupt
+         to pass it to the main program */
+      evt.status = PCNT.status_unit[i].val;
+      PCNT.int_clr.val = BIT(i);
+      xQueueSendFromISR(pcnt_evt_queue, &evt, &HPTaskAwoken);
+      if (HPTaskAwoken == pdTRUE) {
+        portYIELD_FROM_ISR();
+      }
+    }
+  }
 }
 
-static void gpio_task(void *arg) {
-  uint32_t io_num;
-  for (;;) {
-    if (xQueueReceive(gpio_evt_queue, &io_num, portMAX_DELAY)) {
-      printf("GPIO[%d] intr, val: %d\n", io_num, gpio_get_level(io_num));
-      int level = gpio_get_level(io_num);
-      if (io_num == GPIO_INPUT_IO_0) {
-        enc.levA = level;
+static void pcnt_init(int unit, int encA, int encB) {
+  pcnt_config_t pcnt_config = {
+      .pulse_gpio_num = encA,
+      .ctrl_gpio_num = encB,
+      .channel = PCNT_CHANNEL_0,
+      .unit = unit,
+      .pos_mode = PCNT_COUNT_INC,      // increment on enc A posedge
+      .neg_mode = PCNT_COUNT_DIS,      // ignore enc B negedge
+      .lctrl_mode = PCNT_MODE_KEEP,    // ignore enc B low
+      .hctrl_mode = PCNT_MODE_REVERSE, // decrement mode when enc B high
+      .counter_h_lim = PCNT_H_LIM_VAL, // set max
+      .counter_l_lim = PCNT_L_LIM_VAL, // set min
+  };
+  pcnt_unit_config(&pcnt_config);
+
+  pcnt_set_filter_value(
+      unit,
+      PCNT_FILTER_VAL); // ignore pulse if less than val*12.5ns
+  pcnt_filter_enable(unit);
+
+  pcnt_event_enable(unit, PCNT_EVT_H_LIM);
+  pcnt_event_enable(unit, PCNT_EVT_L_LIM);
+
+  pcnt_counter_pause(unit);
+  pcnt_counter_clear(unit);
+
+  pcnt_isr_register(pcnt_enc_intr_handler, NULL, 0, &user_isr_handle);
+  pcnt_intr_enable(unit);
+
+  pcnt_counter_resume(unit);
+}
+
+int getTicks(int enc_num) { return encoders[enc_num]->count; }
+
+void readEncoders() {
+  int16_t count = 0;
+  pcnt_evt_t evt;
+  portBASE_TYPE res;
+  res = xQueueReceive(pcnt_evt_queue, &evt, 0);
+  if (res == pdTRUE) {
+    pcnt_get_counter_value(evt.unit, &count);
+    encoders[evt.unit]->sum =
+        encoders[evt.unit]->sum + count; // manage overflow of 16-bit counter
+    printf("Event PCNT unit[%d]; cnt: %d\n", evt.unit, count);
+    if (evt.status & PCNT_STATUS_L_LIM_M) {
+      printf("L_LIM EVT\n");
+    }
+    if (evt.status & PCNT_STATUS_H_LIM_M) {
+      printf("H_LIM EVT\n");
+    }
+  } else {
+    for (int i = 0; i < ACTIVE_ENCODERS; i++) {
+      pcnt_get_counter_value(i, &count);
+      if (count < encoders[i]->count - encoders[i]->sum) {
+        encoders[i]->direction = backward;
       } else {
-        enc.levB = level;
+        encoders[i]->direction = forward;
       }
-
-      if (io_num != enc.lastGpio) { // Debounce
-        enc.lastGpio = io_num;
-        if ((io_num == enc.encA) && (level == 1)) {
-          if (enc.levB) {
-            ++enc.pos;
-          } else if ((io_num == enc.encB) && (level == 1)) {
-            if (enc.levA) {
-              --enc.pos;
-            }
-          }
-        }
-      }
+      encoders[i]->count = count + encoders[i]->sum;
+      // printf("Enc %d :%d\n", i, encoders[i]->count);
     }
+  }
+  if (user_isr_handle) {
+    esp_intr_free(user_isr_handle);
+    user_isr_handle = NULL;
   }
 }
-/*
-  void _cb(int gpio, int level, uint32_t tick, void *user) {
-    Enc *enc = (Enc *)user;
-    if (gpio == enc.encA) {
-      enc.levA = level;
-    } else {
-      enc.levB = level;
-    }
-  }
-*/
-void enc_init() {
-  enc.encA = GPIO_INPUT_IO_0;
-  enc.encB = GPIO_INPUT_IO_1;
-  enc.levA = 0;
-  enc.levB = 0;
-  enc.pos = 0;
-  enc.lastGpio = -1;
 
-  gpio_config_t io_conf;
-  io_conf.intr_type = GPIO_PIN_INTR_DISABLE;
-  io_conf.mode = GPIO_MODE_INPUT;
-  io_conf.pin_bit_mask = GPIO_INPUT_PIN_SEL;
-  io_conf.pull_down_en = 0;
-  gpio_set_intr_type(GPIO_INPUT_IO_0, GPIO_INTR_ANYEDGE);
-  gpio_set_intr_type(GPIO_INPUT_IO_1, GPIO_INTR_ANYEDGE);
-  gpio_evt_queue = xQueueCreate(10, sizeof(uint32_t));
-  xTaskCreate(gpio_task, "encoder_task", 2048, NULL, 10, NULL);
-  gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT);
-  gpio_isr_handler_add(GPIO_INPUT_IO_0, gpio_isr_handler,
-                       (void *)GPIO_INPUT_IO_0);
-  gpio_isr_handler_add(GPIO_INPUT_IO_1, gpio_isr_handler,
-                       (void *)GPIO_INPUT_IO_1);
+void enc_init() {
+  pcnt_evt_queue = xQueueCreate(10, sizeof(pcnt_evt_t));
+
+  encoders[0] = (Enc *)malloc(sizeof(Enc));
+  encoders[0]->count = 0;
+  encoders[0]->sum = 0;
+  encoders[0]->direction = forward;
+  encoders[0]->pcnt = PCNT_UNIT_0;
+  pcnt_init(encoders[0]->pcnt, 5,
+            10); // pcnt 0, A=gpio5, B=gpio10
 }
