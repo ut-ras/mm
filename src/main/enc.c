@@ -97,8 +97,10 @@ void readEncoders() {
       pcnt_get_counter_value(i, &count);
       if (count < encoders[i]->count - encoders[i]->sum) {
         encoders[i]->direction = backward;
-      } else {
+      } else if (count > encoders[i]->count - encoders[i]->sum) {
         encoders[i]->direction = forward;
+      } else {
+        encoders[i]->direction = stop;
       }
       encoders[i]->count = count + encoders[i]->sum;
       // printf("Enc %d :%d\n", i, encoders[i]->count);
@@ -116,7 +118,7 @@ void enc_init() {
   encoders[0] = (Enc *)malloc(sizeof(Enc));
   encoders[0]->count = 0;
   encoders[0]->sum = 0;
-  encoders[0]->direction = forward;
+  encoders[0]->direction = stop;
   encoders[0]->pcnt = PCNT_UNIT_0;
   pcnt_init(encoders[0]->pcnt, 5,
             10); // pcnt 0, A=gpio5, B=gpio10
@@ -124,7 +126,7 @@ void enc_init() {
   encoders[1] = (Enc *)malloc(sizeof(Enc));
   encoders[1]->count = 0;
   encoders[1]->sum = 0;
-  encoders[1]->direction = forward;
+  encoders[1]->direction = stop;
   encoders[1]->pcnt = PCNT_UNIT_1;
   pcnt_init(encoders[1]->pcnt, 25,
             26); // pcnt 0, A=gpio25, B=gpio26

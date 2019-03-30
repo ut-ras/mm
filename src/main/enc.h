@@ -10,7 +10,8 @@ xQueueHandle pcnt_evt_queue; // A queue to handle pulse counter events
 
 enum Direction{
   forward = 0,
-  backward = 1
+  backward = 1,
+  stop = 2
 };
 
 /* A sample structure to pass events from the PCNT
