@@ -56,7 +56,7 @@ static void mcpwm_frequency_initialize()
 /*
  * Call this initialize before starting to set speed of the both motors
  */
-static void mcpwm_initialize()
+void mcpwm_initialize()
 {
     printf("initializing mcpwm gpio...\n");
     mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM0A, GPIO_PWM0A_OUT);
@@ -90,11 +90,4 @@ void setRightSpeed(double speed){
         mcpwm_set_duty(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_B, -speed);
         mcpwm_set_duty_type(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_B, MCPWM_DUTY_MODE_0);
     }
-}
-
-//example for going forward.
-static void motorController(){
-    mcpwm_initialize();
-    setRightSpeed(60.0);
-    setLeftSpeed(60.0);
 }

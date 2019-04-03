@@ -1,8 +1,8 @@
 #include "distance.h"
-#include "motorController.c"
-#include <math.h>
+#include "movement.h"
+#include "motorController.h"
 #include "enc.h"
-#include "esp_timer.h"
+#include <math.h>
 
 #define PCONST 0.0075
 
@@ -69,7 +69,7 @@ void setMotorsP(int error, float maxSpeed) {
     setMotors(maxSpeed - speedReduc, maxSpeed + speedReduc + 18);
 }
 
-void followP(float maxSpeed, short* walls) {
+/*void followP(float maxSpeed, short* walls) {
 	int dists[2];
 
 	read_distance(&left, dists);
@@ -84,7 +84,7 @@ void followP(float maxSpeed, short* walls) {
 
     uint64_t prevTime = (uint64_t)esp_timer_get_time();
 
-/*	while(frontLeft > LEFT_FRONT_THRESH && frontRight > RIGHT_FRONT_THRESH
+	while(frontLeft > LEFT_FRONT_THRESH && frontRight > RIGHT_FRONT_THRESH
 		&& sideLeft < LEFT_SIDE_THRESH && sideRight < RIGHT_SIDE_THRESH) {
         setMotorsP(error, maxSpeed);
 
@@ -100,8 +100,8 @@ void followP(float maxSpeed, short* walls) {
 
 	walls[0] = sideLeft < LEFT_SIDE_THRESH ? 1 : 0;
 	walls[2] = sideRight < RIGHT_SIDE_THRESH ? 1 : 0;
-	walls[1] = (frontLeft > LEFT_FRONT_THRESH && frontRight > RIGHT_FRONT_THRESH) ? 0 : 1;*/
-}
+	walls[1] = (frontLeft > LEFT_FRONT_THRESH && frontRight > RIGHT_FRONT_THRESH) ? 0 : 1;
+}*/
 
 void followPBasic(float maxSpeed, short* walls) {
     int dists[2];
