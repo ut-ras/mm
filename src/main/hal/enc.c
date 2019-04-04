@@ -1,14 +1,5 @@
-#include "driver/gpio.h"
 #include "driver/pcnt.h"
-#include "driver/periph_ctrl.h"
 #include "enc.h"
-#include "esp_attr.h"
-#include "esp_log.h"
-#include "freertos/portmacro.h"
-#include "soc/gpio_sig_map.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #define PCNT_H_LIM_VAL INT16_MAX
 #define PCNT_L_LIM_VAL INT16_MIN
@@ -16,6 +7,15 @@
 #define ACTIVE_ENCODERS 2
 
 pcnt_isr_handle_t user_isr_handle = NULL; // user's ISR service handle
+xQueueHandle pcnt_evt_queue; // A queue to handle pulse counter events
+
+/* A sample structure to pass events from the PCNT
+ * interrupt handler to the main program.
+ */
+typedef struct {
+  int unit;        // the PCNT unit that originated an interrupt
+  uint32_t status; // information on the event type that caused the interrupt
+} pcnt_evt_t;
 
 /* Decode what PCNT's unit originated an interrupt
  * and pass this information together with the event type
@@ -115,19 +115,19 @@ void readEncoders() {
 void enc_init() {
   pcnt_evt_queue = xQueueCreate(10, sizeof(pcnt_evt_t));
 
-  encoders[0] = (Enc *)malloc(sizeof(Enc));
-  encoders[0]->count = 0;
-  encoders[0]->sum = 0;
-  encoders[0]->direction = stop;
-  encoders[0]->pcnt = PCNT_UNIT_0;
-  pcnt_init(encoders[0]->pcnt, 5,
+  encoders[right_enc] = (Enc *)malloc(sizeof(Enc));
+  encoders[right_enc]->count = 0;
+  encoders[right_enc]->sum = 0;
+  encoders[right_enc]->direction = stop;
+  encoders[right_enc]->pcnt = PCNT_UNIT_0;
+  pcnt_init(encoders[right_enc]->pcnt, 5,
             10); // pcnt 0, A=gpio5, B=gpio10
 
-  encoders[1] = (Enc *)malloc(sizeof(Enc));
-  encoders[1]->count = 0;
-  encoders[1]->sum = 0;
-  encoders[1]->direction = stop;
-  encoders[1]->pcnt = PCNT_UNIT_1;
-  pcnt_init(encoders[1]->pcnt, 25,
-            26); // pcnt 0, A=gpio25, B=gpio26
+  encoders[left_enc] = (Enc *)malloc(sizeof(Enc));
+  encoders[left_enc]->count = 0;
+  encoders[left_enc]->sum = 0;
+  encoders[left_enc]->direction = stop;
+  encoders[left_enc]->pcnt = PCNT_UNIT_1;
+  pcnt_init(encoders[left_enc]->pcnt, 25,
+            26); // pcnt 1, A=gpio25, B=gpio26
 }
