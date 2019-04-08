@@ -21489,24 +21489,19 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </net>
 <net name="REC5" class="0">
 <segment>
-<pinref part="ESP32" gate="G$1" pin="IO13"/>
-<wire x1="63.5" y1="63.5" x2="58.42" y2="63.5" width="0.1524" layer="91"/>
-<label x="53.34" y="63.5" size="1.778" layer="95"/>
-</segment>
-<segment>
 <pinref part="RECEIVER5" gate="G$1" pin="2"/>
 <label x="149.86" y="7.62" size="1.778" layer="95"/>
 <pinref part="R13" gate="G$1" pin="2"/>
 <wire x1="157.48" y1="10.16" x2="157.48" y2="5.08" width="0.1524" layer="91"/>
 <wire x1="157.48" y1="5.08" x2="162.56" y2="5.08" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="ESP32" gate="G$1" pin="SENSOR_VP"/>
+<wire x1="104.14" y1="48.26" x2="109.22" y2="48.26" width="0.1524" layer="91"/>
+<label x="109.22" y="48.26" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="REC6" class="0">
-<segment>
-<pinref part="ESP32" gate="G$1" pin="IO14"/>
-<wire x1="63.5" y1="60.96" x2="58.42" y2="60.96" width="0.1524" layer="91"/>
-<label x="53.34" y="60.96" size="1.778" layer="95"/>
-</segment>
 <segment>
 <pinref part="RECEIVER6" gate="G$1" pin="2"/>
 <label x="177.8" y="7.62" size="1.778" layer="95"/>
@@ -21514,13 +21509,13 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="185.42" y1="10.16" x2="185.42" y2="5.08" width="0.1524" layer="91"/>
 <wire x1="185.42" y1="5.08" x2="190.5" y2="5.08" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="ESP32" gate="G$1" pin="SENSOR_VN"/>
+<wire x1="104.14" y1="45.72" x2="109.22" y2="45.72" width="0.1524" layer="91"/>
+<label x="109.22" y="45.72" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="V_SENSE" class="0">
-<segment>
-<pinref part="ESP32" gate="G$1" pin="IO4"/>
-<wire x1="63.5" y1="76.2" x2="58.42" y2="76.2" width="0.1524" layer="91"/>
-<label x="48.26" y="76.2" size="1.778" layer="95"/>
-</segment>
 <segment>
 <pinref part="R19" gate="G$1" pin="2"/>
 <pinref part="R20" gate="G$1" pin="1"/>
@@ -21529,6 +21524,11 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="-20.32" y1="127" x2="-20.32" y2="132.08" width="0.1524" layer="91"/>
 <label x="-20.32" y="134.62" size="1.778" layer="95"/>
 <junction x="-20.32" y="127"/>
+</segment>
+<segment>
+<pinref part="ESP32" gate="G$1" pin="IO33"/>
+<wire x1="63.5" y1="33.02" x2="60.96" y2="33.02" width="0.1524" layer="91"/>
+<label x="50.8" y="33.02" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="BATT_POWER" class="0">
@@ -22007,14 +22007,14 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </net>
 <net name="LED_SIG" class="0">
 <segment>
-<pinref part="ESP32" gate="G$1" pin="IO33"/>
-<wire x1="63.5" y1="33.02" x2="60.96" y2="33.02" width="0.1524" layer="91"/>
-<label x="50.8" y="33.02" size="1.778" layer="95"/>
-</segment>
-<segment>
 <pinref part="D1" gate="G$1" pin="DI"/>
 <wire x1="144.78" y1="124.46" x2="142.24" y2="124.46" width="0.1524" layer="91"/>
 <label x="132.08" y="124.46" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="ESP32" gate="G$1" pin="IO4"/>
+<wire x1="63.5" y1="76.2" x2="58.42" y2="76.2" width="0.1524" layer="91"/>
+<label x="48.26" y="76.2" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$34" class="0">
