@@ -20892,10 +20892,10 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="C2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-US" device="C1210" package3d_urn="urn:adsk.eagle:package:23619/2" value="3.3nf"/>
 <part name="U2" library="transistors" deviceset="MMBT3904" device=""/>
 <part name="R2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="M1206" package3d_urn="urn:adsk.eagle:package:23566/1" value="100"/>
-<part name="RECEIVER1" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="" package3d_urn="urn:adsk.eagle:package:22435/2"/>
+<part name="RECEIVER2" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="" package3d_urn="urn:adsk.eagle:package:22435/2"/>
 <part name="R9" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="M1206" package3d_urn="urn:adsk.eagle:package:23566/1" value="1.3k"/>
 <part name="X_7" library="ngspice-simulation" library_urn="urn:adsk.eagle:library:527439" deviceset="GND" device=""/>
-<part name="RECEIVER2" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="" package3d_urn="urn:adsk.eagle:package:22435/2"/>
+<part name="RECEIVER5" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="" package3d_urn="urn:adsk.eagle:package:22435/2"/>
 <part name="R10" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="M1206" package3d_urn="urn:adsk.eagle:package:23566/1" value="1.3k"/>
 <part name="X_8" library="ngspice-simulation" library_urn="urn:adsk.eagle:library:527439" deviceset="GND" device=""/>
 <part name="RECEIVER3" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="" package3d_urn="urn:adsk.eagle:package:22435/2"/>
@@ -20904,7 +20904,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="RECEIVER4" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="" package3d_urn="urn:adsk.eagle:package:22435/2"/>
 <part name="R12" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="M1206" package3d_urn="urn:adsk.eagle:package:23566/1" value="1.3k"/>
 <part name="X_10" library="ngspice-simulation" library_urn="urn:adsk.eagle:library:527439" deviceset="GND" device=""/>
-<part name="RECEIVER5" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="" package3d_urn="urn:adsk.eagle:package:22435/2"/>
+<part name="RECEIVER1" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="" package3d_urn="urn:adsk.eagle:package:22435/2"/>
 <part name="R13" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="M1206" package3d_urn="urn:adsk.eagle:package:23566/1" value="1.3k"/>
 <part name="X_11" library="ngspice-simulation" library_urn="urn:adsk.eagle:library:527439" deviceset="GND" device=""/>
 <part name="RECEIVER6" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="" package3d_urn="urn:adsk.eagle:package:22435/2"/>
@@ -20994,7 +20994,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <attribute name="NAME" x="-13.97" y="69.6214" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="-11.43" y="74.422" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="RECEIVER1" gate="G$1" x="134.62" y="53.34" smashed="yes">
+<instance part="RECEIVER2" gate="G$1" x="134.62" y="53.34" smashed="yes">
 <attribute name="NAME" x="128.27" y="59.055" size="1.778" layer="95"/>
 <attribute name="VALUE" x="128.27" y="48.26" size="1.778" layer="96"/>
 </instance>
@@ -21003,7 +21003,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <attribute name="VALUE" x="140.462" y="39.37" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="X_7" gate="G$1" x="137.16" y="35.56" smashed="yes"/>
-<instance part="RECEIVER2" gate="G$1" x="157.48" y="53.34" smashed="yes">
+<instance part="RECEIVER5" gate="G$1" x="157.48" y="53.34" smashed="yes">
 <attribute name="NAME" x="151.13" y="59.055" size="1.778" layer="95"/>
 <attribute name="VALUE" x="151.13" y="48.26" size="1.778" layer="96"/>
 </instance>
@@ -21030,7 +21030,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <attribute name="VALUE" x="143.002" y="-3.81" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="X_10" gate="G$1" x="139.7" y="-7.62" smashed="yes"/>
-<instance part="RECEIVER5" gate="G$1" x="160.02" y="10.16" smashed="yes">
+<instance part="RECEIVER1" gate="G$1" x="160.02" y="10.16" smashed="yes">
 <attribute name="NAME" x="153.67" y="15.875" size="1.778" layer="95"/>
 <attribute name="VALUE" x="153.67" y="5.08" size="1.778" layer="96"/>
 </instance>
@@ -21224,12 +21224,12 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <label x="137.16" y="152.4" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="RECEIVER1" gate="G$1" pin="1"/>
+<pinref part="RECEIVER2" gate="G$1" pin="1"/>
 <label x="134.62" y="68.58" size="1.778" layer="95"/>
 <wire x1="132.08" y1="55.88" x2="132.08" y2="68.58" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="RECEIVER2" gate="G$1" pin="1"/>
+<pinref part="RECEIVER5" gate="G$1" pin="1"/>
 <label x="157.48" y="68.58" size="1.778" layer="95"/>
 <wire x1="154.94" y1="55.88" x2="154.94" y2="68.58" width="0.1524" layer="91"/>
 </segment>
@@ -21244,7 +21244,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="134.62" y1="12.7" x2="134.62" y2="25.4" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="RECEIVER5" gate="G$1" pin="1"/>
+<pinref part="RECEIVER1" gate="G$1" pin="1"/>
 <label x="160.02" y="25.4" size="1.778" layer="95"/>
 <wire x1="157.48" y1="12.7" x2="157.48" y2="25.4" width="0.1524" layer="91"/>
 </segment>
@@ -21319,10 +21319,10 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </segment>
 <segment>
 <pinref part="RECEIVER1" gate="G$1" pin="2"/>
-<label x="124.46" y="50.8" size="1.778" layer="95"/>
-<pinref part="R9" gate="G$1" pin="2"/>
-<wire x1="132.08" y1="53.34" x2="132.08" y2="48.26" width="0.1524" layer="91"/>
-<wire x1="132.08" y1="48.26" x2="137.16" y2="48.26" width="0.1524" layer="91"/>
+<label x="149.86" y="7.62" size="1.778" layer="95"/>
+<pinref part="R13" gate="G$1" pin="2"/>
+<wire x1="157.48" y1="10.16" x2="157.48" y2="5.08" width="0.1524" layer="91"/>
+<wire x1="157.48" y1="5.08" x2="162.56" y2="5.08" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="REC2" class="0">
@@ -21333,10 +21333,10 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </segment>
 <segment>
 <pinref part="RECEIVER2" gate="G$1" pin="2"/>
-<label x="147.32" y="50.8" size="1.778" layer="95"/>
-<pinref part="R10" gate="G$1" pin="2"/>
-<wire x1="154.94" y1="53.34" x2="154.94" y2="48.26" width="0.1524" layer="91"/>
-<wire x1="154.94" y1="48.26" x2="160.02" y2="48.26" width="0.1524" layer="91"/>
+<label x="124.46" y="50.8" size="1.778" layer="95"/>
+<pinref part="R9" gate="G$1" pin="2"/>
+<wire x1="132.08" y1="53.34" x2="132.08" y2="48.26" width="0.1524" layer="91"/>
+<wire x1="132.08" y1="48.26" x2="137.16" y2="48.26" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="EM1" class="0">
@@ -21489,30 +21489,30 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </net>
 <net name="REC5" class="0">
 <segment>
-<pinref part="RECEIVER5" gate="G$1" pin="2"/>
-<label x="149.86" y="7.62" size="1.778" layer="95"/>
-<pinref part="R13" gate="G$1" pin="2"/>
-<wire x1="157.48" y1="10.16" x2="157.48" y2="5.08" width="0.1524" layer="91"/>
-<wire x1="157.48" y1="5.08" x2="162.56" y2="5.08" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="ESP32" gate="G$1" pin="SENSOR_VP"/>
 <wire x1="104.14" y1="48.26" x2="109.22" y2="48.26" width="0.1524" layer="91"/>
 <label x="109.22" y="48.26" size="1.778" layer="95"/>
 </segment>
+<segment>
+<pinref part="RECEIVER5" gate="G$1" pin="2"/>
+<label x="147.32" y="50.8" size="1.778" layer="95"/>
+<pinref part="R10" gate="G$1" pin="2"/>
+<wire x1="154.94" y1="53.34" x2="154.94" y2="48.26" width="0.1524" layer="91"/>
+<wire x1="154.94" y1="48.26" x2="160.02" y2="48.26" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="REC6" class="0">
+<segment>
+<pinref part="ESP32" gate="G$1" pin="SENSOR_VN"/>
+<wire x1="104.14" y1="45.72" x2="109.22" y2="45.72" width="0.1524" layer="91"/>
+<label x="109.22" y="45.72" size="1.778" layer="95"/>
+</segment>
 <segment>
 <pinref part="RECEIVER6" gate="G$1" pin="2"/>
 <label x="177.8" y="7.62" size="1.778" layer="95"/>
 <pinref part="R14" gate="G$1" pin="2"/>
 <wire x1="185.42" y1="10.16" x2="185.42" y2="5.08" width="0.1524" layer="91"/>
 <wire x1="185.42" y1="5.08" x2="190.5" y2="5.08" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="ESP32" gate="G$1" pin="SENSOR_VN"/>
-<wire x1="104.14" y1="45.72" x2="109.22" y2="45.72" width="0.1524" layer="91"/>
-<label x="109.22" y="45.72" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="V_SENSE" class="0">
