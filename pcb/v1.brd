@@ -2441,10 +2441,10 @@ design rules under a new name.</description>
 <signal name="EM1">
 <contactref element="ESP32" pad="J3_14"/>
 <contactref element="R2" pad="2"/>
-<wire x1="31.0599875" y1="48.90894375" x2="34.96893125" y2="45" width="0.2" layer="16"/>
-<wire x1="65" y1="45" x2="67.45" y2="47.45" width="0.2" layer="16"/>
+<wire x1="31.0599875" y1="48.90894375" x2="36.96893125" y2="43" width="0.2" layer="16"/>
+<wire x1="63" y1="43" x2="67.45" y2="47.45" width="0.2" layer="16"/>
 <wire x1="67.45" y1="47.45" x2="67.61" y2="47.45" width="0.2" layer="16"/>
-<wire x1="34.96893125" y1="45" x2="65" y2="45" width="0.2" layer="16"/>
+<wire x1="36.96893125" y1="43" x2="63" y2="43" width="0.2" layer="16"/>
 </signal>
 <signal name="REC3">
 <contactref element="ESP32" pad="J2_15"/>
