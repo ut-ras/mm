@@ -5,40 +5,43 @@
 #define MAX_SPEED (.4)
 #define MAX_SUM (1000)
 
-PID::PID(double p, double i, double d, std::string logName) : kP(p), kI(i),
-    kD(d) {
-    set(0);
-    logFile.open(logName.c_str(),
-                 std::fstream::app); // change to "out" to overwrite
+PID* initPID(double p, double i, double d, char* logName){
+  PID* pid = (PID*)malloc(sizeof(PID));
+  pid->kP = p;
+  pid->kI=i;
+  pid->kD=d;
+  pid->fp=fopen(logName, "w+");
+  set(pid, 0);
+  return pid;
 }
 
-void PID::set(double set) {
-    goal = set;
-    sum = 0;
-    last = 0;
-    if(logFile.is_open()) {
-        logFile << std::endl << "Set: " << set << " P: " << kP << " I: "
-                << kI << " D: " << kD << std::endl;
+double getErr(PID *pid) { return pid->last; }
+
+void set(PID* pid,double set) {
+    pid->goal = set;
+    pid->sum = 0;
+    pid->last = 0;
+    if(pid->fp) {
+        fprintf(pid->fp, "\nSet: %f P: %f I: %f D: %f\n", set,pid->kP, pid->kI,pid->kD);
     }
 }
 
-double PID::update(double current, double dt) {
-    double err = goal - current;
-    double d = (err - last) / dt;
-    sum += err * dt;
+double update(PID* pid, double current, double dt) {
+    double err = pid->goal - current;
+    double d = (err - pid->last) / dt;
+    pid->sum += err * dt;
     // sum = std::min(std::max(controller->sum, -MAX_SUM), MAX_SUM);
-    last = err;
-    double result = kP * err + kI * sum + kD * d;
-    if(logFile.is_open()) {
-        logFile << dt << " " << kP* err << " " << kI* sum << " " << kD* d
-                << " " << result << std::endl;
+    pid->last = err;
+    double result = pid->kP * err + pid->kI * pid->sum + pid->kD * d;
+    if(pid->fp) {
+        fprintf(pid->fp, "%f %f %f %f %f\n", dt, pid->kP* err,pid->kI* pid->sum,pid->kD* d,result);
     }
     return result;
 }
 
-PID::~PID() {
-    if(logFile.is_open()) {
-        logFile.close();
+void pidClose(PID* pid) {
+    if(pid->fp) {
+      fclose(pid->fp);
     }
 }
 
