@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+
+# Eagle
+*.b#*
+*.s#*
+*.l#*
