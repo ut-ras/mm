@@ -34,3 +34,9 @@ void Maze::setMaze(){
 const int** Maze::getMaze(){
     return maze;
 }
+
+bool Maze::query(int x, int y){
+    if(maze[x][y] == 1)
+        return true;    // wall exists
+    return false;
+}

@@ -6,32 +6,37 @@
  */
 #ifndef _MAZE_H
 #define _MAZE_H
-#define MAZE_SIDE 16
+#define MAZE_SIDE_LENGTH 16
 
 class Maze{
     private:
-        static int[16][16] maze;
-        static int[16] top = {14,13,12,11,10,9,8,7,7,8,9,10,11,12,13,14};
+        static int[MAZE_SIDE_LENGTH][MAZE_SIDE_LENGTH] maze;
 
     public:
         /**
-         *  @Description: Maze constructor clears all entries of the maze.
+         *  @Description: Maze constructor creates a default, empty maze.
          */
         Maze();
 
         /**
-         *  @Description: setMaze sets all the hamming distances (to the center)
-         *  of the maze.
+         *  @Description: Maze constructor creates a preset maze from the file name input.
+	     *  @param: char *argv[] address of name of maze to load
          */
-        void setMaze();
+        Maze(char *argv[]);
+
+    	/**
+    	 *  @Description: numPaths gives the number of open paths at position (x, y).
+    	 *  @param: int x - x position (scaled x2)
+    	 *  @param: int y - y position (scaled x2)
+    	 *  @return: int number of paths open
+    	 */
+    	int numPaths(int x, int y);
 
         /**
-         *  @Description: getMaze returns a read only 2d array of the maze.
-         *  @Return: const int**, pointer to the maze
+         * @Description: query calls the Maze and checks if this particular position is open or not.
+         * @param: int x - x position to check (scaled x2)
+         * @param: int y - y position to check (scaled x2)
+         * @return: bool true if no wall, false if wall exists
          */
-        const int** getMaze();
-
-        // Maze specific api to emulate mouse sensors
-};
-
+        bool query(int x, int y);
 #endif

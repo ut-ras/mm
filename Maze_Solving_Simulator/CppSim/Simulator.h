@@ -10,22 +10,62 @@
 
 #include "Maze.h"
 #include "Mouse.h"
+#include "Algorithm.h"
 
 class Simulator{
     private:
         static Maze maze;
         static Mouse mouse;
+        static Algorithm algo;
         generateField();
     public:
         /**
-         *  @Description: Simulator constructor sets up the mouse and the field.
+         *  @Description: Simulator constructor sets up a default Maze, Mouse, and
+         *      generic Algorithm.
          */
         Simulator();
 
         /**
-         *  @Description: printMaze prints the state of the maze and the mouse inside it.
+         *  @Description: Simulator constructor sets up a default Mouse and Algorithm
+         *      and a generated Maze given file name and/or path.
+         *  @param char *argv[] command line arg containing file name.
          */
-        void printMaze();
+        Simulator(char *argv[]);
+
+        /**
+         *  @Description: printExploredMaze accesses the Algorithm API (if it exists)
+         *      and prints out the algorithm's representation of the maze and the
+         *      paths explored/seen by the algorithm's mouse.
+         */
+        void printExploredMaze();
+
+        /**
+         *  @Description: printTotalMaze accesses the Maze and Mouse API and prints
+         *      out the complete maze with the mouse position and orientation.
+         *      DOES NOT show paths taken or previous move history.
+         */
+        void printTotalMaze();
+
+        /**
+         *  Decision flow for simulation:
+         *  Current mouse position, relative wall data is gathered and sent to the algorithm.
+         *  The algorithm runs, makes a decision, and sends it back to the simulator.
+         *  The simulator processes that decision (i.e. move mouse forward one step)
+         *  and the iteration ends.
+         */
+
+        /**
+         *  @Description: run simulates the simulator in an loop until an objective
+         *  is complete (i.e. the center is reached, etc).
+         */
+        void run();
+
+        /**
+         *  @Description: run simulates the simulator in a loop for n loops or until
+         *      an objective is complete, whichever comes first.
+         *  @param int n number of loops.
+         */
+        void run(int n);
 };
 
 #endif

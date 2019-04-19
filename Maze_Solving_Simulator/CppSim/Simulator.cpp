@@ -9,24 +9,27 @@
 Simulator::Simulator(){
     maze = Maze();
     mouse = Mouse();
+    algo = Algorithm();
 }
 
-void Simulator::printMaze(){
-    int** mazeData = maze.getMaze();
-    for(int i = 15; i > -1; i--){
-        for(int j = 0; j < 16; j++){
-            if(mouse.getx()==j && mouse.gety()==i){
-                printf("**|");
-            }
-            else{
-                printf("%02d|", mazeData[j][i]);
-            }
-        }
-        printf("\n");
-        for(int j = 0; j < 16; j++){
-            printf("---");
-        }
-        printf("\n");
-    }
-    printf("\n\n");
+Simulator::Simulator(char *argv[]){
+    maze = Maze(argv);
+    mouse = Mouse();
+    algo = Algorithm();
+}
+
+void Simulator::printExploredMaze(){
+
+}
+
+void Simulator::printTotalMaze(){
+
+}
+
+void Simulator::run(){
+
+}
+
+void Simulator::run(int n){
+
 }
