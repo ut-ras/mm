@@ -1,23 +1,28 @@
+#include "enc.h"
+#include "esp_timer.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 #include "movement.h"
 #include "pid.h"
 #include <stdio.h>
 
 #define NUM_MOTORS 2
 
+PID *linearControl[2];
+PID *alignmentControl;
+
 const int ticksPerUnit = 2200 / 26;
 double maxSpeed = .30; // percentage
 
-enum axis { horizontal, vertical };
+double max(double val1, double val2) { return val1 > val2 ? val1 : val2; }
 
-PID *linearControl[2];
-PID *rotationControl;
-PID *alignmentControl;
+double min(double val1, double val2) { return val1 < val2 ? val1 : val2; }
 
 // Run all control loops in series
 double gains[NUM_MOTORS];
 void controlUpdate(double elapsed) {
   for (int i = 0; i < NUM_MOTORS; ++i) {
-    gains[i] = linearControl[i]->update(getTicks(i), elapsed);
+    gains[i] = update(linearControl[i], getTicks(i), elapsed);
   }
   // double angularCorrection = rotationControl->update(mpu input here);
   // double alignmentCorrection = alignmentControl->update(vlx input here);
@@ -28,27 +33,20 @@ void controlUpdate(double elapsed) {
             max(min(gains[1], maxSpeed), -maxSpeed));
 }
 
-// TODO: Micromouse move straight
-/*
 const int steady = 10;
 const int threshold = 35;
-void moveStraight(int dist, axis dir) {
-  cout << "Starting to move straight for dist: " << dist << endl;
-  int s, us;
-  gpioTime(0, &s, &us);
+void moveStraight(int dist) {
+  printf("Starting to move straight for dist: %d\n", dist);
   int ready = 0;
-  double currentTime, lastTime = (double(s) * 1000 + double(us / 1000)) / 1000;
-  for (int i = 0; i < 4; ++i) {
-    motors[i]->zero();
-    linearControl[i]->set(0);
+  // double currentTime, lastTime =
+  // (double(s) * 1000 + double(us / 1000)) / 1000;
+  double currentTime, lastTime = esp_timer_get_time() / 1000000;
+  setMotors(0, 0);
+  for (int i = 0; i < NUM_MOTORS; ++i) {
+    set(linearControl[i], 0);
   }
-  if (dir == horizontal) {
-    linearControl[0]->set(dist * 1);
-    linearControl[1]->set(dist * -1);
-  } else if (dir == vertical) {
-    linearControl[2]->set(dist * 1);
-    linearControl[3]->set(dist * -1);
-  }
+  set(linearControl[0], dist * 1);
+  set(linearControl[1], dist * -1);
   // block until you're close enough to the set point for long enough
   while (ready < steady) {
     // cout << "Getting there.. " << ready << "/" << steady << endl;
@@ -56,13 +54,13 @@ void moveStraight(int dist, axis dir) {
     //      "\tBottom: " << motors[1]->getTicks() <<
     //      "\tLeft: " << motors[2]->getTicks() <<
     //      "\tRight: " << motors[3]->getTicks() << endl;
-    gpioTime(0, &s, &us);
-    currentTime = (double(s) * 1000 + double(us / 1000)) / 1000;
+    // currentTime = (double(s) * 1000 + double(us / 1000)) / 1000;
+    currentTime = esp_timer_get_time() / 1000000;
     controlUpdate(currentTime - lastTime);
-    time_sleep(.01); // run pid around 20 times per second
+    vTaskDelay(10);
     ++ready;
     for (int i = 0; i < NUM_MOTORS; ++i) {
-      if (linearControl[i]->getErr() > threshold) {
+      if (getErr(linearControl[i]) > threshold) {
         // cout << "holdup: " << linearControl[i]->getErr() << endl;
         ready = 0;
         break;
@@ -72,55 +70,25 @@ void moveStraight(int dist, axis dir) {
   }
   printf("got there\n");
 }
-*/
 
 void selfTest() {
-  for (int i = 0; i < NUM_MOTORS; ++i) {
-    motors[i]->set(.25);
-    vTaskDelay(1000);
-    motors[i]->stop();
-    printf("Motor %d at %d ticks\n", i, getTicks(i));
-  }
+  setMotors(.25, .25);
+  vTaskDelay(1000);
+  setMotors(0, 0);
+  printf("Motor %d at %d ticks\n", 0, getTicks(0));
+  printf("Motor %d at %d ticks\n", 1, getTicks(1));
 }
 
-void hardStop() {
-  for (int i = 0; i < NUM_MOTORS; ++i) {
-    motors[i]->stop();
-  }
-}
+void hardStop() { setMotors(0, 0); }
 
 void printEnc() { printf("Left: %d\tRight: %d\n", getTicks(0), getTicks(1)); }
 
 void setSpeed(double speed) { maxSpeed = speed; }
 
-void moveDir(int dist, int dir) {
-  printf("moving %d units in direction: %d\n", dist, dir);
-  dist *= ticksPerUnit;
-  switch (dir) {
-  case 0:
-    moveStraight(-dist, vertical);
-    break;
-  case 1:
-    moveStraight(dist, vertical);
-    break;
-  case 2:
-    moveStraight(-dist, horizontal);
-    break;
-  case 3:
-    moveStraight(dist, horizontal);
-    break;
-  default:
-    printf("Invalid direction, stopping\n");
-    hardStop(self, args);
-    break;
-  }
-  hardStop(self, args);
-}
-
-void initRobot(PyObject *self, PyObject *args) {
+void initRobot() {
   // TODO: Initialize Motors
   for (int i = 0; i < NUM_MOTORS; ++i) {
-    linearControl[i] = new PID(.01, .01, .0003);
+    linearControl[i] = initPID(.01, .01, .0003, "log");
   }
   // rotationControl = new PID(p, i, d);
   // alignmentControl = new PID(p, i, d);
