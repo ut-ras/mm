@@ -6,12 +6,17 @@
  */
 #ifndef _MAZE_H
 #define _MAZE_H
-#define MAZE_SIDE_LENGTH 16
 
+#include "Params.h"
 class Maze{
     private:
         static int[MAZE_SIDE_LENGTH][MAZE_SIDE_LENGTH] maze;
 
+        /**
+         * @Description: parse takes in a text file of a maze and sets the maze.
+         * @param: string filename - name of the maze file to parse.
+         */
+        void parse(string filename);
     public:
         /**
          *  @Description: Maze constructor creates a default, empty maze.

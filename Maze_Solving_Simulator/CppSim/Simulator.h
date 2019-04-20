@@ -1,6 +1,6 @@
 /**
  *  Simulator.h
- *  @Description: This class manages the maxe and mouse state.
+ *  @Description: This class manages the maze and mouse state.
  *      It can run plug-in algorithms to traverse the mouse across the maze.
  *  @Authors: Matthew Yu and Ahmad Ahbab
  *  @Org: Micromouse
@@ -10,14 +10,19 @@
 
 #include "Maze.h"
 #include "Mouse.h"
-#include "Algorithm.h"
+// #include "Algorithm.h"
 
 class Simulator{
     private:
         static Maze maze;
         static Mouse mouse;
-        static Algorithm algo;
-        generateField();
+        // static Algorithm algo;
+
+        /**
+         * @Description: iterateStep moves one timestep in the algorithm and field.
+         * @return: boolean false if algorithm is done, true if can continue.
+         */
+        bool iterateStep();
     public:
         /**
          *  @Description: Simulator constructor sets up a default Maze, Mouse, and
