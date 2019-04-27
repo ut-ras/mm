@@ -12,17 +12,17 @@ using namespace std;
 Simulator::Simulator(){
     maze = Maze();
     mouse = Mouse();
-    //algo = Algorithm(0, 0, 0);
+    algo = Algorithm();
 }
 
 Simulator::Simulator(char *argv[]){
     maze = Maze(argv);
     mouse = Mouse();
-    //algo = Algorithm(0, 0, 0);
+    algo = Algo();
 }
 
 void Simulator::printExploredMaze(){
-    // requires Algorithm.getMaze();
+    algo.printMaze();
 
     // int** totMaze = Algorithm.getMaze();
     // for(int i = 0; i < MAZE_SIDE_LENGTH; i++){

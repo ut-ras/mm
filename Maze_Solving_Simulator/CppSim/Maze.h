@@ -8,6 +8,7 @@
 #define _MAZE_H
 
 #include "Params.h"
+#include <string.h>
 class Maze{
     private:
         static int[MAZE_SIDE_LENGTH][MAZE_SIDE_LENGTH] maze;
@@ -44,4 +45,5 @@ class Maze{
          * @return: bool true if no wall, false if wall exists
          */
         bool query(int x, int y);
+};
 #endif

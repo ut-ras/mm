@@ -233,3 +233,7 @@ int* Algo::decide() {
     }
     return out;
 }
+
+void Algo::printMaze(){
+    int i = 0;  // future print the maze
+}

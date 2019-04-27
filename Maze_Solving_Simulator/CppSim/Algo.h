@@ -31,5 +31,6 @@ class Algo{
         Algo();
         int* decide();
         void getCheck(bool inp[3]);
+        void printMaze();
 };
 #endif
