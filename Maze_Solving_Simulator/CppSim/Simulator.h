@@ -73,4 +73,19 @@ class Simulator{
          *  @param int n number of loops.
          */
         void run(int n);
+
+        /**
+         *  @Description: getMouse tests the simulated mouse by directly accessing
+         *  and manipulating the mouse.
+         *  @Note: for testing purposes only.
+         *  @return: Mouse* simulated mouse in the maze.
+         */
+        Mouse* getMouse();
+        /**
+         *  @Description: getAlgorithm tests the algorithm by directly accessing
+         *  and manipulating the algorithm.
+         *  @Note: for testing purposes only.
+         *  @return: Algorithm* tested algorithm in the simulator.
+         */
+        Algorithm* getAlgorithm();
 };

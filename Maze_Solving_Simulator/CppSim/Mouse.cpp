@@ -9,8 +9,8 @@
 
 Mouse::Mouse(Maze& maze){
 	x = 0;
-	y = 0;
-	heading = 90.0;
+	y = 15;	// bottom left corner
+	heading = 90.0;	// due north
 	this->maze = &maze;
 }
 
@@ -22,6 +22,7 @@ Mouse::Mouse(int x, int y, double heading, Maze& maze){
 }
 
 void Mouse::moveForward(int steps){
+	heading = fmod(heading+360, 360);
 	switch((int) heading){
 		case 0:
 			x += steps;
@@ -42,6 +43,7 @@ void Mouse::moveForward(int steps){
 }
 
 void Mouse::moveBackward(int steps){
+	heading = fmod(heading+360, 360);
 	switch((int) heading){
 		case 0:
 			x -= steps;
@@ -68,6 +70,7 @@ void Mouse::rotate(double degrees){
 
 // private sim mouse function that translates chacking for maze queries.
 bool Mouse::check(double heading_v){
+	heading_v = fmod(heading_v+360, 360);
 	switch((int) heading_v){
 		case 0:	// East
 			return maze->query(x*2+1, y*2);	// scaled by 2 to match 2d maze
@@ -88,11 +91,11 @@ bool Mouse::checkFront(){
 }
 
 bool Mouse::checkLeft(){
-	return check(fmod(heading + 90, 360));
+	return check(heading + 90);
 }
 
 bool Mouse::checkRight(){
-	return check(heading - 90 + 360);
+	return check(heading - 90);
 }
 
 int Mouse::getPositionX(){

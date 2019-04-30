@@ -122,17 +122,42 @@ bool Maze::query(int x, int y){
     }
 }
 
-void Maze::printMaze(){
+void Maze::printMaze(int x, int y, double heading){
     cout << "---Begin Maze---" << endl;
     for(int row = 0; row < MAZE_HEIGHT; row++){
         int line[MAZE_WIDTH];
         for(int col = 0; col < MAZE_WIDTH; col++){
-            if(maze[row][col] == 1)
-                cout << " \u25A1";
-            else
-                cout << " \u25A0";
+            if(row == y*2 + 1 && col == x*2 + 1){
+                switch((int) heading){  // mouse already takes care of heading double-ness
+                    default:
+                    case 0:
+                        cout << " \u2192";
+                        break;
+                    case 90:
+                        cout << " \u2191";
+                        break;
+                    case 180:
+                        cout << " \u2190";
+                        break;
+                    case 270:
+                        cout << " \u2193";
+                        break;
+                }
+            }else{
+                if(maze[row][col] == 1)
+                    cout << " \u25A1";
+                else
+                    cout << " \u25A0";
+            }
         }
         cout << endl;
     }
     cout << "---End Maze---" << endl;
+}
+
+int Maze::getMazeWidth(){
+    return MAZE_WIDTH;
+}
+int Maze::getMazeHeight(){
+    return MAZE_HEIGHT;
 }

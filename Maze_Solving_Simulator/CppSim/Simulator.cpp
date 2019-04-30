@@ -15,26 +15,16 @@ Simulator::Simulator(){
 
 Simulator::Simulator(string input){
     maze = new Maze(input);
-    mouse = new Mouse(*maze);
+    mouse = new Mouse(0/2, maze->getMazeHeight()/2 - 1, 90.0, *maze);
     algo = new Algorithm();
 }
 
 void Simulator::printExploredMaze(){
     algo->printMaze();
-
-    // int** totMaze = Algorithm.getMaze();
-    // for(int i = 0; i < MAZE_SIDE_LENGTH; i++){
-    //     for(int j = 0; j < MAZE_SIDE_LENGTH; j++){
-    //         printf("%i", totMaze[i][j]);
-    //     }
-    //     printf("\n");
-    // }
-    //
-    // printf("---End Explored Maze---\n\n");
 }
 
 void Simulator::printTotalMaze(){
-    maze->printMaze();
+    maze->printMaze(mouse->getPositionX(), mouse->getPositionY(), mouse->getHeading());
 }
 
 void Simulator::run(){
@@ -75,5 +65,11 @@ bool Simulator::iterateStep(){
             return false;
     }
     return true;
+}
 
+Mouse* Simulator::getMouse(){
+    return mouse;
+}
+Algorithm* Simulator::getAlgorithm(){
+    return algo;
 }
