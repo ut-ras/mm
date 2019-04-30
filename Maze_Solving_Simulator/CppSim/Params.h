@@ -5,4 +5,4 @@
  *  @Org: Micromouse
  *  https://github.com/micromouseonline/mazefiles - url of github with test mazes
  */
-#define MAZE_SIDE_LENGTH 16
+#define MAZE_SIDE_LENGTH 33

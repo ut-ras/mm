@@ -5,24 +5,22 @@
  *  @Authors: Matthew Yu and Ahmad Ahbab
  *  @Org: Micromouse
  */
-#include "Params.h"
 #include "Simulator.h"
-using namespace std;
 
 Simulator::Simulator(){
-    maze = Maze();
-    mouse = Mouse();
-    algo = Algorithm();
+    maze = new Maze();
+    mouse = new Mouse(*maze);
+    algo = new Algorithm();
 }
 
-Simulator::Simulator(char *argv[]){
-    maze = Maze(argv);
-    mouse = Mouse();
-    algo = Algo();
+Simulator::Simulator(string input){
+    maze = new Maze(input);
+    mouse = new Mouse(*maze);
+    algo = new Algorithm();
 }
 
 void Simulator::printExploredMaze(){
-    algo.printMaze();
+    algo->printMaze();
 
     // int** totMaze = Algorithm.getMaze();
     // for(int i = 0; i < MAZE_SIDE_LENGTH; i++){
@@ -36,15 +34,7 @@ void Simulator::printExploredMaze(){
 }
 
 void Simulator::printTotalMaze(){
-    int** totMaze = maze.getMaze();
-    for(int i = 0; i < MAZE_SIDE_LENGTH; i++){
-        for(int j = 0; j < MAZE_SIDE_LENGTH; j++){
-            printf("%i", totMaze[i][j]);
-        }
-        printf("\n");
-    }
-
-    printf("---End Maze---\n\n");
+    maze->printMaze();
 }
 
 void Simulator::run(){
@@ -60,21 +50,25 @@ void Simulator::run(int n){
             break;
 }
 
-void bool Simulator::iterateStep(){
+bool Simulator::iterateStep(){
     // check front, left, and right
-    Algorithm.getCheck([mouse.checkLeft(), mouse.checkFront(), mouse.checkRight()]);
+    bool check[3];  // find way to fix into declaration or directly into .getCheck()
+    check[0] = mouse->checkLeft();
+    check[1] = mouse->checkFront();
+    check[2] = mouse->checkRight();
+    algo->getCheck(check);
     // make a decision
-    int* decision = Algorithm.decide();
+    int* decision = algo->decide();
     // possibly print decision
     switch(decision[0]){
         case 0: // move forwards
-            mouse.moveForward(decision[1]);
+            mouse->moveForward(decision[1]);
             break;
         case 1: // move backwards
-            mouse.moveBackward(decision[1]);
+            mouse->moveBackward(decision[1]);
             break;
         case 2: // rotate
-            mouse.rotate(decision[1]);
+            mouse->rotate(decision[1]);
             break;
         case 3: // finished
             printf("End condition reached for algorithm.");

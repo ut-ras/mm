@@ -5,45 +5,71 @@
  *  @Org: Micromouse
  */
 #include "Maze.h"
-using namespace std;
+#include <iostream>
 
-void Maze::parse(string filename){
-    int maze[32][32];
-    string line;
-    ifstream myfile (filename);
+
+/* Private */
+void Maze::parse(string input){
+    cout << "Looking at file input.." << endl;
+
+    std::string line;
+    ifstream myfile (input);
     if (myfile.is_open()) {
-        for (int j = 31; j > -1 && getline(myfile, line); j--) {
-            char linechar[line.size() + 1];
+        cout << "File opened!" << endl;
+
+        // get height of maze
+        int row = 0;
+        while(getline(myfile, line))
+            row++;
+        // return to beginning
+        myfile.clear();
+        myfile.seekg(0, ios::beg);
+        MAZE_HEIGHT = MAZE_WIDTH = row;
+
+        // fill up maze array
+        int** linePtrs = new int*[MAZE_HEIGHT];
+        for (int row = 0; row < MAZE_HEIGHT && getline(myfile, line); row++) {
+            char linechar[MAZE_WIDTH];
             strcpy(linechar, line.c_str());
-            for (int i = 0; i < 32; i++) {
-                if (linechar[i] == ' ') {
-                    maze[i][j] = 0;
+            int* line = new int[MAZE_WIDTH];
+            for (int col = 0; col < MAZE_WIDTH; col++) {
+                if (linechar[col] == ' ') {
+                    line[col] = 0;
                 } else {
-                    maze[i][j] = 1;
+                    line[col] = 1;
                 }
             }
+
+            linePtrs[row] = line;
         }
+        maze = linePtrs;
         myfile.close();
+
+        cout << "Maze loaded." << endl;
+    }else{
+        cout << "No file found." << endl;
     }
 }
 
+/* Public*/
 Maze::Maze(){
-    for(int i = 0; i < 16; i++){
-        for(int j = 0; j < 16; j++){
-            maze[i][j] = 0;
+    MAZE_HEIGHT = 16;
+    MAZE_WIDTH = 16;
+    int* linePtrs[MAZE_HEIGHT];
+    for(int row = 0; row < MAZE_HEIGHT; row++){
+        int line[MAZE_WIDTH];
+        for(int col = 0; col < MAZE_WIDTH; col++){
+            line[col] = 0;
         }
+        linePtrs[row] = line;
     }
+    maze = linePtrs;
+
+    cout << "Maze generated." << endl;
 }
 
-Maze::Maze(char *argv[]){
-    if(argc != null)
-        parse(str(argv[1]));
-    else
-        printf("Maze::Maze(): null argument err\n");
-}
-
-const int** Maze::getMaze(){
-    return maze;
+Maze::Maze(string input){
+    parse(input);
 }
 
 int Maze::numPaths(int x, int y){
@@ -90,4 +116,19 @@ bool Maze::query(int x, int y){
         printf("Maze::query(): Overflow/Underflow err - X:%i|Y:%i\n", x, y);
         return false;
     }
+}
+
+void Maze::printMaze(){
+    cout << "---Begin Maze---" << endl;
+    for(int row = 0; row < MAZE_HEIGHT; row++){
+        int line[MAZE_WIDTH];
+        for(int col = 0; col < MAZE_WIDTH; col++){
+            if(maze[row][col] == 1)
+                cout << " \u25A1";
+            else
+                cout << " \u25A0";
+        }
+        cout << endl;
+    }
+    cout << "---End Maze---" << endl;
 }

@@ -5,18 +5,20 @@
  *  @Authors: Matthew Yu and Ahmad Ahbab
  *  @Org: Micromouse
  */
-#ifndef _SIMULATOR_H
-#define _SIMULATOR_H
+#pragma once
 
+#include "Params.h"
 #include "Maze.h"
 #include "Mouse.h"
-// #include "Algorithm.h"
+#include "Algorithm.h"
+#include <string>
+using namespace std;
 
 class Simulator{
     private:
-        static Maze maze;
-        static Mouse mouse;
-        // static Algorithm algo;
+        Maze* maze;
+        Mouse* mouse;
+        Algorithm* algo;
 
         /**
          * @Description: iterateStep moves one timestep in the algorithm and field.
@@ -33,9 +35,9 @@ class Simulator{
         /**
          *  @Description: Simulator constructor sets up a default Mouse and Algorithm
          *      and a generated Maze given file name and/or path.
-         *  @param char *argv[] command line arg containing file name.
+         *  @param string input command line arg containing file name converted into String obj.
          */
-        Simulator(char *argv[]);
+        Simulator(string input);
 
         /**
          *  @Description: printExploredMaze accesses the Algorithm API (if it exists)
@@ -72,5 +74,3 @@ class Simulator{
          */
         void run(int n);
 };
-
-#endif

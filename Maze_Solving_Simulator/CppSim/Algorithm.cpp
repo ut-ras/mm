@@ -1,10 +1,6 @@
-#include <iostream>
+#include "Algorithm.h"
 
-#include "Algo.h"
-
-using namespace std;
-
-Algo::Algo() {
+Algorithm::Algorithm() {
     populateMap();
     hasRotated = false;
     currX = 0;
@@ -12,7 +8,7 @@ Algo::Algo() {
     currDir = 1;
 }
 
-void Algo::populateMap() {
+void Algorithm::populateMap() {
     for(int i = 0; i < 16; i++){
         hamDist[0][i] = top[i];
     }
@@ -41,13 +37,13 @@ void Algo::populateMap() {
     }
 }
 
-void Algo::getCheck(bool *inp) {
+void Algorithm::getCheck(bool inp[3]) {
     openF = inp[0];
     openR = inp[1];
     openL = inp[2];
 }
 
-int Algo::numPath() {
+int Algorithm::numPath() {
     int i = 0;
     if(openF){i++;}
     if(openR){i++;}
@@ -55,7 +51,7 @@ int Algo::numPath() {
     return i;
 }
 
-void Algo::moveCorr() {
+void Algorithm::moveCorr() {
     if(!hasRotated){
         if(openF){
             retDir = 1;
@@ -77,7 +73,7 @@ void Algo::moveCorr() {
     }
 }
 
-void Algo::dEnd() {
+void Algorithm::dEnd() {
     if(!hasRotated){
         rotation = 180;
         currDir = (currDir + 2) % 4;
@@ -86,7 +82,7 @@ void Algo::dEnd() {
     }
 }
 
-void Algo::chooseDir() {
+void Algorithm::chooseDir() {
         int maxVal = 99;
         switch(currDir){
             case 0:
@@ -196,7 +192,7 @@ void Algo::chooseDir() {
         }
 }
 
-int* Algo::decide() {
+int* Algorithm::decide() {
     if(hasRotated){
         retDir = 1;
         choice = 0;
@@ -234,6 +230,6 @@ int* Algo::decide() {
     return out;
 }
 
-void Algo::printMaze(){
+void Algorithm::printMaze(){
     int i = 0;  // future print the maze
 }

@@ -4,20 +4,25 @@
  *  @Authors: Matthew Yu and Ahmad Ahbab
  *  @Org: Micromouse
  */
-#ifndef _MAZE_H
-#define _MAZE_H
+#pragma once
 
-#include "Params.h"
-#include <string.h>
+// #include "Params.h"
+#include <string>
+#include <cstring>
+#include <fstream>
+using namespace std;
+
 class Maze{
     private:
-        static int[MAZE_SIDE_LENGTH][MAZE_SIDE_LENGTH] maze;
+        int** maze;
+        int MAZE_HEIGHT;
+        int MAZE_WIDTH;
 
         /**
          * @Description: parse takes in a text file of a maze and sets the maze.
-         * @param: string filename - name of the maze file to parse.
+         * @param: string input - name of the maze file to parse.
          */
-        void parse(string filename);
+        void parse(string input);
     public:
         /**
          *  @Description: Maze constructor creates a default, empty maze.
@@ -26,9 +31,9 @@ class Maze{
 
         /**
          *  @Description: Maze constructor creates a preset maze from the file name input.
-	     *  @param: char *argv[] address of name of maze to load
+	     *  @param: string input - String obj of file name to load from
          */
-        Maze(char *argv[]);
+        Maze(string input);
 
     	/**
     	 *  @Description: numPaths gives the number of open paths at position (x, y).
@@ -45,5 +50,10 @@ class Maze{
          * @return: bool true if no wall, false if wall exists
          */
         bool query(int x, int y);
+
+        /**
+         * @Description: printMaze - safe encapsulated method to display total maze.
+         * used by Simulator to read-access maze data.
+         */
+        void printMaze();
 };
-#endif

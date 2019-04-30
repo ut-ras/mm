@@ -1,11 +1,10 @@
-#ifndef _ALGO_H
-#define _ALGO_H
+#pragma once
 
 #include <string>
-
+#include <iostream>
 using namespace std;
 
-class Algo{
+class Algorithm{
     private:
         int hamDist[16][16];
         int juncDir[16][16];
@@ -28,9 +27,8 @@ class Algo{
         int currY;
         int currDir;
     public:
-        Algo();
+        Algorithm();
         int* decide();
         void getCheck(bool inp[3]);
         void printMaze();
 };
-#endif

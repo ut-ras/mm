@@ -5,20 +5,20 @@
  *  @Authors: Matthew Yu and Ahmad Ahbab
  *  @Org: Micromouse
  */
-#include "Maze.h"	// Query Function
 #include "Mouse.h"
-using namespace std;
 
-Mouse::Mouse(){
+Mouse::Mouse(Maze& maze){
 	x = 0;
 	y = 0;
 	heading = 90.0;
+	this->maze = &maze;
 }
 
-Mouse::Mouse(int x, int y, double heading){
-	this.x = x;
-	this.y = y;
-	this.heading = heading;
+Mouse::Mouse(int x, int y, double heading, Maze& maze){
+	this->x = x;
+	this->y = y;
+	this->heading = heading;
+	this->maze = &maze;
 }
 
 void Mouse::moveForward(int steps){
@@ -41,7 +41,7 @@ void Mouse::moveForward(int steps){
 	}
 }
 
-void Mouse:moveBackward(int steps){
+void Mouse::moveBackward(int steps){
 	switch((int) heading){
 		case 0:
 			x -= steps;
@@ -63,20 +63,20 @@ void Mouse:moveBackward(int steps){
 
 void Mouse::rotate(double degrees){
 	// if I turn 90+300 degrees, I return to 30 abs degrees.
-	heading = (heading + degrees)%360;
+	heading = fmod(heading + degrees, 360);
 }
 
 // private sim mouse function that translates chacking for maze queries.
 bool Mouse::check(double heading_v){
 	switch((int) heading_v){
 		case 0:	// East
-			return query(x*2+1, y*2);	// scaled by 2 to match 2d maze
+			return maze->query(x*2+1, y*2);	// scaled by 2 to match 2d maze
 		case 90: // North
-			return query(x*2, y*2-1);
+			return maze->query(x*2, y*2-1);
 		case 180: // West
-			return query(x*2-1, y*2);
+			return maze->query(x*2-1, y*2);
 		case 270: // South
-			return query(x*2, y*2+1);
+			return maze->query(x*2, y*2+1);
 		default:
 			cout << "Invalid restricted heading: " << heading_v << endl;
 			return false;
@@ -88,7 +88,7 @@ bool Mouse::checkFront(){
 }
 
 bool Mouse::checkLeft(){
-	return check((heading + 90)%360);
+	return check(fmod(heading + 90, 360));
 }
 
 bool Mouse::checkRight(){
