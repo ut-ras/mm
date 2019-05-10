@@ -37,7 +37,7 @@ void Algorithm::populateMap() {
     }
 }
 
-void Algorithm::getCheck(bool inp[3]) {
+void Algorithm::getCheck(bool *inp) {
     openF = inp[0];
     openR = inp[1];
     openL = inp[2];
@@ -59,13 +59,13 @@ void Algorithm::moveCorr() {
             hasRotated = false;
         }
         else if(openL){
-            rotation = 45;
+            rotation = 90;
             currDir = (currDir + 1) % 4;
             choice = 2;
             hasRotated = true;
         }
         else if(openR){
-            rotation = -45;
+            rotation = -90;
             currDir = (currDir + 3) % 4;
             choice = 2;
             hasRotated = true;
@@ -96,7 +96,7 @@ void Algorithm::chooseDir() {
                 }
                 if(openL){
                     if(hamDist[currX][currY + 1] < maxVal) {
-                        rotation = 45;
+                        rotation = 90;
                         currDir = (currDir + 1) % 4;
                         choice = 2;
                         hasRotated = true;
@@ -105,7 +105,7 @@ void Algorithm::chooseDir() {
                 }
                 if(openR){
                     if(hamDist[currX][currY - 1] < maxVal) {
-                        rotation = -45;
+                        rotation = -90;
                         currDir = (currDir + 3) % 4;
                         choice = 2;
                         hasRotated = true;
@@ -114,7 +114,7 @@ void Algorithm::chooseDir() {
             case 1:
                 if(openR){
                     if(hamDist[currX + 1][currY] < maxVal) {
-                        rotation = -45;
+                        rotation = -90;
                         currDir = (currDir + 3) % 4;
                         choice = 2;
                         hasRotated = true;
@@ -131,7 +131,7 @@ void Algorithm::chooseDir() {
                 }
                 if(openL){
                     if(hamDist[currX - 1][currY] < maxVal) {
-                        rotation = 45;
+                        rotation = 90;
                         currDir = (currDir + 1) % 4;
                         choice = 2;
                         hasRotated = true;
@@ -140,7 +140,7 @@ void Algorithm::chooseDir() {
             case 2:
                 if(openR){
                     if(hamDist[currX][currY + 1] < maxVal) {
-                        rotation = -45;
+                        rotation = -90;
                         currDir = (currDir + 3) % 4;
                         choice = 2;
                         hasRotated = true;
@@ -157,7 +157,7 @@ void Algorithm::chooseDir() {
                 }
                 if(openL){
                     if(hamDist[currX][currY - 1] < maxVal) {
-                        rotation = 45;
+                        rotation = 90;
                         currDir = (currDir + 1) % 4;
                         choice = 2;
                         hasRotated = true;
@@ -166,7 +166,7 @@ void Algorithm::chooseDir() {
             default:
                 if(openL){
                     if(hamDist[currX + 1][currY] < maxVal) {
-                        rotation = 45;
+                        rotation = 90;
                         currDir = (currDir + 1) % 4;
                         choice = 2;
                         hasRotated = true;
@@ -175,7 +175,7 @@ void Algorithm::chooseDir() {
                 }
                 if(openR){
                     if(hamDist[currX - 1][currY] < maxVal) {
-                        rotation = -45;
+                        rotation = -90;
                         currDir = (currDir + 3) % 4;
                         choice = 2;
                         hasRotated = true;
@@ -193,6 +193,10 @@ void Algorithm::chooseDir() {
 }
 
 int* Algorithm::decide() {
+    if(hamDist[currX][currY] == 0){
+        retDir = 1;
+        choice = 3;
+    }
     if(hasRotated){
         retDir = 1;
         choice = 0;

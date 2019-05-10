@@ -37,7 +37,7 @@ void Mouse::moveForward(int steps){
 			y += steps;
 			break;
 		default:
-			cout << "Invalid restricted heading: " << heading << endl;
+			cout << "Mouse::moveForwards(): Invalid restricted heading - " << heading << endl;
 			break;
 	}
 }
@@ -58,7 +58,7 @@ void Mouse::moveBackward(int steps){
 			y -= steps;
 			break;
 		default:
-			cout << "Invalid restricted heading: " << heading << endl;
+			cout << "Mouse::moveBackwards(): Invalid restricted heading - " << heading << endl;
 			break;
 	}
 }
@@ -82,7 +82,7 @@ bool Mouse::check(double heading_v){
 		case 270: // South
 			return maze->query(x*2, y*2+1);
 		default:
-			cout << "Invalid restricted heading: " << heading_v << endl;
+			cout << "Mouse::Check(): Invalid restricted heading - " << heading_v << endl;
 			return false;
 	}
 }
