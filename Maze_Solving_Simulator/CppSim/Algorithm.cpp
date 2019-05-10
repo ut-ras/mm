@@ -66,7 +66,7 @@ void Algorithm::moveCorr() {
         }
         else if(openR){
             rotation = -45;
-            currDir = (currDir - 1) % 4;
+            currDir = (currDir + 3) % 4;
             choice = 2;
             hasRotated = true;
         }
