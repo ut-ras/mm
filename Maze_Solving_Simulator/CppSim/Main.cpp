@@ -4,6 +4,7 @@
 
 void loadMazeTest(char* argv[]);
 void basicMouseTest();
+void comprehensiveMouseTest();
 void printMousePosition();
 
 Simulator* sim;
@@ -13,7 +14,8 @@ int main(int argc, char* argv[]){
         cout << "Arguments passed.." << endl;
 
         loadMazeTest(argv);
-        basicMouseTest();
+        // basicMouseTest();
+        comprehensiveMouseTest();
 
         delete sim;
     }
@@ -48,6 +50,20 @@ void basicMouseTest(){
     cout << "Display mouse on field." << endl;
     sim->printTotalMaze();
     cout << "End basic Mouse check." << endl;
+}
+
+// show that the mouse can iterate according to the algorithm for 5 steps.
+void comprehensiveMouseTest(){
+    cout << "Start comprehensive Mouse check." << endl;
+    printMousePosition();
+    Mouse* mouse = sim->getMouse();
+    sim->printTotalMaze();
+    for(int i = 0; i < 5; i++){
+        sim->run(1);
+        sim->printTotalMaze();
+    }
+    cout << "End comprehensive Mouse check." << endl;
+
 }
 
 void printMousePosition(){

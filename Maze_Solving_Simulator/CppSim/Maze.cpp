@@ -108,18 +108,13 @@ int Maze::numPaths(int x, int y){
 }
 
 bool Maze::query(int x, int y){
-    if(!(x < 0 || x >= 32) && !(y < 0 || y >= 32)){
+    if((x >= 0 && x < 32) && (y >= 0 && y < 32)){
         if(maze[x][y] == 1)
             return true;    // wall exists
         return false;
     }
-    else if((x < 0 || x >= 32) && (y < 0 || y >= 32)){
+    else
         return true;
-    }
-    else{
-        printf("Maze::query(): Overflow/Underflow err - X:%i|Y:%i\n", x, y);
-        return false;
-    }
 }
 
 void Maze::printMaze(int x, int y, double heading){

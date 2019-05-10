@@ -71,6 +71,7 @@ void Mouse::rotate(double degrees){
 // private sim mouse function that translates chacking for maze queries.
 bool Mouse::check(double heading_v){
 	heading_v = fmod(heading_v+360, 360);
+	cout << "heading check: " << heading_v << endl;
 	switch((int) heading_v){
 		case 0:	// East
 			return maze->query(x*2+1, y*2);	// scaled by 2 to match 2d maze

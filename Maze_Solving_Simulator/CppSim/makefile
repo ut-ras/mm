@@ -1,3 +1,6 @@
+# https://www.cs.bu.edu/teaching/cpp/writing-makefiles/
+# https://www.cs.swarthmore.edu/~newhall/unixhelp/howto_makefiles.html
+
 # Project: Micromouse Maze Simulator
 # Makefile created by Matthew Yu
 
