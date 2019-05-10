@@ -26,12 +26,22 @@ void set(PID *pid, double set) {
   }
 }
 
+//renamed standard max and min to avoid multiple definition error
+double pid_max(double val1, double val2) { return val1 > val2 ? val1 : val2; }
+
+double pid_min(double val1, double val2) { return val1 < val2 ? val1 : val2; }
+
 double update(PID *pid, double current, double dt) {
+  // calculate current error, the proportional value
   double err = pid->goal - current;
+  // calculate derivative value
   double d = (err - pid->last) / dt;
+  // summation of error into sum to calculate the integral value
   pid->sum += err * dt;
-  // sum = std::min(std::max(controller->sum, -MAX_SUM), MAX_SUM);
-  pid->last = err;
+  // keep integral value between reasonable bounds
+  pid->sum = pid_min(pid_max(pid->sum, -MAX_SUM), MAX_SUM);
+  pid->last = err; // store error for use in next derivative calculation
+  // compute pid calculation and log to file
   double result = pid->kP * err + pid->kI * pid->sum + pid->kD * d;
   if (pid->fp) {
     fprintf(pid->fp, "%f %f %f %f %f\n", dt, pid->kP * err, pid->kI * pid->sum,

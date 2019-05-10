@@ -7,14 +7,15 @@ enum Direction{
   stop = 2
 };
 
+//keep track of which encoder is which
 enum enc_locs{
   right_enc = 0,
   left_enc = 1
 };
 
 typedef struct{
-  int count;
-  int sum;
+  int count; //current real tick count
+  int sum;  //holds counter value if counter overflows
   int pcnt;
   int direction;
 }Enc;
@@ -22,7 +23,6 @@ typedef struct{
 Enc *encoders[2];
 
 void enc_init();
-void readEncoders();
-int getTicks(int enc_num);
+int getTicks(int enc_num); //get current tick count
 
 #endif

@@ -1,5 +1,4 @@
 #include "enc.h"
-#include "esp_timer.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "movement.h"
@@ -12,7 +11,7 @@ PID *linearControl[2];
 PID *alignmentControl;
 
 const int ticksPerUnit = 2200 / 26;
-double maxSpeed = .30; // percentage
+double maxSpeed = .60; // percentage
 
 double max(double val1, double val2) { return val1 > val2 ? val1 : val2; }
 
@@ -23,14 +22,15 @@ double gains[NUM_MOTORS];
 void controlUpdate(double elapsed) {
   for (int i = 0; i < NUM_MOTORS; ++i) {
     gains[i] = update(linearControl[i], getTicks(i), elapsed);
+    printf("motor: %d, ticks: %d\n", i, getTicks(i));
   }
   // double angularCorrection = rotationControl->update(mpu input here);
   // double alignmentCorrection = alignmentControl->update(vlx input here);
 
   // optional velocity pid here to sacrifice positional precision for
   // more easily regulated acceleration
-  setMotors(max(min(gains[0], maxSpeed), -maxSpeed),
-            max(min(gains[1], maxSpeed), -maxSpeed));
+  setMotors(100 * max(min(gains[0], maxSpeed), -maxSpeed),
+            100 * max(min(gains[1], maxSpeed), -maxSpeed));
 }
 
 const int steady = 10;
@@ -40,7 +40,8 @@ void moveStraight(int dist) {
   int ready = 0;
   // double currentTime, lastTime =
   // (double(s) * 1000 + double(us / 1000)) / 1000;
-  double currentTime, lastTime = esp_timer_get_time() / 1000000;
+  double lastTime =
+      esp_timer_get_time() / 1000000; // microseconds/1000000=seconds
   setMotors(0, 0);
   for (int i = 0; i < NUM_MOTORS; ++i) {
     set(linearControl[i], 0);
@@ -50,12 +51,7 @@ void moveStraight(int dist) {
   // block until you're close enough to the set point for long enough
   while (ready < steady) {
     // cout << "Getting there.. " << ready << "/" << steady << endl;
-    // cout << "Top: " << motors[0]->getTicks() <<
-    //      "\tBottom: " << motors[1]->getTicks() <<
-    //      "\tLeft: " << motors[2]->getTicks() <<
-    //      "\tRight: " << motors[3]->getTicks() << endl;
-    // currentTime = (double(s) * 1000 + double(us / 1000)) / 1000;
-    currentTime = esp_timer_get_time() / 1000000;
+    double currentTime = esp_timer_get_time() / 1000000;
     controlUpdate(currentTime - lastTime);
     vTaskDelay(10);
     ++ready;
@@ -72,7 +68,7 @@ void moveStraight(int dist) {
 }
 
 void selfTest() {
-  setMotors(.25, .25);
+  setMotors(25, 25);
   vTaskDelay(1000);
   setMotors(0, 0);
   printf("Motor %d at %d ticks\n", 0, getTicks(0));
