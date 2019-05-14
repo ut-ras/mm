@@ -2,8 +2,8 @@
 
 #define GPIO_PWM0A_OUT 19 // Set GPIO 19 as PWM0A
 #define GPIO_PWM0B_OUT 18 // Set GPIO 18 as PWM0B
-#define GPIO_PWM1A_OUT 21 // Set GPIO 21 as PWM1A
-#define GPIO_PWM1B_OUT 22 // Set GPIO 22 as PWM1B
+#define GPIO_PWM1A_OUT 22 // Set GPIO 22 as PWM1A
+#define GPIO_PWM1B_OUT 21 // Set GPIO 21 as PWM1B
 
 /**
  * @brief Configure whole MCPWM module
