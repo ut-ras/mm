@@ -16039,7 +16039,6 @@ Package contains a relatively large pad on the bottom that should be soldered di
 <part name="C4" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="CPOL-US" device="A/3216-18R" package3d_urn="urn:adsk.eagle:package:23410/2" value=".1uF"/>
 <part name="C5" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="CPOL-US" device="150CLZ-0810" package3d_urn="urn:adsk.eagle:package:23394/2" value="47uF"/>
 <part name="X_13" library="ngspice-simulation" library_urn="urn:adsk.eagle:library:527439" deviceset="GND" device=""/>
-<part name="X_14" library="ngspice-simulation" library_urn="urn:adsk.eagle:library:527439" deviceset="GND" device=""/>
 <part name="R15" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="M1206" package3d_urn="urn:adsk.eagle:package:23566/2" value="30k"/>
 <part name="X_15" library="ngspice-simulation" library_urn="urn:adsk.eagle:library:527439" deviceset="GND" device=""/>
 <part name="X_16" library="ngspice-simulation" library_urn="urn:adsk.eagle:library:527439" deviceset="GND" device=""/>
@@ -16048,7 +16047,6 @@ Package contains a relatively large pad on the bottom that should be soldered di
 <part name="C6" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="CPOL-US" device="A/3216-18R" package3d_urn="urn:adsk.eagle:package:23410/2" value=".1uF"/>
 <part name="C7" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="CPOL-US" device="150CLZ-0810" package3d_urn="urn:adsk.eagle:package:23394/2" value="47uF"/>
 <part name="X_17" library="ngspice-simulation" library_urn="urn:adsk.eagle:library:527439" deviceset="GND" device=""/>
-<part name="X_18" library="ngspice-simulation" library_urn="urn:adsk.eagle:library:527439" deviceset="GND" device=""/>
 <part name="R16" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="M1206" package3d_urn="urn:adsk.eagle:package:23566/2" value="30k"/>
 <part name="X_19" library="ngspice-simulation" library_urn="urn:adsk.eagle:library:527439" deviceset="GND" device=""/>
 <part name="X_20" library="ngspice-simulation" library_urn="urn:adsk.eagle:library:527439" deviceset="GND" device=""/>
@@ -16188,12 +16186,11 @@ Package contains a relatively large pad on the bottom that should be soldered di
 <attribute name="NAME" x="32.385" y="178.816" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="37.211" y="178.816" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="C5" gate="G$1" x="27.94" y="185.42" smashed="yes">
-<attribute name="NAME" x="28.956" y="186.055" size="1.778" layer="95"/>
-<attribute name="VALUE" x="18.796" y="181.229" size="1.778" layer="96"/>
+<instance part="C5" gate="G$1" x="27.94" y="185.42" smashed="yes" rot="R180">
+<attribute name="NAME" x="26.924" y="184.785" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="37.084" y="189.611" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="X_13" gate="G$1" x="45.72" y="177.8" smashed="yes" rot="R90"/>
-<instance part="X_14" gate="G$1" x="27.94" y="193.04" smashed="yes" rot="R180"/>
 <instance part="R15" gate="G$1" x="-30.48" y="149.86" smashed="yes" rot="R90">
 <attribute name="NAME" x="-31.9786" y="148.59" size="1.778" layer="95" rot="R270"/>
 <attribute name="VALUE" x="-27.178" y="146.05" size="1.778" layer="96" rot="R90"/>
@@ -16212,12 +16209,11 @@ Package contains a relatively large pad on the bottom that should be soldered di
 <attribute name="NAME" x="131.445" y="186.436" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="136.271" y="186.436" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="C7" gate="G$1" x="127" y="193.04" smashed="yes">
-<attribute name="NAME" x="128.016" y="193.675" size="1.778" layer="95"/>
-<attribute name="VALUE" x="117.856" y="188.849" size="1.778" layer="96"/>
+<instance part="C7" gate="G$1" x="127" y="193.04" smashed="yes" rot="R180">
+<attribute name="NAME" x="125.984" y="192.405" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="136.144" y="197.231" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="X_17" gate="G$1" x="144.78" y="185.42" smashed="yes" rot="R90"/>
-<instance part="X_18" gate="G$1" x="127" y="200.66" smashed="yes" rot="R180"/>
 <instance part="R16" gate="G$1" x="68.58" y="157.48" smashed="yes" rot="R90">
 <attribute name="NAME" x="67.0814" y="156.21" size="1.778" layer="95" rot="R270"/>
 <attribute name="VALUE" x="71.882" y="153.67" size="1.778" layer="96" rot="R90"/>
@@ -16775,9 +16771,9 @@ Package contains a relatively large pad on the bottom that should be soldered di
 <wire x1="27.94" y1="177.8" x2="22.86" y2="177.8" width="0.1524" layer="91"/>
 <pinref part="C4" gate="G$1" pin="+"/>
 <wire x1="27.94" y1="177.8" x2="30.48" y2="177.8" width="0.1524" layer="91"/>
-<pinref part="C5" gate="G$1" pin="-"/>
-<wire x1="27.94" y1="177.8" x2="27.94" y2="180.34" width="0.1524" layer="91"/>
 <label x="10.16" y="177.8" size="1.778" layer="95"/>
+<pinref part="C5" gate="G$1" pin="+"/>
+<wire x1="27.94" y1="177.8" x2="27.94" y2="182.88" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="DRV2" gate="G$1" pin="VM"/>
@@ -16787,9 +16783,9 @@ Package contains a relatively large pad on the bottom that should be soldered di
 <wire x1="127" y1="185.42" x2="121.92" y2="185.42" width="0.1524" layer="91"/>
 <pinref part="C6" gate="G$1" pin="+"/>
 <wire x1="127" y1="185.42" x2="129.54" y2="185.42" width="0.1524" layer="91"/>
-<pinref part="C7" gate="G$1" pin="-"/>
-<wire x1="127" y1="185.42" x2="127" y2="187.96" width="0.1524" layer="91"/>
 <label x="109.22" y="185.42" size="1.778" layer="95"/>
+<pinref part="C7" gate="G$1" pin="+"/>
+<wire x1="127" y1="185.42" x2="127" y2="190.5" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="BATT_TEST" gate="G$1" pin="TP"/>
@@ -16903,11 +16899,6 @@ Package contains a relatively large pad on the bottom that should be soldered di
 <wire x1="38.1" y1="177.8" x2="45.72" y2="177.8" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="C5" gate="G$1" pin="+"/>
-<pinref part="X_14" gate="G$1" pin="0"/>
-<wire x1="27.94" y1="187.96" x2="27.94" y2="193.04" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="R15" gate="G$1" pin="1"/>
 <pinref part="X_15" gate="G$1" pin="0"/>
 <wire x1="-30.48" y1="144.78" x2="-30.48" y2="139.7" width="0.1524" layer="91"/>
@@ -16928,11 +16919,6 @@ Package contains a relatively large pad on the bottom that should be soldered di
 <pinref part="C6" gate="G$1" pin="-"/>
 <pinref part="X_17" gate="G$1" pin="0"/>
 <wire x1="137.16" y1="185.42" x2="144.78" y2="185.42" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="C7" gate="G$1" pin="+"/>
-<pinref part="X_18" gate="G$1" pin="0"/>
-<wire x1="127" y1="195.58" x2="127" y2="200.66" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="R16" gate="G$1" pin="1"/>
@@ -17057,6 +17043,16 @@ Package contains a relatively large pad on the bottom that should be soldered di
 <junction x="7.62" y="220.98"/>
 <wire x1="7.62" y1="220.98" x2="0" y2="220.98" width="0.1524" layer="91"/>
 <label x="-5.08" y="220.98" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="C7" gate="G$1" pin="-"/>
+<wire x1="127" y1="198.12" x2="127" y2="200.66" width="0.1524" layer="91"/>
+<label x="127" y="200.66" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="C5" gate="G$1" pin="-"/>
+<wire x1="27.94" y1="190.5" x2="27.94" y2="195.58" width="0.1524" layer="91"/>
+<label x="27.94" y="195.58" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$5" class="0">
