@@ -13,7 +13,7 @@ void app_main() {
     zero();
     followPBasic(30.0, vals);*/
 
-    setMotors(50.0, 50.0);
+    setMotors(25.0, 25.0);
 
 	while(1) {
 

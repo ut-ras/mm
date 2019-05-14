@@ -6,7 +6,7 @@
 struct movement_info {
     bool left;
     bool right;
-    bool forward;
+    bool front;
 
     int unitsTraveled;
 };
