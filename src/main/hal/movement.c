@@ -1,6 +1,8 @@
+#include "movement.h"
 #include "distance.h"
 #include "enc.h"
 #include "motorController.h"
+#include "pid.h"
 
 #define PCONST 0.0075
 
@@ -25,10 +27,7 @@ int RIGHT_FRONT_THRESH = 1000;
 distance left;
 distance right;
 
-void setMotors(float left, float right) {
-  setLeftSpeed(left);
-  setRightSpeed(right);
-}
+PID irPID;
 
 int init() {
   if (init_distance_sensor(&left, LEFT_FRONT_PIN, LEFT_SIDE_PIN,
@@ -48,10 +47,13 @@ int init() {
   // mcpwm_example_gpio_initialize();
   mcpwm_initialize();
 
+  initPID(&irPID, 0.01, 0.01, 0.000);
+  set(irPID, 0);
+
   return 0;
 }
 
-void zero() {
+void zero(void) {
   int dists[2];
 
   read_distance(&left, dists);
@@ -68,40 +70,37 @@ void setMotorsP(int error, float maxSpeed) {
   setMotors(maxSpeed - speedReduc, maxSpeed + speedReduc + 18);
 }
 
-/*void followP(float maxSpeed, short* walls) {
-        int dists[2];
+static int calculateIRError() {
+  int dists[2];
 
-        read_distance(&left, dists);
-        int frontLeftLast = dists[0];
-        int sideLeftLast = dists[1];
+  read_distance(&left, dists);
+  int frontLeft = dists[0];
+  int sideLeft = dists[1];
 
-        read_distance(&right, dists);
-        int frontRightLast = dists[0];
-        int sideRightLast = dists[1];
+  read_distance(&right, dists);
+  int frontRight = dists[0];
+  int sideRight = dists[1];
 
-    int error = 0;
+  return (LEFT_SIDE_ZERO - sideLeft) + (sideRight - RIGHT_SIDE_ZERO);
+}
 
-    uint64_t prevTime = (uint64_t)esp_timer_get_time();
+struct movement_info moveIR(float speed) {
 
-        while(frontLeft > LEFT_FRONT_THRESH && frontRight > RIGHT_FRONT_THRESH
-                && sideLeft < LEFT_SIDE_THRESH && sideRight < RIGHT_SIDE_THRESH)
-{ setMotorsP(error, maxSpeed);
+  double lastTime = esp_timer_get_time() / 1000000;
+  double currentTime = lastTime;
 
-        read_distance(&left, dists);
-        int frontLeftCurr = dists[0];
-            int sideLeftCurr = dists[1];
+  while (frontLeft < LEFT_FRONT_THRES && frontRight < RIGHT_FRONT_THRESH && sideLeft > LEFT_SIDE_THRESH && sideRiht > RIGHT_SIDE_THRESH) {
+    
+    double currentTime = esp_timer_get_time() / 1000000;
 
-        read_distance(&right, dists);
-        int frontRightCurr = dists[0];
-        int sideRightCurr = dists[1];
+    double curr = update(&irPID, calculateIRError(), currentTime - lastTime);
+    setMotors(speed - curr, speed + curr);
+  }
 
-        }
+  struct movement_info mov;
 
-        walls[0] = sideLeft < LEFT_SIDE_THRESH ? 1 : 0;
-        walls[2] = sideRight < RIGHT_SIDE_THRESH ? 1 : 0;
-        walls[1] = (frontLeft > LEFT_FRONT_THRESH && frontRight >
-RIGHT_FRONT_THRESH) ? 0 : 1;
-}*/
+  return mov;
+}
 
 void followPBasic(float maxSpeed, short *walls) {
   int dists[2];

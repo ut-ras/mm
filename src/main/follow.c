@@ -1,4 +1,5 @@
 #include "hal/movement.h"
+#include "hal/motorController.h"
 #include "esp_timer.h"
 
 void app_main() {
@@ -8,10 +9,11 @@ void app_main() {
 	/*int left_read = read_distance_side(&left);
 	int right_read = read_distance_side(&left);*/
 
-    short vals[3];
+    /*short vals[3];
     zero();
-    followPBasic(30.0, vals);
+    followPBasic(30.0, vals);*/
 
+    setMotors(50.0, 50.0);
 
 	while(1) {
 

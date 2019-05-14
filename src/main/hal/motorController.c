@@ -70,3 +70,8 @@ void setRightSpeed(double speed) {
                         MCPWM_DUTY_MODE_0);
   }
 }
+
+void setMotors(float left, float right) {
+  setLeftSpeed(left);
+  setRightSpeed(right);
+}
