@@ -59,7 +59,7 @@ void comprehensiveMouseTest(){
     printMousePosition();
     sim->run(1);
 
-    for(int i = 0; i < 15; i++){
+    for(int i = 0; ; i++){
 	cout << "Press any key to continue or q to quit." << endl;
 	char c = getchar();
 	if(c == 'q')
