@@ -43,9 +43,17 @@ void Simulator::run(int n){
 bool Simulator::iterateStep(){
     // check front, left, and right
     bool check[3];  // find way to fix into declaration or directly into .getCheck()
-    check[0] = mouse->checkLeft();
-    check[1] = mouse->checkFront();
-    check[2] = mouse->checkRight();
+    
+    // get info
+    cout << "LEFT\t";
+    check[2] = mouse->checkLeft();
+    cout << "FRONT\t";
+    check[0] = mouse->checkFront();
+    cout << "RIGHT\t";
+    check[1] = mouse->checkRight();
+
+    printTotalMaze();
+
     algo->getCheck(check);
     // make a decision
     int* decision = algo->decide();

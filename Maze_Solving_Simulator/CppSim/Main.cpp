@@ -55,13 +55,23 @@ void basicMouseTest(){
 // show that the mouse can iterate according to the algorithm for 5 steps.
 void comprehensiveMouseTest(){
     cout << "Start comprehensive Mouse check." << endl;
+    
     printMousePosition();
-    Mouse* mouse = sim->getMouse();
-    sim->printTotalMaze();
-    for(int i = 0; i < 5; i++){
-        sim->run(1);
-        sim->printTotalMaze();
+    sim->run(1);
+
+    for(int i = 0; i < 15; i++){
+	cout << "Press any key to continue or q to quit." << endl;
+	char c = getchar();
+	if(c == 'q')
+		return;
+	system("clear");
+
+	cout << "Step: " << i+1 << endl;
+	printMousePosition();
+	sim->run(1);
     }
+    
+    
     cout << "End comprehensive Mouse check." << endl;
 
 }

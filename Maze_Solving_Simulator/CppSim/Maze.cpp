@@ -108,13 +108,14 @@ int Maze::numPaths(int x, int y){
 }
 
 bool Maze::query(int x, int y){
-    if((x >= 0 && x < 32) && (y >= 0 && y < 32)){
-        if(maze[x][y] == 1)
-            return true;    // wall exists
-        return false;
+    if((x >= 0 && x <= MAZE_WIDTH) && (y >= 0 && y <= MAZE_HEIGHT)){
+        if(maze[y][x] == 1)
+            return false;    	// wall exists
+	else
+	    return true;	// path exists
     }
     else
-        return true;
+        return false;
 }
 
 void Maze::printMaze(int x, int y, double heading){
