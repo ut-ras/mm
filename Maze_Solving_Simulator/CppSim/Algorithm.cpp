@@ -68,7 +68,7 @@ void Algorithm::moveCorr() {
         }
         else if(openR){
             rotation = -90;
-            currDir = (currDir - 1) % 4;
+            currDir = (currDir + 3) % 4;
             choice = 2;
             hasRotated = true;
         }
@@ -108,7 +108,7 @@ void Algorithm::chooseDir() {
                 if(openR){
                     if(hamDist[currX][currY - 1] < maxVal) {
                         rotation = -90;
-                        currDir = (currDir - 1) % 4;
+                        currDir = (currDir + 3) % 4;
                         choice = 2;
                         hasRotated = true;
                     }
@@ -117,7 +117,7 @@ void Algorithm::chooseDir() {
                 if(openR){
                     if(hamDist[currX + 1][currY] < maxVal) {
                         rotation = -90;
-                        currDir = (currDir - 1) % 4;
+                        currDir = (currDir + 3) % 4;
                         choice = 2;
                         hasRotated = true;
                         maxVal = hamDist[currX + 1][currY];
@@ -143,7 +143,7 @@ void Algorithm::chooseDir() {
                 if(openR){
                     if(hamDist[currX][currY + 1] < maxVal) {
                         rotation = -90;
-                        currDir = (currDir - 1) % 4;
+                        currDir = (currDir + 3) % 4;
                         choice = 2;
                         hasRotated = true;
                         maxVal = hamDist[currX][currY + 1];
@@ -178,7 +178,7 @@ void Algorithm::chooseDir() {
                 if(openR){
                     if(hamDist[currX - 1][currY] < maxVal) {
                         rotation = -90;
-                        currDir = (currDir - 1) % 4;
+                        currDir = (currDir + 3) % 4;
                         choice = 2;
                         hasRotated = true;
                         maxVal = hamDist[currX - 1][currY];
@@ -226,14 +226,19 @@ int* Algorithm::decide() {
     switch(currDir){
         case 0:
             currX++;
-        case 1:
+            break;
+	case 1:
             currY++;
+	    break;
         case 2:
             currX--;
-        default:
+	    break;
+	default:
             currY--;
+	    break;
     }
-    cout << currX << " " << currY << endl;
+    cout << "New Internal Algo Pos (x|y|dir): " << currX << "|" << currY  << "|" << currDir << endl;
+    cout << "Decision: " << out[0] << "|" << out[1] << endl;
     return out;
 }
 
