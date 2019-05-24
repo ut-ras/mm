@@ -6,8 +6,6 @@
 #include "motorController.h"
 #include "pid.h"
 
-#define PCONST 0.0075
-
 #define MAZE_UNIT_SIZE 200
 
 #define LEFT_FRONT_PIN 37
@@ -51,7 +49,7 @@ int init() {
   // mcpwm_example_gpio_initialize();
   mcpwm_initialize();
 
-  irPID = initPID(0.01, 0.01, 0.000, "log");
+  irPID = initPID(0.001, 0.00, 0.000, "log");
   set(irPID, 0);
 
   return 0;
@@ -67,11 +65,6 @@ void zero(void) {
   read_distance(&right, dists);
   RIGHT_FRONT_ZERO = dists[0];
   RIGHT_SIDE_ZERO = dists[1];
-}
-
-void setMotorsP(int error, float maxSpeed) {
-  float speedReduc = error * PCONST;
-  setMotors(maxSpeed - speedReduc, maxSpeed + speedReduc + 18);
 }
 
 struct movement_info getWalls(void) {
@@ -110,7 +103,7 @@ static int readIRError(int* frontLeft, int* sideLeft, int* frontRight, int* side
 
 struct movement_info moveIR(float speed) {
 
-  double lastTime = esp_timer_get_time() / 1000000;
+  double lastTime = esp_timer_get_time() / 1000000.0;
   double currentTime;
 
   int frontLeft;
@@ -120,14 +113,15 @@ struct movement_info moveIR(float speed) {
 
   double startEnc = (getTicks(0) + getTicks(1)) / 2;
 
-  while ((frontLeft < LEFT_FRONT_THRESH || frontRight < RIGHT_FRONT_THRESH) && sideLeft > LEFT_SIDE_THRESH && sideRight > RIGHT_SIDE_THRESH) {
+  while (1/*(frontLeft < LEFT_FRONT_THRESH || frontRight < RIGHT_FRONT_THRESH) && sideLeft > LEFT_SIDE_THRESH && sideRight > RIGHT_SIDE_THRESH*/) {
     
-    currentTime = esp_timer_get_time() / 1000000;
+    currentTime = esp_timer_get_time() / 1000000.0;
+    double diffTime = currentTime - lastTime;
+    lastTime = currentTime;
 
-    double curr = update(irPID, readIRError(&frontLeft, &sideLeft, &frontRight, &sideRight), currentTime - lastTime);
-    setMotors(speed - curr, speed + curr);
-    
-    lastTime = esp_timer_get_time() / 1000000;
+    double curr = update(irPID, readIRError(&frontLeft, &sideLeft, &frontRight, &sideRight), diffTime);
+    printf("curr %f\n", curr);
+    setMotors(speed + curr, speed - curr);
   }
 
   struct movement_info info = getWalls();
@@ -135,41 +129,4 @@ struct movement_info moveIR(float speed) {
   info.unitsTraveled = (((getTicks(0) + getTicks(1)) / 2) - startEnc) / MAZE_UNIT_SIZE;
 
   return info;
-}
-
-void followPBasic(float maxSpeed, short *walls) {
-  int dists[2];
-
-  read_distance(&left, dists);
-  int frontLeft = dists[0];
-  int sideLeft = dists[1];
-
-  read_distance(&right, dists);
-  int frontRight = dists[0];
-  int sideRight = dists[1];
-
-  int error;
-
-  while (/*frontLeft > LEFT_FRONT_THRESH && frontRight > RIGHT_FRONT_THRESH
-           && sideLeft < LEFT_SIDE_THRESH && sideRight < RIGHT_SIDE_THRESH*/
-         1) {
-
-    read_distance(&left, dists);
-    frontLeft = dists[0];
-    sideLeft = dists[1];
-
-    read_distance(&right, dists);
-    frontRight = dists[0];
-    sideRight = dists[1];
-
-    error = (LEFT_SIDE_ZERO - sideLeft) + (sideRight - RIGHT_SIDE_ZERO);
-    printf("error: %d l: %d r: %d\n", error, sideLeft, sideRight);
-    setMotorsP(error, maxSpeed);
-  }
-
-  walls[0] = sideLeft < LEFT_SIDE_THRESH ? 1 : 0;
-  walls[2] = sideRight < RIGHT_SIDE_THRESH ? 1 : 0;
-  walls[1] = (frontLeft > LEFT_FRONT_THRESH && frontRight > RIGHT_FRONT_THRESH)
-                 ? 0
-                 : 1;
 }
