@@ -58,7 +58,7 @@ void comprehensiveMouseTest(){
     printMousePosition();
     Mouse* mouse = sim->getMouse();
     sim->printTotalMaze();
-    for(int i = 0; i < 5; i++){
+    for(int i = 0; i < 20; i++){
         sim->run(1);
         sim->printTotalMaze();
     }

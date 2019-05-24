@@ -1,4 +1,6 @@
 #include "Algorithm.h"
+#include <iostream>
+#include <ostream>
 
 Algorithm::Algorithm() {
     populateMap();
@@ -66,7 +68,7 @@ void Algorithm::moveCorr() {
         }
         else if(openR){
             rotation = -90;
-            currDir = (currDir + 3) % 4;
+            currDir = (currDir - 1) % 4;
             choice = 2;
             hasRotated = true;
         }
@@ -106,7 +108,7 @@ void Algorithm::chooseDir() {
                 if(openR){
                     if(hamDist[currX][currY - 1] < maxVal) {
                         rotation = -90;
-                        currDir = (currDir + 3) % 4;
+                        currDir = (currDir - 1) % 4;
                         choice = 2;
                         hasRotated = true;
                     }
@@ -115,7 +117,7 @@ void Algorithm::chooseDir() {
                 if(openR){
                     if(hamDist[currX + 1][currY] < maxVal) {
                         rotation = -90;
-                        currDir = (currDir + 3) % 4;
+                        currDir = (currDir - 1) % 4;
                         choice = 2;
                         hasRotated = true;
                         maxVal = hamDist[currX + 1][currY];
@@ -141,7 +143,7 @@ void Algorithm::chooseDir() {
                 if(openR){
                     if(hamDist[currX][currY + 1] < maxVal) {
                         rotation = -90;
-                        currDir = (currDir + 3) % 4;
+                        currDir = (currDir - 1) % 4;
                         choice = 2;
                         hasRotated = true;
                         maxVal = hamDist[currX][currY + 1];
@@ -176,7 +178,7 @@ void Algorithm::chooseDir() {
                 if(openR){
                     if(hamDist[currX - 1][currY] < maxVal) {
                         rotation = -90;
-                        currDir = (currDir + 3) % 4;
+                        currDir = (currDir - 1) % 4;
                         choice = 2;
                         hasRotated = true;
                         maxVal = hamDist[currX - 1][currY];
@@ -212,16 +214,6 @@ int* Algorithm::decide() {
         else{
             chooseDir();
         }
-        switch(currDir){
-            case 0:
-                currX++;
-            case 1:
-                currY++;
-            case 2:
-                currX--;
-            default:
-                currY--;
-        }
     }
     if(!hasRotated){
         out[0] = choice;
@@ -231,6 +223,17 @@ int* Algorithm::decide() {
         out[0] = choice;
         out[1] = rotation;
     }
+    switch(currDir){
+        case 0:
+            currX++;
+        case 1:
+            currY++;
+        case 2:
+            currX--;
+        default:
+            currY--;
+    }
+    cout << currX << " " << currY << endl;
     return out;
 }
 
