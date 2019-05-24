@@ -26,7 +26,7 @@ class Mouse{
          * @Description: check determines if a cell in a certain heading contains a wall
          *  using the Maze API.
          * @param  double heading_v - heading of the mouse to look at
-         * @return  bool - true if wall exists, false elsewise
+         * @return  bool - true if path exists, false elsewise
          */
         bool check(double heading_v);
     public:
@@ -64,19 +64,19 @@ class Mouse{
 
         /**
          * checkFront checks if the sensors detect a wall in front.
-         * @return true if a wall exists in front, false elsewise
+         * @return true if a path exists in front, false elsewise
          */
         bool checkFront();
 
         /**
          * checkLeft checks if the sensors detect a wall to the left.
-         * @return true if a wall exists to the left, false elsewise
+         * @return true if a path exists to the left, false elsewise
          */
         bool checkLeft();
 
         /**
          * checkRight checks if the sensors detect a wall to the right.
-         * @return true if a wall exists to the right, false elsewise
+         * @return true if a path exists to the right, false elsewise
          */
         bool checkRight();
 

@@ -65,26 +65,45 @@ void Mouse::moveBackward(int steps){
 
 void Mouse::rotate(double degrees){
 	// if I turn 90+300 degrees, I return to 30 abs degrees.
-	heading = fmod(heading + degrees, 360);
+	heading = fmod(heading + degrees + 360, 360);
 }
 
 // private sim mouse function that translates chacking for maze queries.
 bool Mouse::check(double heading_v){
 	heading_v = fmod(heading_v+360, 360);
-	cout << "heading check: " << heading_v << endl;
+	cout << "heading check: " << heading_v << ":\t";
+	bool result;
+	// scale coordinates to match maze
+	int s_x = x*2 + 1;
+	int s_y = y*2 + 1;
 	switch((int) heading_v){
 		case 0:	// East
-			return maze->query(x*2+1, y*2);	// scaled by 2 to match 2d maze
+			s_x += 1;
+			result = maze->query(s_x, s_y);
+			break;
 		case 90: // North
-			return maze->query(x*2, y*2-1);
+			s_y -= 1;
+			result = maze->query(s_x, s_y);
+			break;
 		case 180: // West
-			return maze->query(x*2-1, y*2);
+			s_x -= 1;
+			result = maze->query(s_x, s_y);
+			break;
 		case 270: // South
-			return maze->query(x*2, y*2+1);
+			s_y += 1;
+			result = maze->query(s_x, s_y);
+			break;
 		default:
-			cout << "Mouse::Check(): Invalid restricted heading - " << heading_v << endl;
-			return false;
+			cout << "\tMouse::Check(): Invalid restricted heading - " << heading_v << endl;
+			result = false;
+			break;	
 	}
+	cout << "(" << s_x << "|" << s_y << ")";
+	if(result)
+		cout << "1/PATH" << endl;
+	else
+		cout << "0/WALL" << endl;
+	return result;
 }
 
 bool Mouse::checkFront(){
