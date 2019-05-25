@@ -2,7 +2,6 @@
 
 #include <string>
 #include <iostream>
-#include <ostream>
 using namespace std;
 
 class Algorithm{
@@ -20,16 +19,19 @@ class Algorithm{
         bool openF;
         bool openR;
         bool openL;
+        bool dendrev;
         bool hasRotated;
         int retDir;
         int rotation;
         int choice;
         int currX;
         int currY;
+        int prevX;
+        int prevY;
         int currDir;
     public:
         Algorithm();
         int* decide();
-        void getCheck(bool inp[3]);
+        void getCheck(int inp[3], int inp2[3]);
         void printMaze();
 };

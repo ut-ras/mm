@@ -1,13 +1,14 @@
 #include "Algorithm.h"
-#include <iostream>
-#include <ostream>
 
 Algorithm::Algorithm() {
     populateMap();
     hasRotated = false;
     currX = 0;
     currY = 0;
+    prevX = 0;
+    prevY = 0;
     currDir = 1;
+    dendrev = false;
 }
 
 void Algorithm::populateMap() {
@@ -39,10 +40,15 @@ void Algorithm::populateMap() {
     }
 }
 
-void Algorithm::getCheck(bool *inp) {
+void Algorithm::getCheck(int inp[3], int inp2[3]) {
     openF = inp[0];
     openR = inp[1];
     openL = inp[2];
+    prevX = currX;
+    prevY = currY;
+    currX = inp2[0];
+    currY = inp2[1];
+    currDir = inp2[2];
 }
 
 int Algorithm::numPath() {
@@ -62,13 +68,11 @@ void Algorithm::moveCorr() {
         }
         else if(openL){
             rotation = 90;
-            currDir = (currDir + 1) % 4;
             choice = 2;
             hasRotated = true;
         }
         else if(openR){
             rotation = -90;
-            currDir = (currDir + 3) % 4;
             choice = 2;
             hasRotated = true;
         }
@@ -78,126 +82,121 @@ void Algorithm::moveCorr() {
 void Algorithm::dEnd() {
     if(!hasRotated){
         rotation = 180;
-        currDir = (currDir + 2) % 4;
         choice = 2;
         hasRotated = true;
     }
+    dendrev = true;
 }
 
 void Algorithm::chooseDir() {
-        int maxVal = 99;
-        switch(currDir){
-            case 0:
-                if(openF){
-                    if(hamDist[currX + 1][currY] < maxVal) {
-                        retDir = 1;
-                        choice = 0;
-                        hasRotated = false;
-                        maxVal = hamDist[currX + 1][currY];
-                    }
+    if(dendrev){
+        dendrev = false;
+        hamDist[prevX][prevY] = 100;
+    }
+    int maxVal = 99;
+    switch(currDir){
+        case 0:
+            if(openF){
+                if(hamDist[currX + 1][currY] < maxVal) {
+                    retDir = 1;
+                    choice = 0;
+                    hasRotated = false;
+                    maxVal = hamDist[currX + 1][currY];
                 }
-                if(openL){
-                    if(hamDist[currX][currY + 1] < maxVal) {
-                        rotation = 90;
-                        currDir = (currDir + 1) % 4;
-                        choice = 2;
-                        hasRotated = true;
-                        maxVal = hamDist[currX + 1][currY];
-                    }
+            }
+            if(openL){
+                if(hamDist[currX][currY + 1] < maxVal) {
+                    rotation = 90;
+                    choice = 2;
+                    hasRotated = true;
+                    maxVal = hamDist[currX + 1][currY];
                 }
-                if(openR){
-                    if(hamDist[currX][currY - 1] < maxVal) {
-                        rotation = -90;
-                        currDir = (currDir + 3) % 4;
-                        choice = 2;
-                        hasRotated = true;
-                    }
+            }
+            if(openR){
+                if(hamDist[currX][currY - 1] < maxVal) {
+                    rotation = -90;
+                    choice = 2;
+                    hasRotated = true;
                 }
-            case 1:
-                if(openR){
-                    if(hamDist[currX + 1][currY] < maxVal) {
-                        rotation = -90;
-                        currDir = (currDir + 3) % 4;
-                        choice = 2;
-                        hasRotated = true;
-                        maxVal = hamDist[currX + 1][currY];
-                    }
+            }
+        case 1:
+            if(openR){
+                if(hamDist[currX + 1][currY] < maxVal) {
+                    rotation = -90;
+                    choice = 2;
+                    hasRotated = true;
+                    maxVal = hamDist[currX + 1][currY];
                 }
-                if(openF){
-                    if(hamDist[currX][currY + 1] < maxVal) {
-                        retDir = 1;
-                        choice = 0;
-                        hasRotated = false;
-                        maxVal = hamDist[currX][currY + 1];
-                    }
+            }
+            if(openF){
+                if(hamDist[currX][currY + 1] < maxVal) {
+                    retDir = 1;
+                    choice = 0;
+                    hasRotated = false;
+                    maxVal = hamDist[currX][currY + 1];
                 }
-                if(openL){
-                    if(hamDist[currX - 1][currY] < maxVal) {
-                        rotation = 90;
-                        currDir = (currDir + 1) % 4;
-                        choice = 2;
-                        hasRotated = true;
-                    }
+            }
+            if(openL){
+                if(hamDist[currX - 1][currY] < maxVal) {
+                    rotation = 90;
+                    choice = 2;
+                    hasRotated = true;
                 }
-            case 2:
-                if(openR){
-                    if(hamDist[currX][currY + 1] < maxVal) {
-                        rotation = -90;
-                        currDir = (currDir + 3) % 4;
-                        choice = 2;
-                        hasRotated = true;
-                        maxVal = hamDist[currX][currY + 1];
-                    }
+            }
+        case 2:
+            if(openR){
+                if(hamDist[currX][currY + 1] < maxVal) {
+                    rotation = -90;
+                    choice = 2;
+                    hasRotated = true;
+                    maxVal = hamDist[currX][currY + 1];
                 }
-                if(openF){
-                    if(hamDist[currX - 1][currY] < maxVal) {
-                        retDir = 1;
-                        choice = 0;
-                        hasRotated = false;
-                        maxVal = hamDist[currX - 1][currY];
-                    }
+            }
+            if(openF){
+                if(hamDist[currX - 1][currY] < maxVal) {
+                    retDir = 1;
+                    choice = 0;
+                    hasRotated = false;
+                    maxVal = hamDist[currX - 1][currY];
                 }
-                if(openL){
-                    if(hamDist[currX][currY - 1] < maxVal) {
-                        rotation = 90;
-                        currDir = (currDir + 1) % 4;
-                        choice = 2;
-                        hasRotated = true;
-                    }
+            }
+            if(openL){
+                if(hamDist[currX][currY - 1] < maxVal) {
+                    rotation = 90;
+                    choice = 2;
+                    hasRotated = true;
                 }
-            default:
-                if(openL){
-                    if(hamDist[currX + 1][currY] < maxVal) {
-                        rotation = 90;
-                        currDir = (currDir + 1) % 4;
-                        choice = 2;
-                        hasRotated = true;
-                        maxVal = hamDist[currX + 1][currY];
-                    }
+            }
+        default:
+            if(openL){
+                if(hamDist[currX + 1][currY] < maxVal) {
+                    rotation = 90;
+                    choice = 2;
+                    hasRotated = true;
+                    maxVal = hamDist[currX + 1][currY];
                 }
-                if(openR){
-                    if(hamDist[currX - 1][currY] < maxVal) {
-                        rotation = -90;
-                        currDir = (currDir + 3) % 4;
-                        choice = 2;
-                        hasRotated = true;
-                        maxVal = hamDist[currX - 1][currY];
-                    }
+            }
+            if(openR){
+                if(hamDist[currX - 1][currY] < maxVal) {
+                    rotation = -90;
+                    choice = 2;
+                    hasRotated = true;
+                    maxVal = hamDist[currX - 1][currY];
                 }
-                if(openF){
-                    if(hamDist[currX][currY - 1] < maxVal) {
-                        retDir = 1;
-                        choice = 0;
-                        hasRotated = false;
-                    }
+            }
+            if(openF){
+                if(hamDist[currX][currY - 1] < maxVal) {
+                    retDir = 1;
+                    choice = 0;
+                    hasRotated = false;
                 }
-        }
+            }
+    }
 }
 
 int* Algorithm::decide() {
     if(hamDist[currX][currY] == 0){
-        retDir = 1;
-        choice = 3;
+        return 0;
     }
     if(hasRotated){
         retDir = 1;
@@ -222,23 +221,8 @@ int* Algorithm::decide() {
     else{
         out[0] = choice;
         out[1] = rotation;
+        hasRotated = false;
     }
-    switch(currDir){
-        case 0:
-            currX++;
-            break;
-	case 1:
-            currY++;
-	    break;
-        case 2:
-            currX--;
-	    break;
-	default:
-            currY--;
-	    break;
-    }
-    cout << "New Internal Algo Pos (x|y|dir): " << currX << "|" << currY  << "|" << currDir << endl;
-    cout << "Decision: " << out[0] << "|" << out[1] << endl;
     return out;
 }
 
