@@ -1,4 +1,6 @@
 #include "Algorithm.h"
+#include <iostream>
+#include <ostream>
 
 Algorithm::Algorithm() {
     populateMap();
@@ -40,7 +42,7 @@ void Algorithm::populateMap() {
     }
 }
 
-void Algorithm::getCheck(int inp[3], int inp2[3]) {
+void Algorithm::getCheck(bool inp[3], int inp2[3]) {
     openF = inp[0];
     openR = inp[1];
     openL = inp[2];
@@ -223,6 +225,8 @@ int* Algorithm::decide() {
         out[1] = rotation;
         hasRotated = false;
     }
+    cout << "Internal Algo Pos (X|Y|dir): " << currX << "|" << currY << "|" << currDir << endl;
+    cout << "Decision: " << out[0] << "|" << out[1] << endl;
     return out;
 }
 
