@@ -59,7 +59,7 @@ bool Simulator::iterateStep(){
 
     printTotalMaze();
 
-    algo->getCheck(check);
+    algo->getCheck(check, mousePos);
     // make a decision
     int* decision = algo->decide();
     // possibly print decision
