@@ -62,7 +62,7 @@ int Algorithm::numPath() {
 void Algorithm::moveCorr() {
     if(!hasRotated){
         if(openF){
-            retDir = 1;
+            retDir = currDir;
             choice = 0;
             hasRotated = false;
         }
@@ -98,7 +98,7 @@ void Algorithm::chooseDir() {
         case 0:
             if(openF){
                 if(hamDist[currX + 1][currY] < maxVal) {
-                    retDir = 1;
+                    retDir = currDir;
                     choice = 0;
                     hasRotated = false;
                     maxVal = hamDist[currX + 1][currY];
@@ -130,7 +130,7 @@ void Algorithm::chooseDir() {
             }
             if(openF){
                 if(hamDist[currX][currY + 1] < maxVal) {
-                    retDir = 1;
+                    retDir = currDir;
                     choice = 0;
                     hasRotated = false;
                     maxVal = hamDist[currX][currY + 1];
@@ -154,7 +154,7 @@ void Algorithm::chooseDir() {
             }
             if(openF){
                 if(hamDist[currX - 1][currY] < maxVal) {
-                    retDir = 1;
+                    retDir = currDir;
                     choice = 0;
                     hasRotated = false;
                     maxVal = hamDist[currX - 1][currY];
@@ -186,7 +186,7 @@ void Algorithm::chooseDir() {
             }
             if(openF){
                 if(hamDist[currX][currY - 1] < maxVal) {
-                    retDir = 1;
+                    retDir = currDir;
                     choice = 0;
                     hasRotated = false;
                 }
@@ -199,7 +199,7 @@ int* Algorithm::decide() {
         return 0;
     }
     if(hasRotated){
-        retDir = 1;
+        retDir = currDir;
         choice = 0;
         hasRotated = false;
     }
