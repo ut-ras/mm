@@ -42,15 +42,26 @@ void Algorithm::populateMap() {
     }
 }
 
-void Algorithm::getCheck(bool inp[3], int inp2[3]) {
-    openF = inp[0];
-    openR = inp[1];
-    openL = inp[2];
+void Algorithm::getCheck(int inp[3], int inp2[3]) {
+    openF = inp[0] == 0;
+    openR = inp[1] == 0;
+    openL = inp[2] == 0;
     prevX = currX;
     prevY = currY;
     currX = inp2[0];
     currY = inp2[1];
-    currDir = inp2[2];
+    if(inp2[2] == 90.0){
+        currDir = 1;
+    }
+    else if (inp2[2] == 180.0){
+        currDir = 2;
+    }
+    else if(inp2[3] == 270.0){
+        currDir = 3;
+    }
+    else{
+        currDir = 0;
+    }
 }
 
 int Algorithm::numPath() {

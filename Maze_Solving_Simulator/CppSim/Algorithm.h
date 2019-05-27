@@ -32,6 +32,6 @@ class Algorithm{
     public:
         Algorithm();
         int* decide();
-        void getCheck(bool inp[3], int inp2[3]);
+        void getCheck(int inp[3], int inp2[3]);
         void printMaze();
 };
