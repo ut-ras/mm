@@ -10,5 +10,6 @@ void setRightSpeed(double speed);
  * with negative power meaning backwards movement.*/
 void setMotors(float left, float right);
 
+void stopMotors(void);
 
 #endif

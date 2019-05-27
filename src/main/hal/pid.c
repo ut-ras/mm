@@ -26,7 +26,7 @@ void set(PID *pid, double set) {
   }
 }
 
-//renamed standard max and min to avoid multiple definition error
+// renamed standard max and min to avoid multiple definition error
 double pid_max(double val1, double val2) { return val1 > val2 ? val1 : val2; }
 
 double pid_min(double val1, double val2) { return val1 < val2 ? val1 : val2; }
@@ -40,7 +40,7 @@ double update(PID *pid, double current, double dt) {
   pid->sum += err * dt;
   // keep integral value between reasonable bounds
   pid->sum = pid_min(pid_max(pid->sum, -MAX_SUM), MAX_SUM);
-  pid->last = err; // store error for use in next derivative calculation
+  pid->last = err;  // store error for use in next derivative calculation
   // compute pid calculation and log to file
   double result = pid->kP * err + pid->kI * pid->sum + pid->kD * d;
   if (pid->fp) {

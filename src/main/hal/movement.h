@@ -4,16 +4,11 @@
 #include <stdbool.h>
 
 struct movement_info {
-    bool left;
-    bool right;
-    bool front;
+  bool left;
+  bool right;
+  bool front;
 
-    int unitsTraveled;
-};
-
-enum turn_dir {
-    LEFT = 0,
-    RIGHT = 1
+  int unitsTraveled;
 };
 
 /* Initalize all devices including adc, pwm, and encoders */
@@ -42,10 +37,10 @@ struct movement_info moveEnc(float speed);
 
 /* Turn 90 degrees in specified direction at specified speed.
  * Returns a struct containing which direction walls are present */
-struct movement_info turn90(enum turn_dir, float speed);
+struct movement_info turn90(float speed);
 
 /* Turn 180 degrees in specified direction at specified speed.
  * Returns a struct containing which direction walls are present */
-struct movement_info turn180(enum turn_dir, float speed);
+struct movement_info turn180(float speed);
 
 #endif

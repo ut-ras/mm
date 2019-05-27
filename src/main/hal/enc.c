@@ -1,20 +1,20 @@
-#include "driver/pcnt.h"
 #include "enc.h"
+#include "driver/pcnt.h"
 
 #define PCNT_H_LIM_VAL INT16_MAX
 #define PCNT_L_LIM_VAL INT16_MIN
 #define PCNT_FILTER_VAL 100
 #define ACTIVE_ENCODERS 2
 
-pcnt_isr_handle_t user_isr_handle = NULL; // user's ISR service handle
-xQueueHandle pcnt_evt_queue; // A queue to handle pulse counter events
+pcnt_isr_handle_t user_isr_handle = NULL;  // user's ISR service handle
+xQueueHandle pcnt_evt_queue;  // A queue to handle pulse counter events
 
 /* A sample structure to pass events from the PCNT
  * interrupt handler to the main program.
  */
 typedef struct {
-  int unit;        // the PCNT unit that originated an interrupt
-  uint32_t status; // information on the event type that caused the interrupt
+  int unit;         // the PCNT unit that originated an interrupt
+  uint32_t status;  // information on the event type that caused the interrupt
 } pcnt_evt_t;
 
 /* Decode what PCNT's unit originated an interrupt
@@ -46,26 +46,27 @@ static void pcnt_init(int unit, int encA, int encB) {
   pcnt_config_t pcnt_config = {
       .pulse_gpio_num = encA,
       .ctrl_gpio_num = encB,
-      .channel = PCNT_CHANNEL_0, // encA goes to input channel, encB connected
-                                 // to ctrl input
+      .channel = PCNT_CHANNEL_0,  // encA goes to input channel, encB connected
+                                  // to ctrl input
       .unit = unit,
-      .pos_mode = PCNT_COUNT_INC,      // increment on enc A posedge
-      .neg_mode = PCNT_COUNT_DIS,      // ignore enc B negedge
-      .lctrl_mode = PCNT_MODE_KEEP,    // ignore enc B low
-      .hctrl_mode = PCNT_MODE_REVERSE, // decrement mode when enc B high
-      .counter_h_lim = PCNT_H_LIM_VAL, // set max
-      .counter_l_lim = PCNT_L_LIM_VAL, // set min
+      .pos_mode = PCNT_COUNT_INC,       // increment on enc A posedge
+      .neg_mode = PCNT_COUNT_DIS,       // ignore enc B negedge
+      .lctrl_mode = PCNT_MODE_KEEP,     // ignore enc B low
+      .hctrl_mode = PCNT_MODE_REVERSE,  // decrement mode when enc B high
+      .counter_h_lim = PCNT_H_LIM_VAL,  // set max
+      .counter_l_lim = PCNT_L_LIM_VAL,  // set min
   };
   pcnt_unit_config(&pcnt_config);
 
   // filter noise
   pcnt_set_filter_value(
       unit,
-      PCNT_FILTER_VAL); // ignore pulse if less than val*12.5ns
+      PCNT_FILTER_VAL);  // ignore pulse if less than val*12.5ns
   pcnt_filter_enable(unit);
 
-  pcnt_event_enable(unit, PCNT_EVT_H_LIM); // enable events for hitting
-                                           // max capacity on the 16-bit counter
+  pcnt_event_enable(unit,
+                    PCNT_EVT_H_LIM);  // enable events for hitting
+                                      // max capacity on the 16-bit counter
   pcnt_event_enable(unit, PCNT_EVT_L_LIM);
 
   pcnt_counter_pause(unit);
@@ -85,12 +86,12 @@ void readEncoders() {
   res = xQueueReceive(pcnt_evt_queue, &evt, 0);
   if (res == pdTRUE) {
     // if we got an event it means our counter is going to overflow
-    pcnt_get_counter_value(evt.unit, &count); // read counter
+    pcnt_get_counter_value(evt.unit, &count);  // read counter
     // store overflow in sum so counter can be cleared
     encoders[evt.unit]->sum =
         encoders[evt.unit]->sum +
-        count; // manage overflow of 16-bit counter, currently untested
-    pcnt_counter_clear(evt.unit); // clear overflowing counter
+        count;  // manage overflow of 16-bit counter, currently untested
+    pcnt_counter_clear(evt.unit);  // clear overflowing counter
     printf("Event PCNT unit[%d]; cnt: %d\n", evt.unit, count);
     if (evt.status & PCNT_STATUS_L_LIM_M) {
       // detect hitting min counter value
@@ -131,6 +132,8 @@ int getTicks(int enc_num) {
   return encoders[enc_num]->count;
 }
 
+int getAvgTicks(void) { return (getTicks(0) + getTicks(1)) / 2; }
+
 void enc_init() {
   pcnt_evt_queue = xQueueCreate(10, sizeof(pcnt_evt_t));
 
@@ -142,7 +145,7 @@ void enc_init() {
   encoders[right_enc]->pcnt = PCNT_UNIT_0;
   // initialize pulse counter 0 and pass in input pins of encoder
   pcnt_init(encoders[right_enc]->pcnt, 5,
-            10); // pcnt 0, A=gpio5, B=gpio10
+            10);  // pcnt 0, A=gpio5, B=gpio10
 
   encoders[left_enc] = (Enc *)malloc(sizeof(Enc));
   encoders[left_enc]->count = 0;
@@ -151,5 +154,5 @@ void enc_init() {
   encoders[left_enc]->pcnt = PCNT_UNIT_1;
   // initialize pulse counter 1 and pass in input pins of encoder
   pcnt_init(encoders[left_enc]->pcnt, 25,
-            26); // pcnt 1, A=gpio25, B=gpio26
+            26);  // pcnt 1, A=gpio25, B=gpio26
 }

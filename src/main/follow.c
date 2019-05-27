@@ -9,6 +9,9 @@ void app_main() {
   zero();
 
   moveIR(10.0);
+  turn90(-15.0);
+  turn90(-15.0);
+  moveIR(10.0);
 
   while(true){}
 }

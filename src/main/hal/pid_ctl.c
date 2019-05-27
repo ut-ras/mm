@@ -1,9 +1,9 @@
+#include <stdio.h>
 #include "enc.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "motorController.h"
 #include "pid.h"
-#include <stdio.h>
 
 #define NUM_MOTORS 2
 
@@ -11,7 +11,7 @@ PID *linearControl[2];
 PID *alignmentControl;
 
 const int ticksPerUnit = 2200 / 26;
-double maxSpeed = .60; // percentage
+double maxSpeed = .60;  // percentage
 
 double max(double val1, double val2) { return val1 > val2 ? val1 : val2; }
 
@@ -41,7 +41,7 @@ void moveStraight(int dist) {
   // double currentTime, lastTime =
   // (double(s) * 1000 + double(us / 1000)) / 1000;
   double lastTime =
-      esp_timer_get_time() / 1000000; // microseconds/1000000=seconds
+      esp_timer_get_time() / 1000000;  // microseconds/1000000=seconds
   setMotors(0, 0);
   for (int i = 0; i < NUM_MOTORS; ++i) {
     set(linearControl[i], 0);
