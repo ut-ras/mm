@@ -43,6 +43,7 @@ double update(PID *pid, double current, double dt) {
   pid->last = err;  // store error for use in next derivative calculation
   // compute pid calculation and log to file
   double result = pid->kP * err + pid->kI * pid->sum + pid->kD * d;
+  //printf("%f %f\n",pid->kP * err, result);
   if (pid->fp) {
     fprintf(pid->fp, "%f %f %f %f %f\n", dt, pid->kP * err, pid->kI * pid->sum,
             pid->kD * d, result);
