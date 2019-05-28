@@ -42,7 +42,7 @@ void Algorithm::populateMap() {
     }
 }
 
-void Algorithm::getCheck(int inp[3], int inp2[3]) {
+void Algorithm::getCheck(bool inp[3], int inp2[3]) {
     openF = inp[0] == 0;
     openR = inp[1] == 0;
     openL = inp[2] == 0;
