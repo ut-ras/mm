@@ -21,15 +21,17 @@
 
 #define TURN_TICKS 90 
 
-int LEFT_SIDE_ZERO = 250;
-int LEFT_SIDE_THRESH = 1000;
-int RIGHT_SIDE_ZERO = 250;
-int RIGHT_SIDE_THRESH = 1000;
+#define MOVE_DELAY 200
+
+int LEFT_SIDE_ZERO = 100;
+int LEFT_SIDE_THRESH = 10;
+int RIGHT_SIDE_ZERO = 100;
+int RIGHT_SIDE_THRESH = 10;
 
 int LEFT_FRONT_ZERO = 250;
-int LEFT_FRONT_THRESH = 1300;
+int LEFT_FRONT_THRESH = 750;
 int RIGHT_FRONT_ZERO = 250;
-int RIGHT_FRONT_THRESH = 2450;
+int RIGHT_FRONT_THRESH = 550;
 
 distance left;
 distance right;
@@ -56,11 +58,11 @@ int init() {
   // mcpwm_example_gpio_initialize();
   mcpwm_initialize();
 
-  movePID = initPID(0.002, 0.00, 0.000, "log");
+  movePID = initPID(0.002, 0.0003, 0.0, "log");
 
   turn90PID = initPID(0.0111, 0.0061, 0.0, "log");
 
-  turn180PID = initPID(0.005, 0.0051, 0.0, "log");
+  turn180PID = initPID(0.004, 0.0041, 0.0, "log");
 
   initBattery();
 
@@ -127,7 +129,7 @@ struct movement_info moveIR(float speed) {
 
   readIRError(&frontLeft, &sideLeft, &frontRight, &sideRight);
 
-  while ((frontLeft < LEFT_FRONT_THRESH || frontRight < RIGHT_FRONT_THRESH) /* && sideLeft > LEFT_SIDE_THRESH && sideRight > RIGHT_SIDE_THRESH*/) {
+  while ((frontLeft < LEFT_FRONT_THRESH || frontRight < RIGHT_FRONT_THRESH) && sideLeft > LEFT_SIDE_THRESH && sideRight > RIGHT_SIDE_THRESH) {
     currentTime = esp_timer_get_time() / 1000000.0;
     double diffTime = currentTime - lastTime;
     lastTime = currentTime;
@@ -138,6 +140,7 @@ struct movement_info moveIR(float speed) {
     setMotors(speed + curr, speed - curr);
   }
   stopMotors();
+  vTaskDelay(MOVE_DELAY / portTICK_RATE_MS);
 
   struct movement_info info = getWalls();
 
@@ -168,6 +171,7 @@ struct movement_info turn90(float speed) {
     setMotors(speed * distPower, -speed * distPower);
   }
   stopMotors();
+  vTaskDelay(MOVE_DELAY / portTICK_RATE_MS);
 
   struct movement_info info = getWalls();
 
@@ -194,6 +198,7 @@ struct movement_info turn180(float speed) {
     setMotors(speed * distPower, -speed * distPower);
   }
   stopMotors();
+  vTaskDelay(MOVE_DELAY / portTICK_RATE_MS);
 
   struct movement_info info = getWalls();
 
