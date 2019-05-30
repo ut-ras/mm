@@ -1,4 +1,6 @@
-# Quick and dirty Makefile that builds everything so that we have an easy way to generate a compile commands DB.
+# Quick and dirty Makefile that builds everything so that we have an easy way to
+# generate a compile commands DB.
+
 # This doubles as a registry of all the projects we have in this repo.
 
 TEST_PROGRAMS := motor-test sensor-test wall-follow

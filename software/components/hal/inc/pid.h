@@ -22,4 +22,4 @@ void set(PID* pid, double setPoint);
 double update(PID* pid, double current, double dt);  // dt in seconds
 double getErr(PID* pid);
 
-#endif
+#endif /* PID_H */

@@ -13,4 +13,5 @@ int init_distance_sensor(distance *sensor, int front_pin, int side_pin,
                          int emitter_pin);
 
 void read_distance(distance *sensor, int *vals);
-#endif
+
+#endif /* DISTANCE_H */

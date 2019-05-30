@@ -43,4 +43,4 @@ struct movement_info turn90(float speed);
  * Returns a struct containing which direction walls are present */
 struct movement_info turn180(float speed);
 
-#endif
+#endif /* MOVEMENT_H */

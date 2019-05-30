@@ -3,7 +3,7 @@
 
 void mcpwm_initialize();
 
-void setLeftSpeed(double speed);
+void set_left_speed(double speed);
 void setRightSpeed(double speed);
 
 /* Sets the power of each motor, range for input is from -100.0 to 100.0
@@ -12,4 +12,4 @@ void setMotors(float left, float right);
 
 void stopMotors(void);
 
-#endif
+#endif /* MOTOR_CONTROLLER_H */
