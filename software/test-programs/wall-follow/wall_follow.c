@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "esp_timer.h"
-#include "hal/motorController.h"
-#include "hal/movement.h"
+#include "hal/inc/motorController.h"
+#include "hal/inc/movement.h"
 
 void app_main() {
   if (init()) exit(1);

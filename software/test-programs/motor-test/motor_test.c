@@ -1,6 +1,6 @@
-#include "hal/motorController.h"
+#include "hal/inc/motorController.h"
 
-void app_main1() {
+void app_main() {
   mcpwm_initialize();
 
   setMotors(10.0, 10.0);

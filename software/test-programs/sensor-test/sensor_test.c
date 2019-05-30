@@ -1,6 +1,6 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "hal/distance.h"
+#include "hal/inc/distance.h"
 
 #define LEFT_FRONT_PIN 37
 #define LEFT_SIDE_PIN 38
@@ -10,7 +10,7 @@
 #define RIGHT_SIDE_PIN 35
 #define RIGHT_EMITTER 2
 
-void app_main1() {
+void app_main() {
   distance left;
   distance right;
 
