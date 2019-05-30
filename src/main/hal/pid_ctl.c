@@ -43,9 +43,7 @@ void moveStraight(int dist) {
   double lastTime =
       esp_timer_get_time() / 1000000;  // microseconds/1000000=seconds
   setMotors(0, 0);
-  for (int i = 0; i < NUM_MOTORS; ++i) {
-    set(linearControl[i], 0);
-  }
+  for (int i = 0; i < NUM_MOTORS; ++i) { set(linearControl[i], 0); }
   set(linearControl[0], dist * 1);
   set(linearControl[1], dist * -1);
   // block until you're close enough to the set point for long enough

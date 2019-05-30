@@ -1,6 +1,6 @@
 #include "movement.h"
-#include <stdlib.h>
 #include <math.h>
+#include <stdlib.h>
 #include "battery.h"
 #include "distance.h"
 #include "enc.h"
@@ -19,7 +19,7 @@
 #define RIGHT_SIDE_PIN 35
 #define RIGHT_EMITTER 2
 
-#define TURN_TICKS 90 
+#define TURN_TICKS 90
 
 #define MOVE_DELAY 200
 
@@ -100,7 +100,8 @@ struct movement_info getWalls(void) {
   return info;
 }
 
-static int readIRError(int* frontLeft, int* sideLeft, int* frontRight, int* sideRight) {
+static int readIRError(int* frontLeft, int* sideLeft, int* frontRight,
+                       int* sideRight) {
   int dists[2];
 
   read_distance(&left, dists);
@@ -129,14 +130,18 @@ struct movement_info moveIR(float speed) {
 
   readIRError(&frontLeft, &sideLeft, &frontRight, &sideRight);
 
-  while ((frontLeft < LEFT_FRONT_THRESH || frontRight < RIGHT_FRONT_THRESH) && sideLeft > LEFT_SIDE_THRESH && sideRight > RIGHT_SIDE_THRESH) {
+  while ((frontLeft < LEFT_FRONT_THRESH || frontRight < RIGHT_FRONT_THRESH) &&
+         sideLeft > LEFT_SIDE_THRESH && sideRight > RIGHT_SIDE_THRESH) {
     currentTime = esp_timer_get_time() / 1000000.0;
     double diffTime = currentTime - lastTime;
     lastTime = currentTime;
 
-    double curr = update(movePID, readIRError(&frontLeft, &sideLeft, &frontRight, &sideRight), diffTime);
-    //printf("sens %d %d\n", frontLeft, frontRight);
-    //printf("curr %f %d \n", curr, readIRError(&frontLeft, &sideLeft, &frontRight, &sideRight));
+    double curr = update(
+        movePID, readIRError(&frontLeft, &sideLeft, &frontRight, &sideRight),
+        diffTime);
+    // printf("sens %d %d\n", frontLeft, frontRight);
+    // printf("curr %f %d \n", curr, readIRError(&frontLeft, &sideLeft,
+    // &frontRight, &sideRight));
     setMotors(speed + curr, speed - curr);
   }
   stopMotors();
@@ -160,13 +165,16 @@ struct movement_info turn90(float speed) {
 
   int start = getAvgTicks();
 
-  while (fabs((double)TURN_TICKS - turnProg(start) - turn90PID->last) / diffTime > 1.0 || TURN_TICKS - turnProg(start) > 1) {
+  while (fabs((double)TURN_TICKS - turnProg(start) - turn90PID->last) /
+                 diffTime >
+             1.0 ||
+         TURN_TICKS - turnProg(start) > 1) {
     currentTime = esp_timer_get_time() / 1000000.0;
     diffTime = currentTime - lastTime;
     lastTime = currentTime;
 
     double distPower = update(turn90PID, turnProg(start), diffTime);
-    //printf("turnProg %d distPower %f\n", turnProg(start), distPower);
+    // printf("turnProg %d distPower %f\n", turnProg(start), distPower);
 
     setMotors(speed * distPower, -speed * distPower);
   }
@@ -187,13 +195,16 @@ struct movement_info turn180(float speed) {
 
   int start = getAvgTicks();
 
-  while (fabs((double)TURN_TICKS * 2 + 1 - turnProg(start) - turn180PID->last) / diffTime > 1.0 || TURN_TICKS * 2 + 1 - turnProg(start) > 1) {
+  while (fabs((double)TURN_TICKS * 2 + 1 - turnProg(start) - turn180PID->last) /
+                 diffTime >
+             1.0 ||
+         TURN_TICKS * 2 + 1 - turnProg(start) > 1) {
     currentTime = esp_timer_get_time() / 1000000.0;
     diffTime = currentTime - lastTime;
     lastTime = currentTime;
 
     double distPower = update(turn180PID, turnProg(start), diffTime);
-    //printf("turnProg %d distPower %f\n", turnProg(start), distPower);
+    // printf("turnProg %d distPower %f\n", turnProg(start), distPower);
 
     setMotors(speed * distPower, -speed * distPower);
   }

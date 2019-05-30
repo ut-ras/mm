@@ -35,9 +35,7 @@ static void IRAM_ATTR pcnt_enc_intr_handler(void *arg) {
       evt.status = PCNT.status_unit[i].val;
       PCNT.int_clr.val = BIT(i);
       xQueueSendFromISR(pcnt_evt_queue, &evt, &HPTaskAwoken);
-      if (HPTaskAwoken == pdTRUE) {
-        portYIELD_FROM_ISR();
-      }
+      if (HPTaskAwoken == pdTRUE) { portYIELD_FROM_ISR(); }
     }
   }
 }

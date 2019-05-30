@@ -1,0 +1,14 @@
+# We'll use defaults from the Google style.
+BasedOnStyle: Google
+
+---
+Language: Cpp
+PointerAlignment: Left
+BreakBeforeBraces: Custom
+BraceWrapping:
+  SplitEmptyFunction: false
+  AfterControlStatement: false
+AllowShortBlocksOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: true
+AllowShortLoopsOnASingleLine: true
