@@ -19,6 +19,9 @@ BROWN  =$(shell echo -e '\033[0;33m')
 RED    =$(shell echo -e '\033[1;31m')
 NC     =$(shell echo -e '\033[0m')
 
+FMT := clang-format
+THREADS := $(shell nproc)
+
 .PHONY: compdb
 compdb:
 	bear $(MAKE) all
@@ -26,6 +29,12 @@ compdb:
 .PHONY: count
 count:
 	@loc
+
+.PHONY: format
+format:
+# 	@bash -c "shopt -s globstar; echo -verbose -i **/*.{c,h,cpp,s,S}"
+# 	@find . -regextype egrep -regex ".*\.(c|h|cpp|S){1}" ! -path ".*/build/*" -exec $(FMT) -i -verbose {} \;
+	@find . -regextype egrep -regex ".*\.(c|h|cpp|S){1}" ! -path ".*/build/*" -print0 | xargs -0 -P $(THREADS) clang-format -verbose -i
 
 .PHONY: $(PROJECTS)
 $(PROJECTS):

@@ -220,7 +220,7 @@ struct movement_info turn180(float speed) {
   return info;
 }
 
-struct movement_info moveEnc(float speed, int32_t encoderTicks) {   
+struct movement_info moveEnc(float speed, int32_t encoderTicks) {
   double lastTime = esp_timer_get_time() / 1000000.0;
   double currentTime = esp_timer_get_time() / 1000000.0;
   double diffTime = currentTime - lastTime;
@@ -230,9 +230,8 @@ struct movement_info moveEnc(float speed, int32_t encoderTicks) {
   int startRight = getTicks(right_enc);
 
   set(moveEncPID, ENC_DIFF);
-  
+
   while (abs(getAvgTicks() - start) < encoderTicks) {
-     
     currentTime = esp_timer_get_time() / 1000000.0;
     diffTime = currentTime - lastTime;
     lastTime = currentTime;
@@ -252,5 +251,4 @@ struct movement_info moveEnc(float speed, int32_t encoderTicks) {
   info.unitsTraveled = (getAvgTicks() - start) / MAZE_UNIT_SIZE;
 
   return info;
-
 }
