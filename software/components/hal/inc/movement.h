@@ -32,8 +32,9 @@ struct movement_info moveIR(float speed);
  * a gap is detected on the sides or a wall is detected in
  * front. Returns a struct containing which direction walls
  * are present as well as distance traveled in maze units.
- * Travels at a specified speed with a range of 0.0 to 100.0. */
-struct movement_info moveEnc(float speed);
+ * Travels at a specified speed with a range of 0.0 to 100.0.
+ * Travels a certain number of encoder ticks based on input */
+struct movement_info moveEnc(float speed, int encoderTicks);
 
 /* Turn 90 degrees in specified direction at specified speed.
  * Returns a struct containing which direction walls are present */
