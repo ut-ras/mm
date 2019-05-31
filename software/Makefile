@@ -11,13 +11,13 @@ PROJECTS := $(addprefix test-programs/,$(TEST_PROGRAMS)) components/hal/examples
 CMD := all
 
 # Colors:
-BOLD   =$(shell echo -e '\033[0;1m')
-CYAN   =$(shell echo -e '\033[0;36m')
-PURPLE =$(shell echo -e '\033[0;35m')
-GREEN  =$(shell echo -e '\033[0;32m')
-BROWN  =$(shell echo -e '\033[0;33m')
-RED    =$(shell echo -e '\033[1;31m')
-NC     =$(shell echo -e '\033[0m')
+BOLD   := $(shell echo -e '\033[0;1m')
+CYAN   := $(shell echo -e '\033[0;36m')
+PURPLE := $(shell echo -e '\033[0;35m')
+GREEN  := $(shell echo -e '\033[0;32m')
+BROWN  := $(shell echo -e '\033[0;33m')
+RED    := $(shell echo -e '\033[1;31m')
+NC     := $(shell echo -e '\033[0m')
 
 FMT := clang-format
 THREADS := $(shell nproc)
@@ -32,9 +32,11 @@ count:
 
 .PHONY: format
 format:
-# 	@bash -c "shopt -s globstar; echo -verbose -i **/*.{c,h,cpp,s,S}"
-# 	@find . -regextype egrep -regex ".*\.(c|h|cpp|S){1}" ! -path ".*/build/*" -exec $(FMT) -i -verbose {} \;
-	@find . -regextype egrep -regex ".*\.(c|h|cpp|S){1}" ! -path ".*/build/*" -print0 | xargs -0 -P $(THREADS) clang-format -verbose -i
+	@find . -regextype egrep \
+		  -regex ".*\.(c|h|cpp|S){1}" \
+		! -path ".*/build/*" \
+		  -print0 \
+	| xargs -0 -P $(THREADS) clang-format -verbose -i
 
 .PHONY: $(PROJECTS)
 $(PROJECTS):
