@@ -73,7 +73,7 @@ void setRightSpeed(double speed) {
 
 void setMotors(float left, float right) {
   setLeftSpeed(left);
-  setRightSpeed(right);
+  setRightSpeed(-right);
 }
 
 void stopMotors(void) { setMotors(0.0, 0.0); }
