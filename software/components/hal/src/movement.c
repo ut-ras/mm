@@ -27,12 +27,12 @@
 int LEFT_SIDE_ZERO = 100;
 int LEFT_SIDE_THRESH = 10;
 int RIGHT_SIDE_ZERO = 100;
-int RIGHT_SIDE_THRESH = 10;
+int RIGHT_SIDE_THRESH = 5;
 
-int LEFT_FRONT_ZERO = 250;
-int LEFT_FRONT_THRESH = 750;
-int RIGHT_FRONT_ZERO = 250;
-int RIGHT_FRONT_THRESH = 550;
+int LEFT_FRONT_ZERO = 300;
+int LEFT_FRONT_THRESH = 370;
+int RIGHT_FRONT_ZERO = 300;
+int RIGHT_FRONT_THRESH = 370;
 
 distance left;
 distance right;
@@ -60,7 +60,7 @@ int init() {
   // mcpwm_example_gpio_initialize();
   mcpwm_initialize();
 
-  movePID = initPID(0.002, 0.0003, 0.0, "log");
+  movePID = initPID(0.0025, 0.0000, 0.0, "log");
 
   turn90PID = initPID(0.0111, 0.0061, 0.0, "log");
 
@@ -99,7 +99,7 @@ struct movement_info getWalls(void) {
   info.left = leftDists[1] > LEFT_SIDE_THRESH;
   info.right = rightDists[1] > RIGHT_SIDE_THRESH;
   info.front =
-      leftDists[0] > LEFT_FRONT_THRESH || rightDists[0] > RIGHT_FRONT_THRESH;
+      leftDists[0] > LEFT_FRONT_THRESH && rightDists[0] > RIGHT_FRONT_THRESH;
 
   return info;
 }

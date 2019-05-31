@@ -8,7 +8,8 @@ void app_main() {
 
   zero();
   while (true) {
-    moveIR(8.0);
+    struct movement_info info = moveIR(9.0);
+    if (!info.left || !info.right) break;
     turn180(-15.0);
   }
 }

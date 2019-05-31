@@ -3,7 +3,7 @@
 
 # This doubles as a registry of all the projects we have in this repo.
 
-TEST_PROGRAMS := motor-test sensor-test wall-follow
+TEST_PROGRAMS := encoder-test motor-test sensor-test wall-follow
 
 PROJECTS := $(addprefix test-programs/,$(TEST_PROGRAMS)) components/hal/examples
 
