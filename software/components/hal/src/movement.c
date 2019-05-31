@@ -20,6 +20,7 @@
 #define RIGHT_EMITTER 2
 
 #define TURN_TICKS 90
+#define ENC_DIFF 0
 
 #define MOVE_DELAY 200
 
@@ -39,6 +40,7 @@ distance right;
 PID* movePID;
 PID* turn90PID;
 PID* turn180PID;
+PID* moveEncPID;
 
 int init() {
   if (init_distance_sensor(&left, LEFT_FRONT_PIN, LEFT_SIDE_PIN,
@@ -63,6 +65,8 @@ int init() {
   turn90PID = initPID(0.0111, 0.0061, 0.0, "log");
 
   turn180PID = initPID(0.004, 0.0041, 0.0, "log");
+
+  moveEncPID = initPID(0, 0, 0, "log");
 
   initBattery();
 
@@ -214,4 +218,39 @@ struct movement_info turn180(float speed) {
   struct movement_info info = getWalls();
 
   return info;
+}
+
+struct movement_info moveEnc(float speed, int32_t encoderTicks) {   
+  double lastTime = esp_timer_get_time() / 1000000.0;
+  double currentTime = esp_timer_get_time() / 1000000.0;
+  double diffTime = currentTime - lastTime;
+
+  int start = getAvgTicks();
+  int startLeft = getTicks(left_enc);
+  int startRight = getTicks(right_enc);
+
+  set(moveEncPID, ENC_DIFF);
+  
+  while (abs(getAvgTicks() - start) < encoderTicks) {
+     
+    currentTime = esp_timer_get_time() / 1000000.0;
+    diffTime = currentTime - lastTime;
+    lastTime = currentTime;
+
+    int leftDiff = getTicks(left_enc) - startLeft;
+    int rightDiff = getTicks(right_enc) - startRight;
+
+    double correction = update(moveEncPID, leftDiff - rightDiff, diffTime);
+
+    setMotors(speed + correction, speed - correction);
+  }
+  stopMotors();
+  vTaskDelay(MOVE_DELAY / portTICK_RATE_MS);
+
+  struct movement_info info = getWalls();
+
+  info.unitsTraveled = (getAvgTicks() - start) / MAZE_UNIT_SIZE;
+
+  return info;
+
 }
