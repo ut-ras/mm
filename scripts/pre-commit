@@ -3,6 +3,8 @@
 files=()
 for file in `git diff --cached --name-only --diff-filter=ACMRT | grep -E "\.(c|h)$"`; do
   if ! cmp -s <(git show ":${file}") <(git show ":${file}" | clang-format --assume-filename="${file}"); then
+    echo -e "In "'\033[0;1m'"${file}"'\033[0m'":"
+    colordiff -y <(git show ":${file}") <(git show ":${file}" | clang-format --assume-filename="${file}")
     files+=("${file}")
   fi
 done
