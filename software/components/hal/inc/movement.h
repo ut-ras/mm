@@ -8,7 +8,7 @@ struct movement_info {
   bool right;
   bool front;
 
-  int unitsTraveled;
+  int ticksTraveled;
 };
 
 /* Initalize all devices including adc, pwm, and encoders */
@@ -35,6 +35,8 @@ struct movement_info moveIR(float speed);
  * Travels at a specified speed with a range of 0.0 to 100.0.
  * Travels a certain number of encoder ticks based on input */
 struct movement_info moveEnc(float speed, int encoderTicks);
+
+struct movement_info moveEncU(float speed);
 
 /* Turn 90 degrees in specified direction at specified speed.
  * Returns a struct containing which direction walls are present */

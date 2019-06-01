@@ -132,6 +132,8 @@ int getTicks(int enc_num) {
 
 int getAvgTicks(void) { return (getTicks(0) + getTicks(1)) / 2; }
 
+int getAbsAvgTicks(void) { return (abs(getTicks(0)) + abs(getTicks(1))) / 2; }
+
 void enc_init() {
   pcnt_evt_queue = xQueueCreate(10, sizeof(pcnt_evt_t));
 

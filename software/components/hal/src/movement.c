@@ -9,8 +9,6 @@
 #include "motorController.h"
 #include "pid.h"
 
-#define MAZE_UNIT_SIZE 200
-
 #define LEFT_FRONT_PIN 37
 #define LEFT_SIDE_PIN 38
 #define LEFT_EMITTER 15
@@ -25,14 +23,14 @@
 #define MOVE_DELAY 200
 
 int LEFT_SIDE_ZERO = 100;
-int LEFT_SIDE_THRESH = 10;
+int LEFT_SIDE_THRESH = 445;
 int RIGHT_SIDE_ZERO = 100;
 int RIGHT_SIDE_THRESH = 5;
 
 int LEFT_FRONT_ZERO = 300;
-int LEFT_FRONT_THRESH = 370;
+int LEFT_FRONT_THRESH = 280;
 int RIGHT_FRONT_ZERO = 300;
-int RIGHT_FRONT_THRESH = 370;
+int RIGHT_FRONT_THRESH = 280;
 
 distance left;
 distance right;
@@ -62,11 +60,11 @@ int init() {
 
   movePID = initPID(0.002, 0.0002, 0.0, "log");
 
-  turn90PID = initPID(0.0111, 0.0061, 0.0, "log");
+  turn90PID = initPID(0.0091, 0.0088, 0.0, "log");
 
-  turn180PID = initPID(0.004, 0.0041, 0.0, "log");
+  turn180PID = initPID(0.00416, 0.0035, 0.0, "log");
 
-  moveEncPID = initPID(0, 0, 0, "log");
+  moveEncPID = initPID(0.04, 0, 0, "log");
 
   initBattery();
 
@@ -130,7 +128,7 @@ struct movement_info moveIR(float speed) {
 
   set(movePID, 0);
 
-  int startEnc = getAvgTicks();
+  int startEnc = getAbsAvgTicks();
 
   readIRError(&frontLeft, &sideLeft, &frontRight, &sideRight);
 
@@ -153,7 +151,7 @@ struct movement_info moveIR(float speed) {
 
   struct movement_info info = getWalls();
 
-  info.unitsTraveled = (getAvgTicks() - startEnc) / MAZE_UNIT_SIZE;
+  info.ticksTraveled = (getAbsAvgTicks() - startEnc);
 
   return info;
 }
@@ -195,11 +193,11 @@ struct movement_info turn180(float speed) {
   double currentTime = esp_timer_get_time() / 1000000.0;
   double diffTime = currentTime - lastTime;
 
-  set(turn180PID, TURN_TICKS * 2 + 1);
+  set(turn180PID, TURN_TICKS * 2) ;
 
   int start = getAvgTicks();
 
-  while (fabs((double)TURN_TICKS * 2 + 1 - turnProg(start) - turn180PID->last) /
+  while (fabs((double)TURN_TICKS * 2 - turnProg(start) - turn180PID->last) /
                  diffTime >
              1.0 ||
          TURN_TICKS * 2 + 1 - turnProg(start) > 1) {
@@ -225,21 +223,24 @@ struct movement_info moveEnc(float speed, int32_t encoderTicks) {
   double currentTime = esp_timer_get_time() / 1000000.0;
   double diffTime = currentTime - lastTime;
 
-  int start = getAvgTicks();
-  int startLeft = getTicks(left_enc);
-  int startRight = getTicks(right_enc);
+  int start = getAbsAvgTicks();
+  int startLeft = abs(getTicks(left_enc));
+  int startRight = abs(getTicks(right_enc));
 
   set(moveEncPID, ENC_DIFF);
 
-  while (abs(getAvgTicks() - start) < encoderTicks) {
+  while (getAbsAvgTicks() - start < encoderTicks) {
     currentTime = esp_timer_get_time() / 1000000.0;
     diffTime = currentTime - lastTime;
     lastTime = currentTime;
 
-    int leftDiff = getTicks(left_enc) - startLeft;
-    int rightDiff = getTicks(right_enc) - startRight;
+    int leftDiff = abs(getTicks(left_enc)) - startLeft;
+    int rightDiff = abs(getTicks(right_enc)) - startRight;
 
     double correction = update(moveEncPID, leftDiff - rightDiff, diffTime);
+    /*printf("corr %f\n", correction);
+    printf("leftDiff %d rightDiff %d\n", leftDiff, rightDiff);
+    printf("current %d", abs(getAvgTicks() - start));*/
 
     setMotors(speed + correction, speed - correction);
   }
@@ -248,7 +249,52 @@ struct movement_info moveEnc(float speed, int32_t encoderTicks) {
 
   struct movement_info info = getWalls();
 
-  info.unitsTraveled = (getAvgTicks() - start) / MAZE_UNIT_SIZE;
+  info.ticksTraveled = (getAbsAvgTicks() - start);
+
+  return info;
+}
+
+struct movement_info moveEncU(float speed) {
+  double lastTime = esp_timer_get_time() / 1000000.0;
+  double currentTime = esp_timer_get_time() / 1000000.0;
+  double diffTime = currentTime - lastTime;
+  
+  int start = getAbsAvgTicks();
+
+  int startLeft = abs(getTicks(left_enc));
+  int startRight = abs(getTicks(right_enc));
+
+  int frontLeft;
+  int sideLeft;
+  int frontRight;
+  int sideRight;
+
+  set(moveEncPID, ENC_DIFF);
+  
+  readIRError(&frontLeft, &sideLeft, &frontRight, &sideRight);
+
+  while ((frontLeft < LEFT_FRONT_THRESH || frontRight < RIGHT_FRONT_THRESH) && sideLeft > LEFT_SIDE_THRESH && sideRight > RIGHT_SIDE_THRESH) {
+    currentTime = esp_timer_get_time() / 1000000.0;
+    diffTime = currentTime - lastTime;
+    lastTime = currentTime;
+
+    int leftDiff = abs(getTicks(left_enc)) - startLeft;
+    int rightDiff = abs(getTicks(right_enc)) - startRight;
+
+    double correction = update(moveEncPID, leftDiff - rightDiff, diffTime);
+    /*printf("corr %f\n", correction);
+    printf("leftDiff %d rightDiff %d\n", leftDiff, rightDiff);
+    printf("current %d", abs(getAvgTicks() - start));*/
+
+    setMotors(speed + correction, speed - correction);
+    readIRError(&frontLeft, &sideLeft, &frontRight, &sideRight);
+  }
+  stopMotors();
+  vTaskDelay(MOVE_DELAY / portTICK_RATE_MS);
+
+  struct movement_info info = getWalls();
+
+  info.ticksTraveled = (getAbsAvgTicks() - start);
 
   return info;
 }

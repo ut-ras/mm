@@ -20,4 +20,6 @@ int getTicks(int enc_num);  // get current tick count
 
 int getAvgTicks(void);
 
+int getAbsAvgTicks(void);
+
 #endif /* END_H */
