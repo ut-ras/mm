@@ -60,7 +60,7 @@ int init() {
   // mcpwm_example_gpio_initialize();
   mcpwm_initialize();
 
-  movePID = initPID(0.0025, 0.0000, 0.0, "log");
+  movePID = initPID(0.002, 0.0002, 0.0, "log");
 
   turn90PID = initPID(0.0111, 0.0061, 0.0, "log");
 

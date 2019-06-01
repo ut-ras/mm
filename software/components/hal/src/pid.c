@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #define MAX_SPEED (.4)
-#define MAX_SUM (1000)
+#define MAX_SUM (200)
 
 PID *initPID(double p, double i, double d, char *logName) {
   PID *pid = (PID *)malloc(sizeof(PID));
