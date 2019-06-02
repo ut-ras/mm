@@ -22,14 +22,14 @@ void app_main() {
   turnCenter(-15.0);
   moveTest(8.5);*/
 
-  vTaskDelay(1000 / portTICK_RATE_MS);
-  moveEnc(8.5, 45);
-  vTaskDelay(250 / portTICK_RATE_MS);
   moveCenter(8.5);
   turnCenter(15.0);
   turnCenter(15.0);
   moveCenter(8.5);
   turn180Center(-15.0);
+  moveCenter(8.5);
+  turnCenter(-15.0);
+  turnCenter(-15.0);
   moveCenter(8.5);
 
   // moveIRU(8.5);
