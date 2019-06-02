@@ -33,7 +33,7 @@ int RIGHT_SIDE_ZERO = 590;
 int RIGHT_SIDE_THRESH = 5;
 
 int LEFT_FRONT_ZERO = 300;
-int LEFT_FRONT_THRESH = 400;
+int LEFT_FRONT_THRESH = 500;
 int RIGHT_FRONT_ZERO = 300;
 int RIGHT_FRONT_THRESH = 300;
 
@@ -110,8 +110,10 @@ struct movement_info getWalls(int* lsensor, int* rsensor) {
   info.left = leftDists[1] > LEFT_SIDE_THRESH;
   info.right = rightDists[1] > RIGHT_SIDE_THRESH;
 
-  info.front = (leftDists[0] > LEFT_FRONT_THRESH && leftDists[1] < 1000 && rightDists[0] > 0) ||
-               (rightDists[0] > RIGHT_FRONT_THRESH && rightDists[1] < 1500 && leftDists[0] > 0);
+  info.front = (leftDists[0] > LEFT_FRONT_THRESH && leftDists[1] < 900 &&
+                rightDists[0] > 0) ||
+               (rightDists[0] > RIGHT_FRONT_THRESH && rightDists[1] < 1500 &&
+                leftDists[0] > 0);
 
   if (lsensor) *lsensor = leftDists[1];
   if (rsensor) *rsensor = rightDists[1];
@@ -176,6 +178,8 @@ struct movement_info moveIRU(float speed) {
 
   int startEnc = getAbsAvgTicks();
 
+  color_single(leds, RGB_COLOR(0xFF, 0, 0));
+
   struct movement_info info = getWalls(&sideLeft, &sideRight);
   calcIRError(sideLeft, sideRight);
 
@@ -192,7 +196,7 @@ struct movement_info moveIRU(float speed) {
     info = getWalls(&sideLeft, &sideRight);
   }
   stopMotors();
-
+  color_single(leds, RGB_COLOR(0x00, 0xFF, 0));
 
   moveEnc(speed, 130);
   info = getWalls(NULL, NULL);
@@ -235,7 +239,7 @@ struct movement_info turnTicks(PID* pid, float dir, int num_ticks) {
 
   double timeReachedAt = currentTime;
 
-  color_single(leds, RGB_COLOR(0xFF, 0x00, 0x00));
+  // color_single(leds, RGB_COLOR(0xFF, 0x00, 0x00));
 
   while (true) {
     // Update the times:
@@ -257,7 +261,7 @@ struct movement_info turnTicks(PID* pid, float dir, int num_ticks) {
     setMotors(sign * distPower, -sign * distPower);
   }
 
-  color_single(leds, RGB_COLOR(0x00, 0xFF, 0x00));
+  // color_single(leds, RGB_COLOR(0x00, 0xFF, 0x00));
 
   stopMotors();
   vTaskDelay(MOVE_DELAY / portTICK_RATE_MS);
@@ -328,7 +332,7 @@ struct movement_info moveEnc(float speed, int32_t encoderTicks) {
     info = getWalls(NULL, NULL);
   }
   stopMotors();
-  //vTaskDelay(MOVE_DELAY / portTICK_RATE_MS);
+  // vTaskDelay(MOVE_DELAY / portTICK_RATE_MS);
 
   int encDiff = leftDiff - rightDiff;
   // turnDegrees(encDiff > 0 ? -8.5 : 8.5, abs(encDiff));

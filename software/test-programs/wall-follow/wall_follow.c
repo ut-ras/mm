@@ -22,15 +22,17 @@ void app_main() {
   turnCenter(-15.0);
   moveTest(8.5);*/
 
-  moveEnc(15.0, 45);
+  vTaskDelay(1000 / portTICK_RATE_MS);
+  moveEnc(8.5, 45);
+  vTaskDelay(250 / portTICK_RATE_MS);
   moveCenter(8.5);
   turnCenter(15.0);
   turnCenter(15.0);
   moveCenter(8.5);
   turn180Center(-15.0);
   moveCenter(8.5);
-    
-  //moveIRU(8.5);
+
+  // moveIRU(8.5);
   /*while (true) {
     struct movement_info info = moveIR(8.5);
     if (!info.left || !info.right) break;
