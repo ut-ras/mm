@@ -263,6 +263,18 @@ struct movement_info turnDegrees(float speed, float angle) {
 
   return info;
 }
+static bool timeoutError(void) {
+  static int previousLeft = 0;
+  static int previousRight = 0;
+  static int previousTime = 0;
+
+  bool inPlace = getTicks(left_enc) - previousLeft == 0 || getTicks(right_enc) - previousRight == 0;
+
+  previousLeft = getTicks(left_enc);
+  previousRight = getTicks(right_enc);
+
+  return (esp_timer_get_time() - previousTime) > TIMEOUT_DIFF && inPlace;
+}
 struct movement_info moveEnc(float speed, int32_t encoderTicks) {
   double lastTime = esp_timer_get_time() / 1000000.0;
   double currentTime = esp_timer_get_time() / 1000000.0;
