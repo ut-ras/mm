@@ -15,13 +15,13 @@ Mouse::Mouse(int x, int y, int heading){
 
 void Mouse::moveUntilJunct(){
 	int x_old = x, y_old = y;
-    struct movement_info movement;
-	// TODO: move IR or moveEnc in the current direction
-  movement = moveCenter(MOTOR_SPEED);
+	struct movement_info movement;
+	
+	movement = moveCenter(MOTOR_SPEED);
 	// returns movement_info struct.
 
 	// adjust internal position
-	switch((int)heading){
+	switch(heading){
 		case 0:	// east, +x
 			x += movement.ticksTraveled;
 			break;
@@ -86,10 +86,10 @@ void Mouse::moveBackward(int steps){
 	}
 }
 
-void Mouse::rotate(double degrees){
+void Mouse::rotate(int degrees){
 	// if I turn 90+300 degrees, I return to 30 abs degrees.
 	heading = fmod(heading + degrees + 360, 360);
-	switch((int)degrees){
+	switch(degrees){
 		case 0:
 		default:
 			break;
@@ -125,6 +125,6 @@ int Mouse::getPositionY(){
 	return y;
 }
 
-double Mouse::getHeading(){
+int Mouse::getHeading(){
 	return heading;
 }

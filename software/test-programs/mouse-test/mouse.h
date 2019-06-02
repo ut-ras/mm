@@ -20,7 +20,7 @@ class Mouse{
         int y;
 
 	    /* precondition: heading is restricted to 0/90/180/270 deg */
-        double heading; /*0 - east, 90 - north, 180 - west, 270 - south*/
+        int heading; /*0 - east, 90 - north, 180 - west, 270 - south*/
 
         // for purposes of retrieval by the algorithm component.
         bool wallCheck[3];  // left, front, right
@@ -28,7 +28,7 @@ class Mouse{
 
     public:
         /**
-         *  @Description: Mouse constructor sets up a default mouse at position (0, 0),
+         *  @Description: Mouse constructor sets up a default mouse at position (0, 15),
          *      facing 90 deg due North.
          */
         Mouse();
@@ -73,7 +73,7 @@ class Mouse{
          * rotate shifts the mouse heading relatively by n degrees.
          * @param degrees degrees to rotate left or right.
          */
-        void rotate(double degrees);
+        void rotate(int degrees);
 
         /**
          * checkFront checks if the sensors detect a wall in front.
@@ -107,7 +107,7 @@ class Mouse{
 
         /**
          * getHeading returns the mouse absolute heading in the maze.
-         * @return double heading, counterclockwise
+         * @return int heading, counterclockwise
          */
-        double getHeading();
+        int getHeading();
 };
