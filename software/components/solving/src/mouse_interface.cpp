@@ -105,14 +105,14 @@ void Mouse::rotate(int degrees){
 			break;
 	}
 }
-void Mouse::speedRun(std:stack<Point> shortestPath) {
+void Mouse::speedRun(std::stack<Point> shortestPath) {
   Point start = shortestPath.top();
   shortestPath.pop();
 
-  int xDiff = next.x - start.x;
-  int yDiff = next.y - start.y;
 while(!shortestPath.empty()){
   Point next = shortestPath.top();
+  int xDiff = next.x - start.x;
+  int yDiff = next.y - start.y;
   shortestPath.pop();
   if (heading == 0) {
     if(xDiff > 0) {
@@ -127,7 +127,7 @@ while(!shortestPath.empty()){
     if(yDiff > 0) {
       turnCenter(15);
     }
-
+  }
 
   if (heading == 90) {
     if(yDiff < 0) {
@@ -142,6 +142,7 @@ while(!shortestPath.empty()){
     if(xDiff < 0) {
       turnCenter(15);
     }
+  }
 
   if (heading ==180) {
     if(xDiff < 0) {
@@ -156,7 +157,7 @@ while(!shortestPath.empty()){
     if(yDiff < 0) {
       turnCenter(15);
     }
-
+  }
   if (heading == 270) {
     if(yDiff > 0) {
         moveCenter(speed);
@@ -170,8 +171,8 @@ while(!shortestPath.empty()){
     if(xDiff < 0) {
       turnCenter(15);
     }
-}
-start = next;
+  }
+  start = next;
 }
 }
 bool Mouse::checkFront(){

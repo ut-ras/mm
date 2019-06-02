@@ -9,6 +9,7 @@
 #pragma once
 // HAL API
 #include "hal/inc/nav.h"
+#include "solving/inc/Algorithm.h"
 #include <math.h>
 using namespace std;
 
@@ -110,4 +111,6 @@ class Mouse{
          * @return int heading, counterclockwise
          */
         int getHeading();
+
+        void speedRun(std::stack<Point> shortestPath);
 };

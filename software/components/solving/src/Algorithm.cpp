@@ -474,7 +474,7 @@ std::stack<Point> Algorithm::getShortestPath(){
         }
     }while(!(endPoint.x == 0 && endPoint.y == 15));
 
-    struct Point p = {0, 15};
+    p = {0, 15};
     solution.push(p);
 
     // return solution;
