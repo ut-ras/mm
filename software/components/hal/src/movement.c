@@ -172,17 +172,27 @@ static double pid_get_time() { return esp_timer_get_time() / 1000000.0; }
 
 inline static double signum(double num) { return num < 0.0 ? -1.0 : 1.0; }
 
-struct movement_info turn90(float speed) {
-  assert(speed != 0);
+struct movement_info turnTicks(PID* pid, float dir, int num_ticks);
 
-  double sign = signum(speed);
+struct movement_info turn90(float speed) {
+  return turnTicks(turn90PID, speed, TURN_TICKS);
+}
+
+struct movement_info turn180(float speed) {
+  return turnTicks(turn90PID, speed, 2 * TURN_TICKS);
+}
+
+struct movement_info turnTicks(PID* pid, float dir, int num_ticks) {
+  assert(dir != 0);
+
+  double sign = signum(dir);
 
   double lastTime = pid_get_time();
   double currentTime = pid_get_time();
   double diffTime = currentTime - lastTime;
 
-  double target = TURN_TICKS;
-  set(turn90PID, target);
+  double target = num_ticks;
+  set(pid, target);
 
   int start = getAvgTicks();
   int current = start;
@@ -204,41 +214,11 @@ struct movement_info turn90(float speed) {
 
     // Otherwise, update the motors and keep going:
     current = turnProg(start);
-    double distPower = update(turn90PID, current, diffTime);
+    double distPower = update(pid, current, diffTime);
 
     setMotors(sign * distPower, -sign * distPower);
   }
 
-  stopMotors();
-  vTaskDelay(MOVE_DELAY / portTICK_RATE_MS);
-
-  struct movement_info info = getWalls(NULL, NULL);
-
-  return info;
-}
-
-struct movement_info turn180(float speed) {
-  double lastTime = esp_timer_get_time() / 1000000.0;
-  double currentTime = esp_timer_get_time() / 1000000.0;
-  double diffTime = currentTime - lastTime;
-
-  set(turn180PID, TURN_TICKS * 2);
-
-  int start = getAvgTicks();
-
-  while (fabs((double)TURN_TICKS * 2 - turnProg(start) - turn180PID->last) /
-                 diffTime >
-             1.0 ||
-         TURN_TICKS * 2 - turnProg(start) > 1) {
-    currentTime = esp_timer_get_time() / 1000000.0;
-    diffTime = currentTime - lastTime;
-    lastTime = currentTime;
-
-    double distPower = update(turn180PID, turnProg(start), diffTime);
-    // printf("turnProg %d distPower %f\n", turnProg(start), distPower);
-
-    setMotors(speed * distPower, -speed * distPower);
-  }
   stopMotors();
   vTaskDelay(MOVE_DELAY / portTICK_RATE_MS);
 
