@@ -21,6 +21,7 @@
 #define ENC_DIFF 0
 
 #define MOVE_DELAY 200
+#define TIMEOUT_DIFF 100
 
 int LEFT_SIDE_ZERO = 510;
 int LEFT_SIDE_THRESH = 200;
