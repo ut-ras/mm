@@ -7,13 +7,13 @@
 
 struct movement_info moveCenter(float speed) {
   struct movement_info info = getWalls(NULL, NULL);
-  do {
+  //do {
     if (!info.left && !info.right)
       info = moveEnc(8.5, 210);
     else
       info = moveIRU(8.5);
     vTaskDelay(250 / portTICK_RATE_MS);
-  } while (!info.front && info.left && info.right);
+  //} while (!info.front && info.left && info.right);
   vTaskDelay(250 / portTICK_RATE_MS);
 
   return info;
