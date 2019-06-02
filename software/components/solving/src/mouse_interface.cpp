@@ -1,4 +1,4 @@
-#include "mouse.h"
+#include "solving/inc/mouse.h"
 #include "hal/inc/nav.h"
 #define FORWARD_TICKS 100
 #define MOTOR_SPEED 8.0

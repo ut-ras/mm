@@ -1,5 +1,5 @@
-#include "mouse.h"
-#include "Algorithm.h"
+#include "solving/inc/mouse.h"
+#include "solving/inc/Algorithm.h"
 
 
 bool iterateStep();
