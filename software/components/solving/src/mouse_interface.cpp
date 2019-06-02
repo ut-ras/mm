@@ -208,9 +208,9 @@ int Mouse::getHeading(){
 
 bool* Mouse::getWallCheck(){
 	struct movement_info info = getWalls(null, null);
-	wallCheck[0] = info.left;
-	wallCheck[1] = info.front;
-	wallCheck[2] = info.right;
+	wallCheck[0] = !info.left;
+	wallCheck[1] = !info.front;
+	wallCheck[2] = !info.right;
 	return wallCheck;
 }
 
