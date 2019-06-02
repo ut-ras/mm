@@ -1,18 +1,23 @@
 #include "nav.h"
+#include <stdlib.h>
 
 #define MAZE_UNIT_SIZE 215
 
 struct movement_info moveCenter(float speed) {
   struct movement_info info;
-  do { info = moveIR(8.5); } while (!info.front && info.left && info.right);
+  do { info = moveEncU(8.5); } while (!info.front && info.left && info.right);
 
-  if (info.front)
-    moveEnc(-speed, (info.ticksTraveled % MAZE_UNIT_SIZE));
-  else if (info.right) {
-    moveEnc(speed, 154);
+  int travel = 0;
+  if (info.front) {
+    travel = (info.ticksTraveled % MAZE_UNIT_SIZE) * -1;
+  } else if (info.right) {
+    travel = 154;
   } else if (info.left) {
-    moveEnc(speed, 123);
+    travel = 123;
   }
+
+  struct movement_info encMove = moveEnc(travel < 0 ? -8.5 : 8.5, abs(travel));
+  info.ticksTraveled += encMove.ticksTraveled;
 
   return info;
 }

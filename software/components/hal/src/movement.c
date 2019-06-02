@@ -70,7 +70,7 @@ int init() {
 
   turn90PID = initPID(0.8, 0.1, 0.0, "log");
 
-  turn180PID = initPID(0.00416, 0.0035, 0.0, "log");
+  turn180PID = initPID(0.5, 0.1, 0.0, "log");
 
   moveEncPID = initPID(0.04, 0, 0, "log");
 
@@ -110,17 +110,8 @@ struct movement_info getWalls(int* lsensor, int* rsensor) {
   info.left = leftDists[1] > LEFT_SIDE_THRESH;
   info.right = rightDists[1] > RIGHT_SIDE_THRESH;
 
-  /*info.front = false;
-  if (info.left)
-    info.front |= leftDists[0] > LEFT_FRONT_THRESH;
-  if (info.right)
-      info.front |= rightDists[0] > RIGHT_FRONT_THRESH;
-  if (!info.left && !info.right)
-    info.front = leftDists[0] > LEFT_FRONT_THRESH || rightDists[0] >
-  RIGHT_FRONT_THRESH;*/
-
-  info.front = (leftDists[0] > LEFT_FRONT_THRESH && leftDists[1] < 1000) ||
-               (rightDists[0] > RIGHT_FRONT_THRESH && rightDists[1] < 1500);
+  info.front = (leftDists[0] > LEFT_FRONT_THRESH && leftDists[1] < 1000 && rightDists[0] > 0) ||
+               (rightDists[0] > RIGHT_FRONT_THRESH && rightDists[1] < 1500 && leftDists[0] > 0);
 
   if (lsensor) *lsensor = leftDists[1];
   if (rsensor) *rsensor = rightDists[1];
@@ -188,7 +179,7 @@ struct movement_info turn90(float speed) {
 }
 
 struct movement_info turn180(float speed) {
-  return turnTicks(turn90PID, speed, 2 * TURN_TICKS);
+  return turnTicks(turn180PID, speed, 2 * TURN_TICKS);
 }
 
 struct movement_info turnTicks(PID* pid, float dir, int num_ticks) {
