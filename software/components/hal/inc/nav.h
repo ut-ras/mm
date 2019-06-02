@@ -1,3 +1,5 @@
+#ifndef NAV_H
+#define NAV_H
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -14,3 +16,4 @@ struct movement_info turn180Center(float speed);
 #ifdef __cplusplus
 }
 #endif
+#endif /* NAV_H */

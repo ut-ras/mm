@@ -1,5 +1,6 @@
 #include "solving/inc/mouse.h"
 #include "solving/inc/Algorithm.h"
+#include <stdio.h>
 
 
 bool iterateStep();
@@ -7,6 +8,9 @@ bool iterateStep();
 Mouse* mouse;
 Algorithm* algo;
 extern "C" void app_main(void) {
+
+    init();
+
 	mouse = new Mouse();
 	algo = new Algorithm();
 
