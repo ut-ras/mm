@@ -6,6 +6,11 @@ Mouse::Mouse(){
 	x = 0;
 	y = 15;	// bottom left corner
 	heading = 90;	// due north
+	wallCheck[0] = false;
+	wallCheck[1] = true;
+	wallCheck[2] = false;
+	mouseChange[0] = x;
+	mouseChange[1] = y;
 }
 
 Mouse::Mouse(int x, int y, int heading){
