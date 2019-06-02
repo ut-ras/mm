@@ -17,4 +17,16 @@ struct movement_info moveCenter(float speed) {
   return info;
 }
 
+struct movement_info turnCenter(float speed) {
+  turn90(speed);
+  struct movement_info info;
+  info = moveEnc(8.5, 170);
+
+  return info;
+}
+
+void turn180Center(float speed) {
+  turn180(speed);
+}
+
 void moveTest(float speed) { moveCenter(speed); }
