@@ -28,6 +28,8 @@ struct movement_info getWalls(int* lsensor, int* rsensor);
  * Travels at a specified speed with a range of 0.0 to 100.0. */
 struct movement_info moveIR(float speed);
 
+struct movement_info moveIRU(float speed);
+
 /* Move forward using encoders for correction until
  * a gap is detected on the sides or a wall is detected in
  * front. Returns a struct containing which direction walls

@@ -9,22 +9,28 @@
 void app_main() {
   if (init()) exit(1);
 
-  vTaskDelay(750 / portTICK_RATE_MS);
-
   zero();
-  // moveTest(8.5);
-  while (true) {
-    turn90(-15.0);
-    vTaskDelay(600 / portTICK_RATE_MS);
-    turn90(15.0);
-    vTaskDelay(600 / portTICK_RATE_MS);
-  }
+  /*moveTest(8.5);
+  turnCenter(15.0);
+  moveTest(8.5);
+  turnCenter(15.0);
+  moveTest(8.5);
+  turn180Center(15.0);
+  moveTest(8.5);
+  turnCenter(-15.0);
+  moveTest(8.5);
+  turnCenter(-15.0);
+  moveTest(8.5);*/
 
-  // moveEnc(8.5, 100);
-  // moveTest(8.5);
-  // turn90(15.0);
-  // moveEnc(8.5, 100);
-  // moveTest(8.5);
+  moveEnc(15.0, 45);
+  moveCenter(8.5);
+  turnCenter(15.0);
+  turnCenter(15.0);
+  moveCenter(8.5);
+  turn180Center(-15.0);
+  moveCenter(8.5);
+    
+  //moveIRU(8.5);
   /*while (true) {
     struct movement_info info = moveIR(8.5);
     if (!info.left || !info.right) break;

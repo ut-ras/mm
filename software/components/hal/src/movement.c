@@ -66,7 +66,7 @@ int init() {
   // mcpwm_example_gpio_initialize();
   mcpwm_initialize();
 
-  movePID = initPID(0.002, 0.0002, 0.0, "log");
+  movePID = initPID(0.001, 0.001, 0.000, "log");
 
   turn90PID = initPID(0.8, 0.1, 0.0, "log");
 
@@ -162,6 +162,42 @@ struct movement_info moveIR(float speed) {
                 (abs(getTicks(right_enc)) - rightStart);
 
   // turnDegrees(encDiff > 0 ? -8.5 : 8.5, abs(encDiff));
+
+  return info;
+}
+struct movement_info moveIRU(float speed) {
+  double lastTime = esp_timer_get_time() / 1000000.0;
+  double currentTime;
+
+  int sideLeft;
+  int sideRight;
+
+  set(movePID, 0);
+
+  int startEnc = getAbsAvgTicks();
+
+  struct movement_info info = getWalls(&sideLeft, &sideRight);
+  calcIRError(sideLeft, sideRight);
+
+  while (getAbsAvgTicks() - startEnc < 80 && !info.front) {
+    currentTime = esp_timer_get_time() / 1000000.0;
+    double diffTime = currentTime - lastTime;
+    lastTime = currentTime;
+
+    double curr = update(movePID, calcIRError(sideLeft, sideRight), diffTime);
+    // printf("sens %d %d\n", frontLeft, frontRight);
+    // printf("curr %f %d \n", curr, readIRError(&frontLeft, &sideLeft,
+    // &frontRight, &sideRight));
+    setMotors(speed + curr, speed - curr);
+    info = getWalls(&sideLeft, &sideRight);
+  }
+  stopMotors();
+
+
+  moveEnc(speed, 130);
+  info = getWalls(NULL, NULL);
+
+  info.ticksTraveled = (getAbsAvgTicks() - startEnc);
 
   return info;
 }
@@ -270,7 +306,7 @@ struct movement_info moveEnc(float speed, int32_t encoderTicks) {
   int startRight = abs(getTicks(right_enc));
 
   set(moveEncPID, ENC_DIFF);
-  struct movement_info info;
+  struct movement_info info = getWalls(NULL, NULL);
 
   int leftDiff = 0;
   int rightDiff = 0;
@@ -292,7 +328,7 @@ struct movement_info moveEnc(float speed, int32_t encoderTicks) {
     info = getWalls(NULL, NULL);
   }
   stopMotors();
-  vTaskDelay(MOVE_DELAY / portTICK_RATE_MS);
+  //vTaskDelay(MOVE_DELAY / portTICK_RATE_MS);
 
   int encDiff = leftDiff - rightDiff;
   // turnDegrees(encDiff > 0 ? -8.5 : 8.5, abs(encDiff));
