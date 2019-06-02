@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <math.h>
 #include <stdlib.h>
+#include "apa102.h"
 #include "battery.h"
 #include "distance.h"
 #include "enc.h"
@@ -23,6 +24,9 @@
 
 #define MOVE_DELAY 200
 
+#define LED_DATA_PIN 4
+#define LED_CLK_PIN 32
+
 int LEFT_SIDE_ZERO = 510;
 int LEFT_SIDE_THRESH = 200;
 int RIGHT_SIDE_ZERO = 590;
@@ -41,6 +45,8 @@ PID* turn90PID;
 PID* turn180PID;
 PID* moveEncPID;
 PID* turnDegreePID;
+
+LedStrip* leds;
 
 int init() {
   if (init_distance_sensor(&left, LEFT_FRONT_PIN, LEFT_SIDE_PIN,
@@ -73,6 +79,9 @@ int init() {
   initBattery();
 
   printf("Battery: %d\n", getBatteryVal());
+
+  leds = new_led_strip(HSPI_HOST, LED_DATA_PIN, LED_CLK_PIN, 2);
+  color_single(leds, RGB_COLOR(0xFF, 0xFF, 0xFF));
 
   return 0;
 }
@@ -199,6 +208,8 @@ struct movement_info turnTicks(PID* pid, float dir, int num_ticks) {
 
   double timeReachedAt = currentTime;
 
+  color_single(leds, RGB_COLOR(0xFF, 0x00, 0x00));
+
   while (true) {
     // Update the times:
     currentTime = pid_get_time();
@@ -218,6 +229,8 @@ struct movement_info turnTicks(PID* pid, float dir, int num_ticks) {
 
     setMotors(sign * distPower, -sign * distPower);
   }
+
+  color_single(leds, RGB_COLOR(0x00, 0xFF, 0x00));
 
   stopMotors();
   vTaskDelay(MOVE_DELAY / portTICK_RATE_MS);
