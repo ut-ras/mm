@@ -49,6 +49,7 @@ void Mouse::moveUntilJunct(){
 // unused as of right now
 void Mouse::moveForward(int steps){
 	heading = fmod(heading+360, 360);
+    moveCenter(MOTOR_SPEED);
 	switch((int) heading){
 		case 0:
 			x += steps;
@@ -109,14 +110,14 @@ void Mouse::speedRun(std::stack<Point> shortestPath) {
   Point start = shortestPath.top();
   shortestPath.pop();
 
-while(!shortestPath.empty()){
-  Point next = shortestPath.top();
+  while(!shortestPath.empty()){
+    Point next = shortestPath.top();
   int xDiff = next.x - start.x;
   int yDiff = next.y - start.y;
   shortestPath.pop();
   if (heading == 0) {
     if(xDiff > 0) {
-        moveCenter(speed);
+        moveCenter(MOTOR_SPEED);
     }
     if(xDiff < 0) {
       turn180Center(-15); 
@@ -131,7 +132,7 @@ while(!shortestPath.empty()){
 
   if (heading == 90) {
     if(yDiff < 0) {
-        moveCenter(speed);
+        moveCenter(MOTOR_SPEED);
     }
     if(yDiff > 0) {
       turn180Center(-15); 
@@ -146,7 +147,7 @@ while(!shortestPath.empty()){
 
   if (heading ==180) {
     if(xDiff < 0) {
-        moveCenter(speed);
+        moveCenter(MOTOR_SPEED);
     }
     if(xDiff > 0) {
       turn180Center(-15); 
@@ -160,7 +161,7 @@ while(!shortestPath.empty()){
   }
   if (heading == 270) {
     if(yDiff > 0) {
-        moveCenter(speed);
+        moveCenter(MOTOR_SPEED);
     }
     if(yDiff < 0) {
       turn180Center(-15); 
@@ -173,7 +174,7 @@ while(!shortestPath.empty()){
     }
   }
   start = next;
-}
+  }
 }
 bool Mouse::checkFront(){
 	return false;	// return getWalls.front;
