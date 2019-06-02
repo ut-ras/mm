@@ -1,7 +1,7 @@
 #include "solving/inc/mouse.h"
 #include "hal/inc/nav.h"
 #define FORWARD_TICKS 100
-#define MOTOR_SPEED 8.0
+#define MOTOR_SPEED 8.5
 Mouse::Mouse(){
 	x = 0;
 	y = 15;	// bottom left corner
