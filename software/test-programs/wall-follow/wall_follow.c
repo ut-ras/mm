@@ -9,17 +9,22 @@
 void app_main() {
   if (init()) exit(1);
 
+  vTaskDelay(750 / portTICK_RATE_MS);
+
   zero();
-  moveTest(8.5);
-  turn90(15.0);
-  moveEnc(8.5, 170);
-  moveTest(8.5);
-  turn90(15.0);
-  moveEnc(8.5, 170);
-  moveTest(8.5);
-  turn180(-15.0);
-  moveTest(8.5);
-  
+  // moveTest(8.5);
+  while (true) {
+    turn90(-15.0);
+    vTaskDelay(600 / portTICK_RATE_MS);
+    turn90(15.0);
+    vTaskDelay(600 / portTICK_RATE_MS);
+  }
+
+  // moveEnc(8.5, 100);
+  // moveTest(8.5);
+  // turn90(15.0);
+  // moveEnc(8.5, 100);
+  // moveTest(8.5);
   /*while (true) {
     struct movement_info info = moveIR(8.5);
     if (!info.left || !info.right) break;

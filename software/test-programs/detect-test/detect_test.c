@@ -17,7 +17,7 @@ void app_main() {
 
   struct movement_info info = getWalls(NULL, NULL);
 
-  while(true) {
+  while (true) {
     printf("Left %s\n", b(info.left));
 
     printf("Right %s\n", b(info.right));

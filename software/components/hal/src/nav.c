@@ -25,8 +25,6 @@ struct movement_info turnCenter(float speed) {
   return info;
 }
 
-void turn180Center(float speed) {
-  turn180(speed);
-}
+void turn180Center(float speed) { turn180(speed); }
 
 void moveTest(float speed) { moveCenter(speed); }
