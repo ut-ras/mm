@@ -1,6 +1,6 @@
 #include "movement.h"
 
-#define MAZE_UNIT_SIZE 210
+#define MAZE_UNIT_SIZE 215
 
 static struct movement_info moveCenter(float speed) {
   struct movement_info info;
@@ -8,10 +8,10 @@ static struct movement_info moveCenter(float speed) {
 
   if (info.front)
     moveEnc(-speed, (info.ticksTraveled % MAZE_UNIT_SIZE));
-  else {
-    int forwardTicks = MAZE_UNIT_SIZE - (info.ticksTraveled % MAZE_UNIT_SIZE);
-    if (forwardTicks <= MAZE_UNIT_SIZE / 3) forwardTicks += MAZE_UNIT_SIZE;
-    moveEnc(speed, forwardTicks);
+  else if (info.right) {
+    moveEnc(speed, 154);
+  } else if (info.left) {
+    moveEnc(speed, 123);
   }
 
   return info;

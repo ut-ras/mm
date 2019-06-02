@@ -19,7 +19,7 @@ int init();
 void zero(void);
 
 /* Return a struct containing which walls are present */
-struct movement_info getWalls(void);
+struct movement_info getWalls(int* lsensor, int*rsensor);
 
 /* Move forward using distance sensors for correction until
  * a gap is detected on the sides or a wall is detected in
@@ -49,4 +49,5 @@ struct movement_info turn90(float speed);
  * Returns a struct containing which direction walls are present */
 struct movement_info turn180(float speed);
 
+struct movement_info turnDegrees(float speed, float angle);
 #endif /* MOVEMENT_H */
