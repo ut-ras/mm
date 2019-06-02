@@ -41,7 +41,6 @@ PID* turn180PID;
 PID* moveEncPID;
 PID* turnDegreePID;
 
-
 int init() {
   if (init_distance_sensor(&left, LEFT_FRONT_PIN, LEFT_SIDE_PIN,
                            LEFT_EMITTER)) {
@@ -197,7 +196,7 @@ struct movement_info turn180(float speed) {
   double currentTime = esp_timer_get_time() / 1000000.0;
   double diffTime = currentTime - lastTime;
 
-  set(turn180PID, TURN_TICKS * 2) ;
+  set(turn180PID, TURN_TICKS * 2);
 
   int start = getAvgTicks();
 
@@ -226,10 +225,10 @@ struct movement_info turnDegrees(float speed, float angle) {
   double currentTime = esp_timer_get_time() / 1000000.0;
   double diffTime = currentTime - lastTime;
 
-  set(turnDegreePID, (TURN_TICKS * angle)/90);
+  set(turnDegreePID, (TURN_TICKS * angle) / 90);
 
   int start = getAvgTicks();
-    while (fabs((double)TURN_TICKS * 2 - turnProg(start) - turnDegreePID->last) /
+  while (fabs((double)TURN_TICKS * 2 - turnProg(start) - turnDegreePID->last) /
                  diffTime >
              1.0 ||
          TURN_TICKS * 2 + 1 - turnProg(start) > 1) {
@@ -247,7 +246,7 @@ struct movement_info turnDegrees(float speed, float angle) {
 
   struct movement_info info = getWalls();
 
-  return info; 
+  return info;
 }
 struct movement_info moveEnc(float speed, int32_t encoderTicks) {
   double lastTime = esp_timer_get_time() / 1000000.0;
@@ -289,7 +288,7 @@ struct movement_info moveEncU(float speed) {
   double lastTime = esp_timer_get_time() / 1000000.0;
   double currentTime = esp_timer_get_time() / 1000000.0;
   double diffTime = currentTime - lastTime;
-  
+
   int start = getAbsAvgTicks();
 
   int startLeft = abs(getTicks(left_enc));
@@ -301,10 +300,11 @@ struct movement_info moveEncU(float speed) {
   int sideRight;
 
   set(moveEncPID, ENC_DIFF);
-  
+
   readIRError(&frontLeft, &sideLeft, &frontRight, &sideRight);
 
-  while ((frontLeft < LEFT_FRONT_THRESH || frontRight < RIGHT_FRONT_THRESH) && sideLeft > LEFT_SIDE_THRESH && sideRight > RIGHT_SIDE_THRESH) {
+  while ((frontLeft < LEFT_FRONT_THRESH || frontRight < RIGHT_FRONT_THRESH) &&
+         sideLeft > LEFT_SIDE_THRESH && sideRight > RIGHT_SIDE_THRESH) {
     currentTime = esp_timer_get_time() / 1000000.0;
     diffTime = currentTime - lastTime;
     lastTime = currentTime;

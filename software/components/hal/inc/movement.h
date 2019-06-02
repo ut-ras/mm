@@ -39,7 +39,7 @@ struct movement_info moveEnc(float speed, int encoderTicks);
 struct movement_info moveEncU(float speed);
 
 /* Turn a specified number of degrees*/
-struct movement_info turnDegrees(float speed, float degrees); 
+struct movement_info turnDegrees(float speed, float degrees);
 
 /* Turn 90 degrees in specified direction at specified speed.
  * Returns a struct containing which direction walls are present */

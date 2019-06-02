@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include "esp_timer.h"
-#include "hal/inc/motorController.h"
-#include "hal/inc/movement.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "hal/inc/motorController.h"
+#include "hal/inc/movement.h"
 #include "hal/inc/nav.h"
 
 void app_main() {
@@ -23,5 +23,5 @@ void app_main() {
     if (info.front)
       turn180(-15.0);
   }*/
-  //moveEnc(8.5, 1000);
+  // moveEnc(8.5, 1000);
 }
