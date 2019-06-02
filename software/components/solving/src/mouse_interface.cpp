@@ -29,16 +29,16 @@ void Mouse::moveUntilJunct(){
 	// adjust internal position
 	switch(heading){
 		case 0:	// east, +x
-			x += movement.ticksTraveled;
+			x += 1;
 			break;
 		case 90: // north, -y
-			y -= movement.ticksTraveled;
+			y -= 1;
 			break;
 		case 180: // west, -x
-			x -= movement.ticksTraveled;
+			x -= 1;
 			break;
 		case 270: // south, +y
-			y += movement.ticksTraveled;
+			y += 1;
 			break;
 	}
 	// adjust wallCheck (left, front, right)
@@ -54,7 +54,6 @@ void Mouse::moveUntilJunct(){
 // unused as of right now
 void Mouse::moveForward(int steps){
 	heading = fmod(heading+360, 360);
-    moveCenter(MOTOR_SPEED);
 	switch((int) heading){
 		case 0:
 			x += steps;
@@ -110,6 +109,7 @@ void Mouse::rotate(int degrees){
 			turnCenter(-speed);
 			break;
 	}
+	moveForward(1);
 }
 void Mouse::speedRun(std::stack<Point> shortestPath) {
   Point start = shortestPath.top();
