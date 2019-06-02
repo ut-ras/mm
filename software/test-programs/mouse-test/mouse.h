@@ -1,40 +1,37 @@
 /**
- *  Mouse.h
- *  @Description: This class manages the mouse state.
- *  The API has two sets of identical functions, simulator-based mouse functions
- *  and real mouse functions.
+ *  Mouse.h (Hardware Mouse)
+ *  @Description: This class manages the mouse state and unit movement. Functions
+ *  are implemented by sending calls to HAL API.
  *  @Authors: Matthew Yu and Ahmad Ahbab
  *  @Org: Micromouse
+ *  @last modified: 6/1/19
  */
 #pragma once
-#include "Maze.h" // Query function for look API
+// HAL API
+#include "hal/inc/nav.h"
 #include <math.h>
-#include <iostream>
 using namespace std;
 
 class Mouse{
     private:
         // The mouse holds an internal position and heading.
+        int speed = 10; // TODO: magic number!!
         int x;
         int y;
-        Maze* maze;  // needs a reference to the maze to access queries
 
 	    /* precondition: heading is restricted to 0/90/180/270 deg */
         double heading; /*0 - east, 90 - north, 180 - west, 270 - south*/
 
-        /**
-         * @Description: check determines if a cell in a certain heading contains a wall
-         *  using the Maze API.
-         * @param  double heading_v - heading of the mouse to look at
-         * @return  bool - true if path exists, false elsewise
-         */
-        bool check(double heading_v);
+        // for purposes of retrieval by the algorithm component.
+        bool wallCheck[3];  // left, front, right
+        int mouseChange[3]; // x_c, y_c, h_c
+
     public:
         /**
          *  @Description: Mouse constructor sets up a default mouse at position (0, 0),
          *      facing 90 deg due North.
          */
-        Mouse(Maze& maze);
+        Mouse();
 
         /**
          * Mouse constructor sets up a mouse at position (x, y) facing (n) degrees.
@@ -42,7 +39,23 @@ class Mouse{
          * @param y       y position in the maze.
          * @param heading degrees counterclockwise the mouse is facing.
          */
-        Mouse(int x, int y, double heading, Maze& maze);
+        Mouse(int x, int y, int heading);
+
+        /**
+         * moveUntilIntersection moves the mouse position until it finds a junction (wall in front or multiple paths).
+         * sets movement and walls conditions for retrieval.
+         **/
+        void moveUntilJunct();
+
+        /**
+         * getWallCheck
+         **/
+        bool* getWallCheck(){ return wallCheck; };
+
+        /**
+         * getMouseChange
+         **/
+        int* getMouseChange(){ return mouseChange; };
 
         /**
          * moveForward moves the mouse position forward relatively by n steps.
