@@ -14,11 +14,11 @@ struct Point{
 
 class Algorithm{
     private:
-        int hamDist[16][16];
+//        int hamDist[16][16];
         int tremauxMap[16][16][5];  // move history, east, north, west, south wall check
         int solutionMap[16][16];
         std::stack<Point> solution;
-        const int top[16] = {14,13,12,11,10,9,8,7,7,8,9,10,11,12,13,14};
+//        const int top[16] = {14,13,12,11,10,9,8,7,7,8,9,10,11,12,13,14};
         int out[2];
 
         bool openL = false, openF = false, openR = false;

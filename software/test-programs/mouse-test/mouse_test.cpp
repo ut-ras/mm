@@ -34,7 +34,7 @@ bool iterateStep(){
 		case 3:		// end condition is met
 			return false;
 		default:	// error output
-			return false;
+			return true;
 	}
 	return true;
 }

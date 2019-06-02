@@ -3,22 +3,22 @@
 #include <ostream>
 
 void Algorithm::populateMap() {       // creates hamDist maze
-    for(int i = 0; i < 16; i++){
-        hamDist[0][i] = top[i];
-    }
-    for(int i = 1; i < 8; i++){
-        for(int j = 0; j < 16; j++){
-            hamDist[i][j] = hamDist[i-1][j] - 1;
-        }
-    }
-    for(int i = 0; i < 16; i++){
-        hamDist[8][i] = hamDist[7][i];
-    }
-    for(int i = 9; i < 16; i++){
-        for(int j = 0; j < 16; j++){
-            hamDist[i][j] = hamDist[i-1][j] + 1;
-        }
-    }
+//    for(int i = 0; i < 16; i++){
+//        hamDist[0][i] = top[i];
+//    }
+//    for(int i = 1; i < 8; i++){
+//        for(int j = 0; j < 16; j++){
+//            hamDist[i][j] = hamDist[i-1][j] - 1;
+//        }
+//    }
+//    for(int i = 0; i < 16; i++){
+//        hamDist[8][i] = hamDist[7][i];
+//    }
+//    for(int i = 9; i < 16; i++){
+//       for(int j = 0; j < 16; j++){
+//            hamDist[i][j] = hamDist[i-1][j] + 1;
+//        }
+//    }
 
     for(int i = 0; i < 16; i++){
         for(int j = 0; j < 16; j++){
@@ -309,7 +309,7 @@ int* Algorithm::decide() {
             break;
     }
 
-    if(hamDist[currX][currY] == 0){ //if reached center, set finish flag
+    if((currX == 7 || currX == 8) && (currY == 7 || currY == 8)){ //if reached center, set finish flag
         out[0] = 3;
     }
 
