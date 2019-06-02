@@ -105,7 +105,75 @@ void Mouse::rotate(int degrees){
 			break;
 	}
 }
+void Mouse::speedRun(std:stack<Point> shortestPath) {
+  Point start = shortestPath.top();
+  shortestPath.pop();
 
+  int xDiff = next.x - start.x;
+  int yDiff = next.y - start.y;
+while(!shortestPath.empty()){
+  Point next = shortestPath.top();
+  shortestPath.pop();
+  if (heading == 0) {
+    if(xDiff > 0) {
+        moveCenter(speed);
+    }
+    if(xDiff < 0) {
+      turn180Center(-15); 
+    }
+    if(yDiff > 0) {
+      turnCenter(-15);
+    }
+    if(yDiff > 0) {
+      turnCenter(15);
+    }
+
+
+  if (heading == 90) {
+    if(yDiff < 0) {
+        moveCenter(speed);
+    }
+    if(yDiff > 0) {
+      turn180Center(-15); 
+    }
+    if(xDiff > 0) {
+      turnCenter(-15);
+    }
+    if(xDiff < 0) {
+      turnCenter(15);
+    }
+
+  if (heading ==180) {
+    if(xDiff < 0) {
+        moveCenter(speed);
+    }
+    if(xDiff > 0) {
+      turn180Center(-15); 
+    }
+    if(yDiff > 0) {
+      turnCenter(-15);
+    }
+    if(yDiff < 0) {
+      turnCenter(15);
+    }
+
+  if (heading == 270) {
+    if(yDiff > 0) {
+        moveCenter(speed);
+    }
+    if(yDiff < 0) {
+      turn180Center(-15); 
+    }
+    if(xDiff < 0) {
+      turnCenter(-15);
+    }
+    if(xDiff < 0) {
+      turnCenter(15);
+    }
+}
+start = next;
+}
+}
 bool Mouse::checkFront(){
 	return false;	// return getWalls.front;
 }
