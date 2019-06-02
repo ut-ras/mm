@@ -1,4 +1,5 @@
 #include "movement.h"
+#include <assert.h>
 #include <math.h>
 #include <stdlib.h>
 #include "battery.h"
@@ -61,7 +62,7 @@ int init() {
 
   movePID = initPID(0.002, 0.0002, 0.0, "log");
 
-  turn90PID = initPID(0.0091, 0.0088, 0.0, "log");
+  turn90PID = initPID(0.8, 0.1, 0.0, "log");
 
   turn180PID = initPID(0.00416, 0.0035, 0.0, "log");
 
@@ -88,7 +89,7 @@ void zero(void) {
   RIGHT_SIDE_ZERO = dists[1];
 }
 
-struct movement_info getWalls(int *lsensor, int *rsensor) {
+struct movement_info getWalls(int* lsensor, int* rsensor) {
   int leftDists[2];
   int rightDists[2];
 
@@ -99,21 +100,21 @@ struct movement_info getWalls(int *lsensor, int *rsensor) {
   struct movement_info info;
   info.left = leftDists[1] > LEFT_SIDE_THRESH;
   info.right = rightDists[1] > RIGHT_SIDE_THRESH;
-  
+
   /*info.front = false;
   if (info.left)
     info.front |= leftDists[0] > LEFT_FRONT_THRESH;
   if (info.right)
       info.front |= rightDists[0] > RIGHT_FRONT_THRESH;
   if (!info.left && !info.right)
-    info.front = leftDists[0] > LEFT_FRONT_THRESH || rightDists[0] > RIGHT_FRONT_THRESH;*/
+    info.front = leftDists[0] > LEFT_FRONT_THRESH || rightDists[0] >
+  RIGHT_FRONT_THRESH;*/
 
-  info.front = (leftDists[0] > LEFT_FRONT_THRESH && leftDists[1] < 1000) || (rightDists[0] > RIGHT_FRONT_THRESH && rightDists[1] < 1500);
+  info.front = (leftDists[0] > LEFT_FRONT_THRESH && leftDists[1] < 1000) ||
+               (rightDists[0] > RIGHT_FRONT_THRESH && rightDists[1] < 1500);
 
-  if (lsensor)
-    *lsensor = leftDists[1];
-  if (rsensor)
-    *rsensor = rightDists[1];
+  if (lsensor) *lsensor = leftDists[1];
+  if (rsensor) *rsensor = rightDists[1];
 
   return info;
 }
@@ -135,7 +136,6 @@ struct movement_info moveIR(float speed) {
   int leftStart = abs(getTicks(left_enc));
   int rightStart = abs(getTicks(right_enc));
 
-
   struct movement_info info = getWalls(&sideLeft, &sideRight);
   calcIRError(sideLeft, sideRight);
 
@@ -144,9 +144,7 @@ struct movement_info moveIR(float speed) {
     double diffTime = currentTime - lastTime;
     lastTime = currentTime;
 
-    double curr = update(
-        movePID, calcIRError(sideLeft, sideRight),
-        diffTime);
+    double curr = update(movePID, calcIRError(sideLeft, sideRight), diffTime);
     // printf("sens %d %d\n", frontLeft, frontRight);
     // printf("curr %f %d \n", curr, readIRError(&frontLeft, &sideLeft,
     // &frontRight, &sideRight));
@@ -154,48 +152,63 @@ struct movement_info moveIR(float speed) {
     info = getWalls(&sideLeft, &sideRight);
   }
   stopMotors();
+
   vTaskDelay(MOVE_DELAY / portTICK_RATE_MS);
 
   info = getWalls(NULL, NULL);
 
   info.ticksTraveled = (getAbsAvgTicks() - startEnc);
-  int encDiff = (abs(getTicks(left_enc)) - leftStart) - (abs(getTicks(right_enc)) - rightStart);
+  int encDiff = (abs(getTicks(left_enc)) - leftStart) -
+                (abs(getTicks(right_enc)) - rightStart);
 
-  //turnDegrees(encDiff > 0 ? -8.5 : 8.5, abs(encDiff));
+  // turnDegrees(encDiff > 0 ? -8.5 : 8.5, abs(encDiff));
 
   return info;
 }
 
 static int turnProg(int start) { return abs(getAvgTicks() - start); }
 
+static double pid_get_time() { return esp_timer_get_time() / 1000000.0; }
+
+inline static double signum(double num) { return num < 0.0 ? -1.0 : 1.0; }
+
 struct movement_info turn90(float speed) {
-  double lastTime = esp_timer_get_time() / 1000000.0;
-  double currentTime = esp_timer_get_time() / 1000000.0;
+  assert(speed != 0);
+
+  double sign = signum(speed);
+
+  double lastTime = pid_get_time();
+  double currentTime = pid_get_time();
   double diffTime = currentTime - lastTime;
 
-  int leftCorrection = 0;
-  
-  if (speed < 0)
-    leftCorrection = -6;
-
-  set(turn90PID, TURN_TICKS + leftCorrection);
+  double target = TURN_TICKS;
+  set(turn90PID, target);
 
   int start = getAvgTicks();
+  int current = start;
 
+  double timeReachedAt = currentTime;
 
-  while (fabs((double)TURN_TICKS + leftCorrection - turnProg(start) - turn90PID->last) /
-                 diffTime >
-             1.0 ||
-         TURN_TICKS + leftCorrection - turnProg(start) > 1) {
-    currentTime = esp_timer_get_time() / 1000000.0;
+  while (true) {
+    // Update the times:
+    currentTime = pid_get_time();
     diffTime = currentTime - lastTime;
     lastTime = currentTime;
 
-    double distPower = update(turn90PID, turnProg(start), diffTime);
-    // printf("turnProg %d distPower %f\n", turnProg(start), distPower);
+    // Once we get close to our setpoint, let timeReachedAt indicate when it
+    // happened.
+    if (fabs(target - current) > 1) timeReachedAt = currentTime;
 
-    setMotors(speed * distPower, -speed * distPower);
+    // Once we've been close to our setpoint for long enough, bail
+    if ((currentTime - timeReachedAt) >= 0.05) break;
+
+    // Otherwise, update the motors and keep going:
+    current = turnProg(start);
+    double distPower = update(turn90PID, current, diffTime);
+
+    setMotors(sign * distPower, -sign * distPower);
   }
+
   stopMotors();
   vTaskDelay(MOVE_DELAY / portTICK_RATE_MS);
 
@@ -233,18 +246,18 @@ struct movement_info turn180(float speed) {
 
   return info;
 }
+
 struct movement_info turnDegrees(float speed, float angle) {
   double lastTime = esp_timer_get_time() / 1000000.0;
   double currentTime = esp_timer_get_time() / 1000000.0;
   double diffTime = currentTime - lastTime;
 
-  int goal = (TURN_TICKS * angle)/90;
+  int goal = (TURN_TICKS * angle) / 90;
   set(turnDegreePID, goal);
 
   int start = getAvgTicks();
 
-    while (fabs((double)goal - turnProg(start) - turnDegreePID->last) /
-                 diffTime >
+  while (fabs((double)goal - turnProg(start) - turnDegreePID->last) / diffTime >
              1.0 ||
          goal - turnProg(start) > 1) {
     currentTime = esp_timer_get_time() / 1000000.0;
@@ -273,7 +286,7 @@ struct movement_info moveEnc(float speed, int32_t encoderTicks) {
   int startRight = abs(getTicks(right_enc));
 
   set(moveEncPID, ENC_DIFF);
-  struct movement_info info; 
+  struct movement_info info;
 
   int leftDiff = 0;
   int rightDiff = 0;
@@ -298,7 +311,7 @@ struct movement_info moveEnc(float speed, int32_t encoderTicks) {
   vTaskDelay(MOVE_DELAY / portTICK_RATE_MS);
 
   int encDiff = leftDiff - rightDiff;
-  //turnDegrees(encDiff > 0 ? -8.5 : 8.5, abs(encDiff));
+  // turnDegrees(encDiff > 0 ? -8.5 : 8.5, abs(encDiff));
 
   info = getWalls(NULL, NULL);
 
@@ -318,7 +331,7 @@ struct movement_info moveEncU(float speed) {
   int startRight = abs(getTicks(right_enc));
 
   set(moveEncPID, ENC_DIFF);
-  
+
   struct movement_info info = getWalls(NULL, NULL);
 
   while (!info.front && info.left && info.right) {
@@ -335,7 +348,7 @@ struct movement_info moveEncU(float speed) {
     printf("current %d", abs(getAvgTicks() - start));*/
 
     setMotors(speed + correction, speed - correction);
-    
+
     info = getWalls(NULL, NULL);
   }
   stopMotors();

@@ -19,7 +19,7 @@ int init();
 void zero(void);
 
 /* Return a struct containing which walls are present */
-struct movement_info getWalls(int* lsensor, int*rsensor);
+struct movement_info getWalls(int* lsensor, int* rsensor);
 
 /* Move forward using distance sensors for correction until
  * a gap is detected on the sides or a wall is detected in
