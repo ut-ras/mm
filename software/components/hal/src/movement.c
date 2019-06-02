@@ -221,13 +221,14 @@ struct movement_info turn180(float speed) {
 
   return info;
 }
-struct movement_info turnDegrees(float speed float angle) {
+struct movement_info turnDegrees(float speed, float angle) {
   double lastTime = esp_timer_get_time() / 1000000.0;
   double currentTime = esp_timer_get_time() / 1000000.0;
   double diffTime = currentTime - lastTime;
 
   set(turnDegreePID, (TURN_TICKS * angle)/90);
 
+  int start = getAvgTicks();
     while (fabs((double)TURN_TICKS * 2 - turnProg(start) - turnDegreePID->last) /
                  diffTime >
              1.0 ||
