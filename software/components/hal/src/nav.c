@@ -1,8 +1,8 @@
-#include "movement.h"
+#include "nav.h"
 
 #define MAZE_UNIT_SIZE 215
 
-static struct movement_info moveCenter(float speed) {
+struct movement_info moveCenter(float speed) {
   struct movement_info info;
   do { info = moveIR(8.5); } while (!info.front && info.left && info.right);
 

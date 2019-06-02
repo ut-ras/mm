@@ -10,7 +10,7 @@
  */
 static void mcpwm_frequency_initialize() {
   mcpwm_config_t pwm_config;
-  pwm_config.frequency = 100;  // frequency = 100Hz
+  pwm_config.frequency = 1000;  // frequency = 100Hz
   pwm_config.cmpr_a = 0.0;     // duty cycle of PWMxA = 0.0%
   pwm_config.cmpr_b = 0.0;     // duty cycle of PWMxb = 0.0%
   pwm_config.counter_mode = MCPWM_UP_COUNTER;
@@ -19,7 +19,7 @@ static void mcpwm_frequency_initialize() {
       MCPWM_UNIT_0, MCPWM_TIMER_0,
       &pwm_config);  // Configure PWM0A(19) & PWM0B(18) with above settings
   // connect 19 and 18 to a single motors
-  pwm_config.frequency = 100;  // frequency = 100Hz
+  pwm_config.frequency = 1000;  // frequency = 100Hz
   pwm_config.cmpr_a = 0.0;     // duty cycle of PWMxA = 0.0%
   pwm_config.cmpr_b = 0.0;     // duty cycle of PWMxb = 0.0%
   pwm_config.counter_mode = MCPWM_UP_COUNTER;
