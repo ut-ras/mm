@@ -23,7 +23,7 @@ struct movement_info turnCenter(float speed) {
   turn90(speed);
   struct movement_info info;
     if (!info.left && !info.right)
-      moveEnc(8.5, 190);
+      moveEnc(8.5, 210);
     else
       info = moveIRU(8.5);
   //info = moveEnc(8.5, 180);
