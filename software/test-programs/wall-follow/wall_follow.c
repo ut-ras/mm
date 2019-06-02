@@ -10,16 +10,29 @@ void app_main() {
   if (init()) exit(1);
 
   zero();
+  /*moveTest(8.5);
+  turnCenter(15.0);
   moveTest(8.5);
-  turn90(15.0);
-  moveEnc(8.5, 170);
+  turnCenter(15.0);
   moveTest(8.5);
-  turn90(15.0);
-  moveEnc(8.5, 170);
+  turn180Center(15.0);
   moveTest(8.5);
-  turn180(-15.0);
+  turnCenter(-15.0);
   moveTest(8.5);
-  
+  turnCenter(-15.0);
+  moveTest(8.5);*/
+
+  moveCenter(8.5);
+  turnCenter(15.0);
+  turnCenter(15.0);
+  moveCenter(8.5);
+  turn180Center(-15.0);
+  moveCenter(8.5);
+  turnCenter(-15.0);
+  turnCenter(-15.0);
+  moveCenter(8.5);
+
+  // moveIRU(8.5);
   /*while (true) {
     struct movement_info info = moveIR(8.5);
     if (!info.left || !info.right) break;

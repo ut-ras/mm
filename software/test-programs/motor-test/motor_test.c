@@ -6,7 +6,3 @@ void app_main() {
   setMotors(-10.0, -10.0);
   while (1) {}
 }
-
-
-
-

@@ -3,7 +3,7 @@
 
 # This doubles as a registry of all the projects we have in this repo.
 
-TEST_PROGRAMS := apa102-test encoder-test motor-test sensor-test wall-follow mouse-test
+TEST_PROGRAMS := apa102-test detect-test encoder-test motor-test sensor-test wall-follow mouse-test
 
 PROJECTS := $(addprefix test-programs/,$(TEST_PROGRAMS)) components/hal/examples
 

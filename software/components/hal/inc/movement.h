@@ -19,7 +19,7 @@ int init();
 void zero(void);
 
 /* Return a struct containing which walls are present */
-struct movement_info getWalls(int* lsensor, int*rsensor);
+struct movement_info getWalls(int* lsensor, int* rsensor);
 
 /* Move forward using distance sensors for correction until
  * a gap is detected on the sides or a wall is detected in
@@ -27,6 +27,8 @@ struct movement_info getWalls(int* lsensor, int*rsensor);
  * are present as well as distance traveled in maze units.
  * Travels at a specified speed with a range of 0.0 to 100.0. */
 struct movement_info moveIR(float speed);
+
+struct movement_info moveIRU(float speed);
 
 /* Move forward using encoders for correction until
  * a gap is detected on the sides or a wall is detected in
