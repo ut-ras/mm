@@ -2,20 +2,22 @@
 
 #include <string>
 #include <iostream>
-#include <vector>
+#include <queue>
+#include <stack>
 #define DEAD_END 99
 using namespace std;
 
-typedef struct Decision{
-    int param1;
-    int param2;
-}Decision;
+struct Point{
+    int x;
+    int y;
+};
 
 class Algorithm{
     private:
         int hamDist[16][16];
-        int tremauxMap[16][16];
-        vector<Decision> solution;
+        int tremauxMap[16][16][5];  // move history, east, north, west, south wall check
+        int solutionMap[16][16];
+        std::stack<Point> solution;
         const int top[16] = {14,13,12,11,10,9,8,7,7,8,9,10,11,12,13,14};
         int out[2];
 
@@ -38,5 +40,5 @@ class Algorithm{
         int* decide();
         void getCheck(bool* wallCheck, int* mousePos);
         void printMaze();
-        std::vector<Decision> getShortestPath();
+        std::stack<Point> getShortestPath();
 };
