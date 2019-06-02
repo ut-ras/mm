@@ -4,8 +4,8 @@
 
 bool iterateStep();
 
-Mouse mouse;
-Algorithm algo;
+Mouse* mouse;
+Algorithm* algo;
 extern "C" void app_main(void) {
 	mouse = new Mouse();
 	algo = new Algorithm();
