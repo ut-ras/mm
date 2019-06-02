@@ -39,6 +39,8 @@ PID* movePID;
 PID* turn90PID;
 PID* turn180PID;
 PID* moveEncPID;
+PID* turnDegreePID;
+
 
 int init() {
   if (init_distance_sensor(&left, LEFT_FRONT_PIN, LEFT_SIDE_PIN,
@@ -65,6 +67,8 @@ int init() {
   turn180PID = initPID(0.00416, 0.0035, 0.0, "log");
 
   moveEncPID = initPID(0.04, 0, 0, "log");
+
+  turnDegreePID = initPID(0.00, 0.00, 0.00, "log");
 
   initBattery();
 
@@ -217,7 +221,33 @@ struct movement_info turn180(float speed) {
 
   return info;
 }
+struct movement_info turnDegrees(float speed float angle) {
+  double lastTime = esp_timer_get_time() / 1000000.0;
+  double currentTime = esp_timer_get_time() / 1000000.0;
+  double diffTime = currentTime - lastTime;
 
+  set(turnDegreePID, (TURN_TICKS * angle)/90);
+
+    while (fabs((double)TURN_TICKS * 2 - turnProg(start) - turnDegreePID->last) /
+                 diffTime >
+             1.0 ||
+         TURN_TICKS * 2 + 1 - turnProg(start) > 1) {
+    currentTime = esp_timer_get_time() / 1000000.0;
+    diffTime = currentTime - lastTime;
+    lastTime = currentTime;
+
+    double distPower = update(turnDegreePID, turnProg(start), diffTime);
+    // printf("turnProg %d distPower %f\n", turnProg(start), distPower);
+
+    setMotors(speed * distPower, -speed * distPower);
+  }
+  stopMotors();
+  vTaskDelay(MOVE_DELAY / portTICK_RATE_MS);
+
+  struct movement_info info = getWalls();
+
+  return info; 
+}
 struct movement_info moveEnc(float speed, int32_t encoderTicks) {
   double lastTime = esp_timer_get_time() / 1000000.0;
   double currentTime = esp_timer_get_time() / 1000000.0;
