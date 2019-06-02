@@ -5,25 +5,29 @@
 #define MAX_SUM (200)
 
 PID *initPID(double p, double i, double d, char *logName) {
+  printf("inittest\n");
   PID *pid = (PID *)malloc(sizeof(PID));
   pid->kP = p;
   pid->kI = i;
   pid->kD = d;
-  pid->fp = fopen(logName, "w+");
+  //pid->fp = fopen(logName, "w+");
   set(pid, 0);
+  printf("inittest2\n");
   return pid;
 }
 
 double getErr(PID *pid) { return pid->last; }
 
 void set(PID *pid, double set) {
+  printf("tadsfiasdst\n");
   pid->goal = set;
   pid->sum = 0;
   pid->last = 0;
-  if (pid->fp) {
+  printf("test\n");
+  /*if (pid->fp) {
     fprintf(pid->fp, "\nSet: %f P: %f I: %f D: %f\n", set, pid->kP, pid->kI,
             pid->kD);
-  }
+  }*/
 }
 
 // renamed standard max and min to avoid multiple definition error
@@ -45,8 +49,8 @@ double update(PID *pid, double current, double dt) {
   double result = pid->kP * err + pid->kI * pid->sum + pid->kD * d;
   // printf("%f %f\n",pid->kI * pid->sum, result);
   if (pid->fp) {
-    fprintf(pid->fp, "%f %f %f %f %f\n", dt, pid->kP * err, pid->kI * pid->sum,
-            pid->kD * d, result);
+    /*fprintf(pid->fp, "%f %f %f %f %f\n", dt, pid->kP * err, pid->kI * pid->sum,
+            pid->kD * d, result);*/
   }
   return result;
 }

@@ -3,6 +3,9 @@
 
 #include <stdbool.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 struct movement_info {
   bool left;
   bool right;
@@ -52,4 +55,7 @@ struct movement_info turn90(float speed);
 struct movement_info turn180(float speed);
 
 struct movement_info turnDegrees(float speed, float angle);
+#ifdef __cplusplus
+}
+#endif
 #endif /* MOVEMENT_H */

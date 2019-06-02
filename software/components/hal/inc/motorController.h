@@ -1,6 +1,9 @@
 #ifndef MOTOR_CONTROLLER_H
 #define MOTOR_CONTROLLER_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 void mcpwm_initialize();
 
 void set_left_speed(double speed);
@@ -12,4 +15,7 @@ void setMotors(float left, float right);
 
 void stopMotors(void);
 
+#ifdef __cplusplus
+}
+#endif
 #endif /* MOTOR_CONTROLLER_H */
