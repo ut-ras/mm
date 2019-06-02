@@ -51,7 +51,7 @@ class Mouse{
         /**
          * getWallCheck
          **/
-        bool* getWallCheck(){ return wallCheck; };
+        bool* getWallCheck();
 
         /**
          * getMouseChange
