@@ -44,3 +44,8 @@ compile_commands.json
 # OS Specifc files
 .fuse_hidden*
 .DS_Store
+
+# Eagle
+*.b#*
+*.s#*
+*.l#*
