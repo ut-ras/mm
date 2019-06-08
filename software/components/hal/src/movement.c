@@ -31,12 +31,12 @@
 int LEFT_SIDE_ZERO = 510;
 int LEFT_SIDE_THRESH = 330;
 int RIGHT_SIDE_ZERO = 590;
-int RIGHT_SIDE_THRESH = 5;
+int RIGHT_SIDE_THRESH = 300;
 
 int LEFT_FRONT_ZERO = 300;
-int LEFT_FRONT_THRESH = 550;
+int LEFT_FRONT_THRESH = 510;
 int RIGHT_FRONT_ZERO = 300;
-int RIGHT_FRONT_THRESH = 350;
+int RIGHT_FRONT_THRESH = 310;
 
 distance left;
 distance right;
@@ -67,7 +67,7 @@ int init() {
   // mcpwm_example_gpio_initialize();
   mcpwm_initialize();
 
-  movePID = initPID(0.0003, 0.001, 0.000, "log");
+  movePID = initPID(0.00035, 0.001, 0.000, "log");
 
   turn90PID = initPID(0.8, 0.1, 0.0, "log");
 
@@ -198,7 +198,7 @@ struct movement_info moveIRU(float speed) {
     // printf("sens %d %d\n", frontLeft, frontRight);
     // printf("curr %f %d \n", curr, readIRError(&frontLeft, &sideLeft,
     // &frontRight, &sideRight));
-    setMotors(speed + curr + .2, speed - curr);
+    setMotors(speed + curr, speed - curr);
     info = getWalls(&sideLeft, &sideRight);
   }
   stopMotors();
@@ -347,7 +347,7 @@ struct movement_info moveEnc(float speed, int32_t encoderTicks) {
     printf("leftDiff %d rightDiff %d\n", leftDiff, rightDiff);
     printf("current %d", abs(getAvgTicks() - start));*/
 
-    setMotors(speed + correction + .2, speed - correction);
+    setMotors(speed + correction, speed - correction);
     info = getWalls(NULL, NULL);
   }
   stopMotors();

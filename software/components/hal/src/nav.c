@@ -12,7 +12,6 @@ struct movement_info moveCenter(float speed) {
       info = moveEnc(8.5, 210);
     else
       info = moveIRU(8.5);
-    vTaskDelay(250 / portTICK_RATE_MS);
   //} while (!info.front && info.left && info.right);
   vTaskDelay(250 / portTICK_RATE_MS);
 
