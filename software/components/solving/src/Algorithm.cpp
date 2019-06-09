@@ -2,24 +2,7 @@
 #include <iostream>
 #include <ostream>
 
-void Algorithm::populateMap() {       // creates hamDist maze
-//    for(int i = 0; i < 16; i++){
-//        hamDist[0][i] = top[i];
-//    }
-//    for(int i = 1; i < 8; i++){
-//        for(int j = 0; j < 16; j++){
-//            hamDist[i][j] = hamDist[i-1][j] - 1;
-//        }
-//    }
-//    for(int i = 0; i < 16; i++){
-//        hamDist[8][i] = hamDist[7][i];
-//    }
-//    for(int i = 9; i < 16; i++){
-//       for(int j = 0; j < 16; j++){
-//            hamDist[i][j] = hamDist[i-1][j] + 1;
-//        }
-//    }
-
+void Algorithm::populateMap() {       // creates a default tremaux map and solution map.
     for(int i = 0; i < 16; i++){
         for(int j = 0; j < 16; j++){
             for(int k = 0; k < 5; k++)
@@ -38,8 +21,8 @@ void Algorithm::populateMap() {       // creates hamDist maze
     }
 }
 
-// emulate moving through corridor in algorithm history
-void Algorithm::mvCorr() {            // if only one direction is open, move through corridor
+// precondition: if only one direction is open
+void Algorithm::mvCorr() {
     if(openF){  // dead end, has rotated, move forward.
         out[0] = 0;
         out[1] = 1;
@@ -65,9 +48,11 @@ void Algorithm::mvDEnd() {            // if no way is open, reverse
     tremauxMap[currX][currY][0] = DEAD_END;
 }
 
-void Algorithm::mvJunct() {           // method for dealing with junctions, where >1 paths are open
+// precondition: more than 1 paths are open
+void Algorithm::mvJunct() {
     int rotation = 0;
     bool hasRotated = false;
+
     // first check if there is a priority among tremaux
     int lowestSide = 0; //front
     int lowestVal = 99;

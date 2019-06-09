@@ -16,7 +16,6 @@ using namespace std;
 class Mouse{
     private:
         // The mouse holds an internal position and heading.
-        int speed = 10; // TODO: magic number!!
         int x;
         int y;
 
