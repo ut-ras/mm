@@ -31,6 +31,20 @@
 *.out
 *.app
 
+# ESP-IDF things
+build/
+sdkconfig*
+
+# clangd files
+compile_commands.json
+
+# Temp files
+*.swp
+
+# OS Specifc files
+.fuse_hidden*
+.DS_Store
+
 # Eagle
 *.b#*
 *.s#*
